@@ -31,25 +31,19 @@ namespace GuardsOfAetheria
             {
                 //ThrowException();
             }
-            else if ((int)(input - '0') == 1)
+            switch ((int)(input - '0'))
             {
-                return;
-            }
-            else if ((int)(input - '0') == 2)
-            {
-                //LoadGame()
-            }
-            else if ((int)(input - '0') == 3)
-            {
-                //DisplayOptionsMenu()
-            }
-            else if ((int)(input - '0') == 4)
-            {
+                case 1:
+                    return;
+                case 2:
+                //LoadGame
+                case 3:
+                //DisplayOptionsMenu()2
+                case 4:
                 //DisplayCreditsMeny()
-            }
-            else if ((int)(input-'0')== 5)
-            {
-                Environment.Exit(0);
+                case 5:
+                    Environment.Exit(0);
+                    break;
             }
             DisplayMainMenu();
         }
