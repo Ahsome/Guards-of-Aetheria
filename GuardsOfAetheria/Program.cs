@@ -53,3 +53,8 @@ namespace GuardsOfAetheria
         }
     }
 }
+/* Save:
+ *  XmlDocument doc = new XmlDocument();
+ *  doc.AppendChild(doc.CreateElement("<name>","<value>")); 
+ *  doc.Save("<destination>.GoA"); 
+ *  to read, use XmlDocument.Load*/
