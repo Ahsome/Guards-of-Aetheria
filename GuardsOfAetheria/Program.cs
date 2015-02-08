@@ -11,10 +11,10 @@ namespace GuardsOfAetheria
         static void Main(string[] args)
         {
             Program program = new Program();
-            program.MainMenu();
+            program.DisplayMainMenu();
         }
 
-        public void MainMenu()
+        public void DisplayMainMenu()
         {
             Console.Clear();
             Console.WriteLine("Welcome to the Guards of Atheria\nA simple game, set in the land of Aesrin\nWhat would you like to do?\n\n> New Game\n  Load Game\n  Options Game\n  Credits Game\n  Quit Game");
@@ -43,28 +43,28 @@ namespace GuardsOfAetheria
                 //LoadGame
                 case 3:
                     Console.Clear();
-                    Options();
+                    DisplayOptions();
                     break;
                 case 4:
                     Console.Clear();
-                    Credits();
+                    DisplayCredits();
                     break;
                 case 5:
                     Environment.Exit(0);
                     break;
             }
-            MainMenu();
+            DisplayMainMenu();
         }
-        public void Options()
+        public void DisplayOptions()
         {
             //Options
             Console.Clear();
-            MainMenu();
+            DisplayMainMenu();
         }
-        public void Credits()
+        public void DisplayCredits()
         {
             //Credits
-            MainMenu();
+            DisplayMainMenu();
         }
     }
 }
