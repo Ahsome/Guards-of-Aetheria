@@ -17,21 +17,25 @@ namespace GuardsOfAetheria
         public void DisplayMainMenu()
         {
             Console.Clear();
-            Console.WriteLine("Welcome to the Guards of Atheria");
-            Console.WriteLine("A simple game, set in the land of Aesrin");
-            Console.WriteLine("What would you like to do?\n");
-
-            Console.WriteLine("(1) New Game");
-            Console.WriteLine("(2) Load Game");
-            Console.WriteLine("(3) Options Game");
-            Console.WriteLine("(4) Credits Game");
-            Console.WriteLine("(5) Quit Game");
-            char input = Console.ReadKey().KeyChar;
-            if (!Char.IsNumber(input))
+            Console.WriteLine("Welcome to the Guards of Atheria\nA simple game, set in the land of Aesrin\nWhat would you like to do?\n\n> New Game\n  Load Game\n  Options Game\n  Credits Game\n  Quit Game");
+            int menu = 1;
+            ConsoleKey input;
+            int enter = 0;
+            while (enter == 0)
             {
-                //ThrowException();
+                input = Console.ReadKey().Key;
+                if (input == ConsoleKey.Enter) { enter = 1; } else { enter = 0; }
+                Console.SetCursorPosition(0, menu + 3);
+                Console.Write(' ');
+                if (input == ConsoleKey.UpArrow) { menu--; }
+                if (input == ConsoleKey.DownArrow) { menu++; }
+                if (menu < 1) { menu = 5; }
+                if (menu > 5) { menu = 1; }
+                Console.SetCursorPosition(0, menu + 3);
+                Console.Write('>');
             }
-            switch ((int)(input - '0'))
+
+            switch (menu)
             {
                 case 1:
                     return;
