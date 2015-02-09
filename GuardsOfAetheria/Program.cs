@@ -72,7 +72,7 @@ namespace GuardsOfAetheria
                     return;
                 case 2:
                     playerClass = "Mage";
-                    intelligence = 10;
+                    intellect = 10;
                     return;
                 case 3:
                     playerClass = "Archer";
