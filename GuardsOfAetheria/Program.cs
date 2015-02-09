@@ -14,26 +14,12 @@ namespace GuardsOfAetheria
             program.DisplayMainMenu();
         }
 
+        public int menu;
         public void DisplayMainMenu()
         {
             Console.Clear();
             Console.WriteLine("Welcome to the Guards of Atheria\nA simple game, set in the land of Aesrin\nWhat would you like to do?\n\n> New Game\n  Load Game\n  Options\n  Credits\n  Quit Game");
-            int menu = 1;
-            ConsoleKey input;
-            int enter = 0;
-            while (enter == 0)
-            {
-                input = Console.ReadKey().Key;
-                if (input == ConsoleKey.Enter) { enter = 1; } else { enter = 0; }
-                Console.SetCursorPosition(0, menu + 3);
-                Console.Write(' ');
-                if (input == ConsoleKey.UpArrow) { menu--; }
-                if (input == ConsoleKey.DownArrow) { menu++; }
-                if (menu < 1) { menu = 5; }
-                if (menu > 5) { menu = 1; }
-                Console.SetCursorPosition(0, menu + 3);
-                Console.Write('>');
-            }
+            SelectOption(4, 8);
 
             switch (menu)
             {
@@ -72,8 +58,30 @@ namespace GuardsOfAetheria
         public void CharCreation()
         {
             Console.Clear();
-            Console.WriteLine();
+            Console.WriteLine("You wake up and find yourself on a surprisingly comfortable hay mattress.\nYou look around and see things that you thought belonged in an era long gone.\nYou take a moment to realise that you feel... different.\nYou climb out of bed, flex your muscles and do some mental warm-ups and find\nthat you are:\n> a warrior (berserker?), strong and ... to concentrate but slow and clumsy\n  a mage, excellent at concentrating and more dexterous than average, but weak\n  an archer, quick and agile and strong enough but bad at concentrating");
+            SelectOption(5,7);
             DisplayMainMenu();
+        }
+        public void SelectOption(int startLine, int endLine)
+        {
+            int numberOfOptions = endLine - startLine + 1;
+            menu = 1;
+            ConsoleKey input;
+            int enter = 0;
+            while (enter == 0)
+            {
+                input = Console.ReadKey().Key;
+                if (input == ConsoleKey.Enter) { enter = 1; } else { enter = 0; }
+                Console.SetCursorPosition(0, menu + startLine - 1);
+                Console.Write(' ');
+                if (input == ConsoleKey.UpArrow) { menu--; }
+                if (input == ConsoleKey.DownArrow) { menu++; }
+                if (menu < 1) { menu = numberOfOptions; }
+                if (menu > numberOfOptions) { menu = 1; }
+                Console.SetCursorPosition(0, menu + startLine - 1);
+                Console.Write('>');
+            }
+            return;
         }
     }
 }
