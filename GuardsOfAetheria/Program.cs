@@ -15,6 +15,10 @@ namespace GuardsOfAetheria
         }
 
         public int menu;
+        public string playerClass;
+        public int strength;
+        public int intellect;
+        public int dexterity;
         public void DisplayMainMenu()
         {
             Console.Clear();
@@ -60,6 +64,21 @@ namespace GuardsOfAetheria
             Console.Clear();
             Console.WriteLine("You wake up and find yourself on a surprisingly comfortable hay mattress.\nYou look around and see things that you thought belonged in an era long gone.\nYou take a moment to realise that you feel... different.\nYou climb out of bed, flex your muscles and do some mental warm-ups and find\nthat you are:\n> a warrior (berserker?), strong and ... to concentrate but slow and clumsy\n  a mage, excellent at concentrating and more dexterous than average, but weak\n  an archer, quick and agile and strong enough but bad at concentrating");
             SelectOption(5,7);
+            switch (menu)
+            {
+                case 1:
+                    playerClass = "Warrior";
+                    strength = 10;
+                    return;
+                case 2:
+                    playerClass = "Mage";
+                    intelligence = 10;
+                    return;
+                case 3:
+                    playerClass = "Archer";
+                    dexterity = 10;
+                    return;
+            }
             DisplayMainMenu();
         }
         public void SelectOption(int startLine, int endLine)
