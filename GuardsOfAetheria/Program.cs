@@ -38,7 +38,9 @@ namespace GuardsOfAetheria
             switch (menu)
             {
                 case 1:
-                    return;
+                    Console.Clear();
+                    CharCreation();
+                    break;
                 case 2:
                 //LoadGame
                 case 3:
@@ -57,13 +59,20 @@ namespace GuardsOfAetheria
         }
         public void DisplayOptions()
         {
-            //Options
             Console.Clear();
+            //Options
             DisplayMainMenu();
         }
         public void DisplayCredits()
         {
+            Console.Clear();
             //Credits
+            DisplayMainMenu();
+        }
+        public void CharCreation()
+        {
+            Console.Clear();
+            Console.WriteLine();
             DisplayMainMenu();
         }
     }
