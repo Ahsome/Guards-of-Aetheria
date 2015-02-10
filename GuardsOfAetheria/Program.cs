@@ -6,66 +6,16 @@ using System.Threading.Tasks;
 
 namespace GuardsOfAetheria
 {
-    class Program
+    class MainProgram
     {
         static void Main(string[] args)
         {
-            Program program = new Program();
-            program.DisplayMainMenu();
+            Console.CursorVisible = false;
+            var guiMenu = new GUIMainMenu();
+            guiMenu.DisplayMainMenu();
+            //Took way to long
         }
 
-        public void DisplayMainMenu()
-        {
-            Console.Clear();
-            Console.WriteLine("Welcome to the Guards of Atheria\nA simple game, set in the land of Aesrin\nWhat would you like to do?\n\n> New Game\n  Load Game\n  Options Game\n  Credits Game\n  Quit Game");
-            int menu = 1;
-            ConsoleKey input;
-            int enter = 0;
-            while (enter == 0)
-            {
-                input = Console.ReadKey().Key;
-                if (input == ConsoleKey.Enter) { enter = 1; } else { enter = 0; }
-                Console.SetCursorPosition(0, menu + 3);
-                Console.Write(' ');
-                if (input == ConsoleKey.UpArrow) { menu--; }
-                if (input == ConsoleKey.DownArrow) { menu++; }
-                if (menu < 1) { menu = 5; }
-                if (menu > 5) { menu = 1; }
-                Console.SetCursorPosition(0, menu + 3);
-                Console.Write('>');
-            }
-
-            switch (menu)
-            {
-                case 1:
-                    return;
-                case 2:
-                //LoadGame
-                case 3:
-                    Console.Clear();
-                    DisplayOptions();
-                    break;
-                case 4:
-                    Console.Clear();
-                    DisplayCredits();
-                    break;
-                case 5:
-                    Environment.Exit(0);
-                    break;
-            }
-            DisplayMainMenu();
-        }
-        public void DisplayOptions()
-        {
-            //Options
-            Console.Clear();
-            DisplayMainMenu();
-        }
-        public void DisplayCredits()
-        {
-            //Credits
-            DisplayMainMenu();
-        }
     }
 }
 /* Save:
