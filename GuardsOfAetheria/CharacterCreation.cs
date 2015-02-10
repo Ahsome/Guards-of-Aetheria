@@ -8,7 +8,7 @@ namespace GuardsOfAetheria
 {
     class CharacterCreation
     {
-        static Player player = new Player();
+        Player player = Player.Instance;
         public void CreateCharacter()
         {
             Console.Clear();
@@ -40,13 +40,13 @@ namespace GuardsOfAetheria
                         switch (menuSelected)
                         {
                             case 1:
-                                player.PlayerClass = Player.playerClass.Melee;
+                                player.PlayerClass = Player.Class.Melee;
                                 return;
                             case 2:
-                                player.PlayerClass = Player.playerClass.Ranged;
+                                player.PlayerClass = Player.Class.Ranged;
                                 return;
                             case 3:
-                                player.PlayerClass = Player.playerClass.Magic;
+                                player.PlayerClass = Player.Class.Magic;
                                 return;
                         }
                         return;
@@ -69,7 +69,7 @@ namespace GuardsOfAetheria
         {
             switch (player.PlayerClass)
             {
-                case Player.playerClass.Melee:
+                case Player.Class.Melee:
                     player.StrengthAtt = 13;
                     player.DexterityAtt = 10;
                     player.WisdomAtt = 7;
@@ -77,7 +77,7 @@ namespace GuardsOfAetheria
                     player.ManaAtt = 70;
                     player.EnduranceAtt = 100;
                     break;
-                case Player.playerClass.Magic:
+                case Player.Class.Magic:
                     player.StrengthAtt = 13;
                     player.DexterityAtt = 10;
                     player.WisdomAtt = 7;
@@ -85,7 +85,7 @@ namespace GuardsOfAetheria
                     player.ManaAtt = 70;
                     player.EnduranceAtt = 100;
                     break;
-                case Player.playerClass.Ranged:
+                case Player.Class.Ranged:
                     player.StrengthAtt = 13;
                     player.DexterityAtt = 10;
                     player.WisdomAtt = 7;

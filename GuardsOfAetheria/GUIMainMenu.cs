@@ -15,7 +15,7 @@ namespace GuardsOfAetheria
 
             int menuSelected = SetMainCursor();
             ActivateSelectedMenu(menuSelected);
-            DisplayMainMenu();
+ 
         }
 
         private void ActivateSelectedMenu(int menuSelected)

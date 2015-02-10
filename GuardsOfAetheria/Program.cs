@@ -13,7 +13,7 @@ namespace GuardsOfAetheria
             Console.CursorVisible = false;
             var guiMenu = new GUIMainMenu();
             guiMenu.DisplayMainMenu();
-            //Took way to long
+            //Took way to long to make this ;)
         }
 
     }

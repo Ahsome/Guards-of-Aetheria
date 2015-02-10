@@ -8,12 +8,14 @@ namespace GuardsOfAetheria
 {
     class Player
     {
-        public enum playerClass
+        public enum Class
         {
-            Melee, Magic, Ranged
+            Melee,
+            Magic,
+            Ranged
         }
         public string PlayerName { get; set; }
-        public playerClass PlayerClass { get; set; }
+        public Class PlayerClass { get; set; }
 
         public int StrengthAtt { get; set; }
         public int DexterityAtt { get; set; }
@@ -25,5 +27,23 @@ namespace GuardsOfAetheria
         public int EnduranceAtt { get; set; }
 
         public int DefenceAtt { get; set; }
+
+        private static readonly Player instance = new Player();
+
+        static Player()
+        {
+        }
+
+        private Player()
+        {
+        }
+
+        public static Player Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
     }
 }
