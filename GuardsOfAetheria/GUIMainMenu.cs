@@ -59,6 +59,9 @@ namespace GuardsOfAetheria
                         break;
                     case ConsoleKey.Enter:
                         return menuSelected;
+                    default:
+                        DisplayMainMenu();
+                        break;
                 }
 
                 if (menuSelected < 1)

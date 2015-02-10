@@ -17,7 +17,6 @@ namespace GuardsOfAetheria
             ChooseClass();
             SetClassAttributes();
             ManualAttributes();
-            Console.ReadLine();
         }
         private void ChooseClass()
         {
@@ -68,7 +67,7 @@ namespace GuardsOfAetheria
 
         private void SetClassAttributes()
         {
-            switch(player.PlayerClass)
+            switch (player.PlayerClass)
             {
                 case Player.playerClass.Melee:
                     player.StrengthAtt = 13;
@@ -101,19 +100,15 @@ namespace GuardsOfAetheria
         {
             Console.Clear();
             int pointsLeft = 16;
-            int menuSelected = 1;
-            Console.WriteLine("Set your attributes manually. Points left are indicated below");
-            Console.WriteLine("Strength:       {0}", player.StrengthAtt );
-            Console.WriteLine("Dexterity:      {0}", player.DexterityAtt);
-            Console.WriteLine("Wisdom:         {0}", player.WisdomAtt);
-            Console.WriteLine("Vitality:       {0}", player.VitalityAtt);
-            Console.WriteLine("Mana:           {0}", player.ManaAtt);
-            Console.WriteLine("Endurance:      {0}\n", player.EnduranceAtt);
-            Console.WriteLine("Points left to use: {0}", pointsLeft);
+            int[] tempPoints = { 0, 0, 0, 0, 0, 0 };
+            int menuSelected = 0;
+            CreationAttributeGraphics(pointsLeft, tempPoints);
+            Console.SetCursorPosition(14, 1);
+            Console.Write('>');
             while (true)
             {
                 ConsoleKey input = Console.ReadKey().Key;
-                Console.SetCursorPosition(16, menuSelected);
+                Console.SetCursorPosition(14, menuSelected + 1);
                 Console.Write(' ');
 
                 switch (input)
@@ -124,21 +119,56 @@ namespace GuardsOfAetheria
                     case ConsoleKey.DownArrow:
                         menuSelected++;
                         break;
-                    case ConsoleKey.Enter:
+                    case ConsoleKey.LeftArrow:
+                        if (tempPoints[menuSelected] > 0)
+                        {
+                            tempPoints[menuSelected]--;
+                            pointsLeft++;
+                            CreationAttributeGraphics(pointsLeft, tempPoints);
+                        }
                         break;
+                    case ConsoleKey.RightArrow:
+                        if (pointsLeft > 0)
+                        {
+                            tempPoints[menuSelected]++;
+                            pointsLeft--;
+                            CreationAttributeGraphics(pointsLeft, tempPoints);
+                        }
+                        break;
+                    case ConsoleKey.Enter:
+                        player.StrengthAtt += tempPoints[0];
+                        player.DexterityAtt +=tempPoints[1];
+                        player.WisdomAtt +=tempPoints[2];
+                        player.VitalityAtt +=tempPoints[3];
+                        player.ManaAtt +=tempPoints[4];
+                        player.EnduranceAtt += tempPoints[5];
+                        return;
                 }
 
-                if (menuSelected < 1)
+                if (menuSelected < 0)
                 {
-                    menuSelected = 6;
+                    menuSelected = 5;
                 }
-                else if (menuSelected > 6)
+                else if (menuSelected > 5)
                 {
-                    menuSelected = 1;
+                    menuSelected = 0;
                 }
-                Console.SetCursorPosition(16, menuSelected);
+                Console.SetCursorPosition(14, menuSelected + 1);
                 Console.Write('>');
             }
+        }
+
+        private void CreationAttributeGraphics(int pointsLeft, int[] tempPoints)
+        {
+            Console.Clear();
+            Console.WriteLine("Set your attributes manually. Points left are indicated below");
+            Console.WriteLine("Strength:       {0}", player.StrengthAtt + tempPoints[0]);
+            Console.WriteLine("Dexterity:      {0}", player.DexterityAtt + tempPoints[1]);
+            Console.WriteLine("Wisdom:         {0}", player.WisdomAtt + tempPoints[2]);
+            Console.WriteLine("Vitality:       {0}", player.VitalityAtt + tempPoints[3]);
+            Console.WriteLine("Mana:           {0}", player.ManaAtt + tempPoints[4]);
+            Console.WriteLine("Endurance:      {0}\n", player.EnduranceAtt + tempPoints[5]);
+            Console.WriteLine("Points left to use: {0}", pointsLeft);
         }
     }
 }
