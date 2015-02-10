@@ -24,6 +24,16 @@ namespace GuardsOfAetheria
         public int ManaAtt { get; set; }
         public int EnduranceAtt { get; set; }
 
+        public int AttackAtt { get; set; }
         public int DefenceAtt { get; set; }
+
+        public int AccuracyAtt { get; set; }
+        public int EvasionAtt { get; set; }
+
+        public int LuckAtt { get; set; }
+
+        public int PrimaryAtt { get; set; }
+        public int SecondaryAtt { get; set; }
+        public int TertiaryAtt { get; set; }
     }
 }
