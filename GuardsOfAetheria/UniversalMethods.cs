@@ -8,7 +8,7 @@ namespace GuardsOfAetheria
 {
     class UniversalMethods
     {
-        public int optionSelected;
+        static public int optionSelected;
         static public int SelectOption(int startLine, int endLine)
         {
             int numberOfOptions = endLine - startLine + 1;
@@ -30,25 +30,25 @@ namespace GuardsOfAetheria
             }
             return optionSelected;
         }
-        public void UpdateAtts (CharacterCreation.player.PlayerClass)
+        public void UpdateAtts ()
             {
-                if (player.PlayerClass == Player.playerClass.Melee)
+                if (CharacterCreation.player.PlayerClass == Player.playerClass.Melee)
                 {
-                    player.StrengthAtt = player.PrimaryAtt;
-                    player.DexterityAtt = player.SecondaryAtt;
-                    player.WisdomAtt = player.TertiaryAtt;
+                    CharacterCreation.player.StrengthAtt = CharacterCreation.player.PrimaryAtt;
+                    CharacterCreation.player.DexterityAtt = CharacterCreation.player.SecondaryAtt;
+                    CharacterCreation.player.WisdomAtt = CharacterCreation.player.TertiaryAtt;
                 }
-                if (player.PlayerClass == Player.playerClass.Magic)
+                if (CharacterCreation.player.PlayerClass == Player.playerClass.Magic)
                 {
-                    player.StrengthAtt = player.PrimaryAtt;
-                    player.DexterityAtt = player.SecondaryAtt;
-                    player.WisdomAtt = player.TertiaryAtt;
+                    CharacterCreation.player.StrengthAtt = CharacterCreation.player.PrimaryAtt;
+                    CharacterCreation.player.DexterityAtt = CharacterCreation.player.SecondaryAtt;
+                    CharacterCreation.player.WisdomAtt = CharacterCreation.player.TertiaryAtt;
                 }
-                if (player.PlayerClass == Player.playerClass.Ranged)
+                if (CharacterCreation.player.PlayerClass == Player.playerClass.Ranged)
                 {
-                    player.StrengthAtt = player.PrimaryAtt;
-                    player.DexterityAtt = player.SecondaryAtt;
-                    player.WisdomAtt = player.TertiaryAtt;
+                    CharacterCreation.player.StrengthAtt = CharacterCreation.player.PrimaryAtt;
+                    CharacterCreation.player.DexterityAtt = CharacterCreation.player.SecondaryAtt;
+                    CharacterCreation.player.WisdomAtt = CharacterCreation.player.TertiaryAtt;
                 }
             }
     }
