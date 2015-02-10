@@ -11,7 +11,10 @@ namespace GuardsOfAetheria
         public void DisplayMainMenu()
         {
             Console.Clear();
-            Console.WriteLine("Welcome to the Guards of Atheria\nA simple game, set in the land of Aesrin\nWhat would you like to do?\n\n> New Game\n  Load Game\n  Options Game\n  Credits Game\n  Quit Game");
+            Console.WriteLine("Welcome to the Guards of Atheria");
+            Console.WriteLine("A simple game, set in the land of Aesrin");
+            Console.WriteLine("What would you like to do?\n");
+            Console.WriteLine("> New Game\n  Load Game\n  Options\n  Credits\n  Quit Game");
 
             int menuSelected = SetMainCursor();
             ActivateSelectedMenu(menuSelected);
@@ -75,7 +78,6 @@ namespace GuardsOfAetheria
                 Console.SetCursorPosition(0, menuSelected + 3);
                 Console.Write('>');
             }
-            return 0;
         }
 
         private void DisplayOptions()

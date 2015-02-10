@@ -8,7 +8,7 @@ namespace GuardsOfAetheria
 {
     class CharacterCreation
     {
-        Player player = Player.Instance;
+        public static Player player = new Player();
         public void CreateCharacter()
         {
             Console.Clear();
@@ -27,41 +27,21 @@ namespace GuardsOfAetheria
                 ConsoleKey input = Console.ReadKey().Key;
                 Console.SetCursorPosition(0, menuSelected + 3);
                 Console.Write(' ');
+                int optionSelected = UniversalMethods.SelectOption(3, 7);
 
-                switch (input)
+                switch (optionSelected)
                 {
-                    case ConsoleKey.UpArrow:
-                        menuSelected--;
-                        break;
-                    case ConsoleKey.DownArrow:
-                        menuSelected++;
-                        break;
-                    case ConsoleKey.Enter:
-                        switch (menuSelected)
-                        {
-                            case 1:
-                                player.PlayerClass = Player.Class.Melee;
-                                return;
-                            case 2:
-                                player.PlayerClass = Player.Class.Ranged;
-                                return;
-                            case 3:
-                                player.PlayerClass = Player.Class.Magic;
-                                return;
-                        }
+                    case 1:
+                        player.PlayerClass = Player.playerClass.Melee;
+                        return;
+                    case 2:
+                        player.PlayerClass = Player.playerClass.Ranged;
+                        return;
+                    case 3:
+                        player.PlayerClass = Player.playerClass.Magic;
                         return;
                 }
-
-                if (menuSelected < 1)
-                {
-                    menuSelected = 3;
-                }
-                else if (menuSelected > 3)
-                {
-                    menuSelected = 1;
-                }
-                Console.SetCursorPosition(0, menuSelected + 3);
-                Console.Write('>');
+                return;
             }
         }
 
@@ -69,31 +49,25 @@ namespace GuardsOfAetheria
         {
             switch (player.PlayerClass)
             {
-                case Player.Class.Melee:
+                case Player.playerClass.Melee:
                     player.StrengthAtt = 13;
                     player.DexterityAtt = 10;
                     player.WisdomAtt = 7;
-                    player.VitalityAtt = 130;
-                    player.ManaAtt = 70;
-                    player.EnduranceAtt = 100;
                     break;
-                case Player.Class.Magic:
+                case Player.playerClass.Magic:
                     player.StrengthAtt = 13;
                     player.DexterityAtt = 10;
                     player.WisdomAtt = 7;
-                    player.VitalityAtt = 130;
-                    player.ManaAtt = 70;
-                    player.EnduranceAtt = 100;
                     break;
-                case Player.Class.Ranged:
+                case Player.playerClass.Ranged:
                     player.StrengthAtt = 13;
                     player.DexterityAtt = 10;
                     player.WisdomAtt = 7;
-                    player.VitalityAtt = 130;
-                    player.ManaAtt = 70;
-                    player.EnduranceAtt = 100;
                     break;
             }
+            player.VitalityAtt = 130;
+            player.ManaAtt = 70;
+            player.EnduranceAtt = 100;
         }
 
         private void ManualAttributes()
