@@ -8,12 +8,11 @@ namespace GuardsOfAetheria
 {
     class CharacterCreation
     {
-        public static Player player = new Player();
         public void CreateCharacter()
         {
             Console.Clear();
             Console.WriteLine("What is your character's name?");
-            player.PlayerName = Console.ReadLine();
+            Player.Instance.PlayerName = Console.ReadLine();
             ChooseClass();
             SetClassAttributes();
             ManualAttributes();
@@ -27,47 +26,68 @@ namespace GuardsOfAetheria
                 ConsoleKey input = Console.ReadKey().Key;
                 Console.SetCursorPosition(0, menuSelected + 3);
                 Console.Write(' ');
-                int optionSelected = UniversalMethods.SelectOption(3, 7);
 
-                switch (optionSelected)
+                switch (input)
                 {
-                    case 1:
-                        player.PlayerClass = Player.playerClass.Melee;
-                        return;
-                    case 2:
-                        player.PlayerClass = Player.playerClass.Ranged;
-                        return;
-                    case 3:
-                        player.PlayerClass = Player.playerClass.Magic;
-                        return;
+                    case ConsoleKey.UpArrow:
+                        menuSelected--;
+                        break;
+                    case ConsoleKey.DownArrow:
+                        menuSelected++;
+                        break;
+                    case ConsoleKey.Enter:
+                        switch (menuSelected)
+                        {
+                            case 1:
+                                Player.Instance.PlayerClass = Player.Class.Melee;
+                                return;
+                            case 2:
+                                Player.Instance.PlayerClass = Player.Class.Ranged;
+                                return;
+                            case 3:
+                                Player.Instance.PlayerClass = Player.Class.Magic;
+                                return;
+                        }
+                        break;
                 }
-                return;
+
+                if (menuSelected < 1)
+                {
+                    menuSelected = 3;
+                }
+                else if (menuSelected > 3)
+                {
+                    menuSelected = 1;
+                }
+                Console.SetCursorPosition(0, menuSelected + 3);
+                Console.Write('>');
             }
         }
 
         private void SetClassAttributes()
         {
-            switch (player.PlayerClass)
+            switch (Player.Instance.PlayerClass)
             {
-                case Player.playerClass.Melee:
-                    player.StrengthAtt = 13;
-                    player.DexterityAtt = 10;
-                    player.WisdomAtt = 7;
+                case Player.Class.Melee:
+                    Player.Instance.StrengthAtt = 13;
+                    Player.Instance.DexterityAtt = 7;
+                    Player.Instance.WisdomAtt = 10;
                     break;
-                case Player.playerClass.Magic:
-                    player.StrengthAtt = 13;
-                    player.DexterityAtt = 10;
-                    player.WisdomAtt = 7;
+                case Player.Class.Magic:
+                    Player.Instance.StrengthAtt = 7;
+                    Player.Instance.DexterityAtt = 10;
+                    Player.Instance.WisdomAtt = 13;
                     break;
-                case Player.playerClass.Ranged:
-                    player.StrengthAtt = 13;
-                    player.DexterityAtt = 10;
-                    player.WisdomAtt = 7;
+                case Player.Class.Ranged:
+                    Player.Instance.StrengthAtt = 10;
+                    Player.Instance.DexterityAtt = 13;
+                    Player.Instance.WisdomAtt = 7;
                     break;
             }
-            player.VitalityAtt = 130;
-            player.ManaAtt = 70;
-            player.EnduranceAtt = 100;
+            Player.Instance.VitalityAtt = Player.Instance.StrengthAtt * 10;
+            Player.Instance.CurrentVitality = Player.Instance.VitalityAtt;
+            Player.Instance.ManaAtt = Player.Instance.WisdomAtt * 10;
+            Player.Instance.EnduranceAtt = Player.Instance.DexterityAtt * 10;
         }
 
         private void ManualAttributes()
@@ -110,12 +130,12 @@ namespace GuardsOfAetheria
                         }
                         break;
                     case ConsoleKey.Enter:
-                        player.StrengthAtt += tempPoints[0];
-                        player.DexterityAtt +=tempPoints[1];
-                        player.WisdomAtt +=tempPoints[2];
-                        player.VitalityAtt +=tempPoints[3];
-                        player.ManaAtt +=tempPoints[4];
-                        player.EnduranceAtt += tempPoints[5];
+                        Player.Instance.StrengthAtt += tempPoints[0];
+                        Player.Instance.DexterityAtt += tempPoints[1];
+                        Player.Instance.WisdomAtt += tempPoints[2];
+                        Player.Instance.VitalityAtt += tempPoints[3];
+                        Player.Instance.ManaAtt += tempPoints[4];
+                        Player.Instance.EnduranceAtt += tempPoints[5];
                         return;
                 }
 
@@ -136,12 +156,12 @@ namespace GuardsOfAetheria
         {
             Console.Clear();
             Console.WriteLine("Set your attributes manually. Points left are indicated below");
-            Console.WriteLine("Strength:       {0}", player.StrengthAtt + tempPoints[0]);
-            Console.WriteLine("Dexterity:      {0}", player.DexterityAtt + tempPoints[1]);
-            Console.WriteLine("Wisdom:         {0}", player.WisdomAtt + tempPoints[2]);
-            Console.WriteLine("Vitality:       {0}", player.VitalityAtt + tempPoints[3]);
-            Console.WriteLine("Mana:           {0}", player.ManaAtt + tempPoints[4]);
-            Console.WriteLine("Endurance:      {0}\n", player.EnduranceAtt + tempPoints[5]);
+            Console.WriteLine("Strength:       {0}", Player.Instance.StrengthAtt + tempPoints[0]);
+            Console.WriteLine("Dexterity:      {0}", Player.Instance.DexterityAtt + tempPoints[1]);
+            Console.WriteLine("Wisdom:         {0}", Player.Instance.WisdomAtt + tempPoints[2]);
+            Console.WriteLine("Vitality:       {0}", Player.Instance.VitalityAtt + tempPoints[3]);
+            Console.WriteLine("Mana:           {0}", Player.Instance.ManaAtt + tempPoints[4]);
+            Console.WriteLine("Endurance:      {0}\n", Player.Instance.EnduranceAtt + tempPoints[5]);
             Console.WriteLine("Points left to use: {0}", pointsLeft);
         }
     }

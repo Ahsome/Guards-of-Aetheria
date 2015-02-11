@@ -22,6 +22,8 @@ namespace GuardsOfAetheria
         public int WisdomAtt { get; set; }
 
         public int VitalityAtt { get; set; }
+        public int BaseVit { get; set; }
+        public int CurrentVitality { get; set; }
         //Rename Mana to something better
         public int ManaAtt { get; set; }
         public int EnduranceAtt { get; set; }
@@ -37,6 +39,13 @@ namespace GuardsOfAetheria
         public int PrimaryAtt { get; set; }
         public int SecondaryAtt { get; set; }
         public int TertiaryAtt { get; set; }
+
+        public string Location { get; set; }
+
+        public void UpdateAttributes()
+        {
+            //DO THIS DAMNIT
+        }
 
         private static readonly Player instance = new Player();
 
