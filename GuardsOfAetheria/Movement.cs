@@ -37,14 +37,13 @@ namespace GuardsOfAetheria
                     if (option == 1)
                     {
                         SetLocation("Corridor");
-                        return option;
                     }
                     else
                     {
                         LocationOption();
                     }
                     break;
-                default:
+                case "Corridor":
                     Console.WriteLine("Sorry I haven't bothered to give any options, {0}", Player.Instance.PlayerName);
                     Console.ReadKey();
                     break;
