@@ -8,69 +8,32 @@ namespace GuardsOfAetheria
 {
     class CharacterCreation
     {
+        Utility utility = new Utility();
         public void CreateCharacter()
         {
             Console.Clear();
             Console.WriteLine("What is your character's name?");
             Player.Instance.PlayerName = Console.ReadLine();
             ChooseClass();
-            SetClassAttributes();
+            Player.Instance.AssignAtts();
             ManualAttributes();
         }
         private void ChooseClass()
         {
             Console.WriteLine("\nWhat is your class?\n> Warrior\n  Archer\n  Mage");
-            int menuSelected = 1;
-            while (true)
+            int menuSelected = utility.SelectOption(3, 2);
+            switch (menuSelected)
             {
-                ConsoleKey input = Console.ReadKey().Key;
-                Console.SetCursorPosition(0, menuSelected + 3);
-                Console.Write(' ');
-
-                switch (input)
-                {
-                    case ConsoleKey.UpArrow:
-                        menuSelected--;
-                        break;
-                    case ConsoleKey.DownArrow:
-                        menuSelected++;
-                        break;
-                    case ConsoleKey.Enter:
-                        switch (menuSelected)
-                        {
-                            case 1:
-                                Player.Instance.PlayerClass = Player.Class.Melee;
-                                return;
-                            case 2:
-                                Player.Instance.PlayerClass = Player.Class.Ranged;
-                                return;
-                            case 3:
-                                Player.Instance.PlayerClass = Player.Class.Magic;
-                                return;
-                        }
-                        break;
-                }
-
-                if (menuSelected < 1)
-                {
-                    menuSelected = 3;
-                }
-                else if (menuSelected > 3)
-                {
-                    menuSelected = 1;
-                }
-                Console.SetCursorPosition(0, menuSelected + 3);
-                Console.Write('>');
+                case 1:
+                    Player.Instance.PlayerClass = Player.Class.Melee;
+                    return;
+                case 2:
+                    Player.Instance.PlayerClass = Player.Class.Ranged;
+                    return;
+                case 3:
+                    Player.Instance.PlayerClass = Player.Class.Magic;
+                    return;
             }
-        }
-
-        private void SetClassAttributes()
-        {
-            Player.Instance.PrimaryAtt = 13;
-            Player.Instance.SecondaryAtt = 10;
-            Player.Instance.TertiaryAtt = 7;
-            var Utility = new Utility();
-            Utility.UpdateAtts();
         }
 
         private void ManualAttributes()
@@ -79,7 +42,7 @@ namespace GuardsOfAetheria
             int pointsLeft = 16;
             int[] tempPoints = { 0, 0, 0 };
             int menuSelected = 0;
-            CreationAttributeGraphics(pointsLeft, tempPoints);
+            AttributeGraphics(pointsLeft, tempPoints);
             Console.SetCursorPosition(14, 1);
             Console.Write('>');
             while (true)
@@ -101,7 +64,7 @@ namespace GuardsOfAetheria
                         {
                             tempPoints[menuSelected]--;
                             pointsLeft++;
-                            CreationAttributeGraphics(pointsLeft, tempPoints);
+                            AttributeGraphics(pointsLeft, tempPoints);
                         }
                         break;
                     case ConsoleKey.RightArrow:
@@ -109,7 +72,7 @@ namespace GuardsOfAetheria
                         {
                             tempPoints[menuSelected]++;
                             pointsLeft--;
-                            CreationAttributeGraphics(pointsLeft, tempPoints);
+                            AttributeGraphics(pointsLeft, tempPoints);
                         }
                         break;
                     case ConsoleKey.Enter:
@@ -132,7 +95,7 @@ namespace GuardsOfAetheria
             }
         }
 
-        private void CreationAttributeGraphics(int pointsLeft, int[] tempPoints)
+        private void AttributeGraphics(int pointsLeft, int[] tempPoints)
         {
             Console.Clear();
             Console.WriteLine("Set your attributes manually. Points left are indicated below");

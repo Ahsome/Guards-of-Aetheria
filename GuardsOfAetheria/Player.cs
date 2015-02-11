@@ -52,22 +52,25 @@ namespace GuardsOfAetheria
         }
         public void AssignAtts()
         {
+            Player.Instance.PrimaryAtt = 13;
+            Player.Instance.SecondaryAtt = 10;
+            Player.Instance.TertiaryAtt = 7;
             switch (Player.Instance.PlayerClass)
             {
                 case Player.Class.Melee:
-                    Player.Instance.PrimaryAtt = Player.Instance.StrengthAtt;
-                    Player.Instance.SecondaryAtt = Player.Instance.WisdomAtt;
-                    Player.Instance.TertiaryAtt = Player.Instance.DexterityAtt;
+                    Player.Instance.StrengthAtt = Player.Instance.PrimaryAtt;
+                    Player.Instance.WisdomAtt = Player.Instance.SecondaryAtt;
+                    Player.Instance.DexterityAtt = Player.Instance.TertiaryAtt;
                     break;
                 case Player.Class.Magic:
-                    Player.Instance.PrimaryAtt = Player.Instance.WisdomAtt;
-                    Player.Instance.SecondaryAtt = Player.Instance.DexterityAtt;
-                    Player.Instance.TertiaryAtt = Player.Instance.StrengthAtt;
+                    Player.Instance.StrengthAtt = Player.Instance.TertiaryAtt;
+                    Player.Instance.WisdomAtt = Player.Instance.PrimaryAtt;
+                    Player.Instance.DexterityAtt = Player.Instance.SecondaryAtt;
                     break;
                 case Player.Class.Ranged:
-                    Player.Instance.PrimaryAtt = Player.Instance.StrengthAtt;
-                    Player.Instance.SecondaryAtt = Player.Instance.WisdomAtt;
-                    Player.Instance.TertiaryAtt = Player.Instance.DexterityAtt;
+                    Player.Instance.StrengthAtt = Player.Instance.SecondaryAtt;
+                    Player.Instance.WisdomAtt = Player.Instance.TertiaryAtt;
+                    Player.Instance.DexterityAtt = Player.Instance.PrimaryAtt;
                     break;
             }
         }
