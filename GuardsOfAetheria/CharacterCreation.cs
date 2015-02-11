@@ -19,48 +19,20 @@ namespace GuardsOfAetheria
         }
         private void ChooseClass()
         {
+            Utility utility = new Utility();
             Console.WriteLine("\nWhat is your class?\n> Warrior\n  Archer\n  Mage");
-            int menuSelected = 1;
-            while (true)
+            int menuSelected = utility.SelectOption(0, 1, 3);
+            switch (menuSelected)
             {
-                ConsoleKey input = Console.ReadKey().Key;
-                Console.SetCursorPosition(0, menuSelected + 3);
-                Console.Write(' ');
-
-                switch (input)
-                {
-                    case ConsoleKey.UpArrow:
-                        menuSelected--;
-                        break;
-                    case ConsoleKey.DownArrow:
-                        menuSelected++;
-                        break;
-                    case ConsoleKey.Enter:
-                        switch (menuSelected)
-                        {
-                            case 1:
-                                Player.Instance.PlayerClass = Player.Class.Melee;
-                                return;
-                            case 2:
-                                Player.Instance.PlayerClass = Player.Class.Ranged;
-                                return;
-                            case 3:
-                                Player.Instance.PlayerClass = Player.Class.Magic;
-                                return;
-                        }
-                        break;
-                }
-
-                if (menuSelected < 1)
-                {
-                    menuSelected = 3;
-                }
-                else if (menuSelected > 3)
-                {
-                    menuSelected = 1;
-                }
-                Console.SetCursorPosition(0, menuSelected + 3);
-                Console.Write('>');
+                case 1:
+                    Player.Instance.PlayerClass = Player.Class.Melee;
+                    break;
+                case 2:
+                    Player.Instance.PlayerClass = Player.Class.Ranged;
+                    break;
+                case 3:
+                    Player.Instance.PlayerClass = Player.Class.Magic;
+                    break;
             }
         }
 
