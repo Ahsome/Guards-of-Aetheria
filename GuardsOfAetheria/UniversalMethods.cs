@@ -35,19 +35,19 @@ namespace GuardsOfAetheria
                 if (CharacterCreation.player.PlayerClass == Player.playerClass.Melee)
                 {
                     CharacterCreation.player.StrengthAtt = CharacterCreation.player.PrimaryAtt;
-                    CharacterCreation.player.WisdomAtt = CharacterCreation.player.SecondaryAtt;
-                    CharacterCreation.player.DexterityAtt = CharacterCreation.player.TertiaryAtt;
+                    CharacterCreation.player.DexterityAtt = CharacterCreation.player.SecondaryAtt;
+                    CharacterCreation.player.WisdomAtt = CharacterCreation.player.TertiaryAtt;
                 }
                 if (CharacterCreation.player.PlayerClass == Player.playerClass.Magic)
                 {
-                    CharacterCreation.player.WisdomAtt = CharacterCreation.player.PrimaryAtt;
+                    CharacterCreation.player.StrengthAtt = CharacterCreation.player.PrimaryAtt;
                     CharacterCreation.player.DexterityAtt = CharacterCreation.player.SecondaryAtt;
-                    CharacterCreation.player.StrengthAtt = CharacterCreation.player.TertiaryAtt;
+                    CharacterCreation.player.WisdomAtt = CharacterCreation.player.TertiaryAtt;
                 }
                 if (CharacterCreation.player.PlayerClass == Player.playerClass.Ranged)
                 {
-                    CharacterCreation.player.DexterityAtt = CharacterCreation.player.PrimaryAtt;
-                    CharacterCreation.player.StrengthAtt = CharacterCreation.player.SecondaryAtt;
+                    CharacterCreation.player.StrengthAtt = CharacterCreation.player.PrimaryAtt;
+                    CharacterCreation.player.DexterityAtt = CharacterCreation.player.SecondaryAtt;
                     CharacterCreation.player.WisdomAtt = CharacterCreation.player.TertiaryAtt;
                 }
             }

@@ -47,12 +47,27 @@ namespace GuardsOfAetheria
 
         private void SetClassAttributes()
         {
-            player.PrimaryAtt = 13;
-            player.SecondaryAtt = 10;
-            player.TertiaryAtt = 7;
+            switch (player.PlayerClass)
+            {
+                case Player.playerClass.Melee:
+                    player.StrengthAtt = 13;
+                    player.DexterityAtt = 10;
+                    player.WisdomAtt = 7;
+                    break;
+                case Player.playerClass.Magic:
+                    player.StrengthAtt = 13;
+                    player.DexterityAtt = 10;
+                    player.WisdomAtt = 7;
+                    break;
+                case Player.playerClass.Ranged:
+                    player.StrengthAtt = 13;
+                    player.DexterityAtt = 10;
+                    player.WisdomAtt = 7;
+                    break;
+            }
             player.VitalityAtt = 130;
-            player.EnduranceAtt = 100; 
-            player.ManaAtt = 70;            
+            player.ManaAtt = 70;
+            player.EnduranceAtt = 100;
         }
 
         private void ManualAttributes()
