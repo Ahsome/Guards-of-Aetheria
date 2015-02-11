@@ -18,7 +18,7 @@ namespace GuardsOfAetheria
             Console.WriteLine("> New Game\n  Load Game\n  Options\n  Credits\n  Quit Game");
 
             Utility utility = new Utility();
-            int menuSelected = utility.SelectOption(0, 3, 4);
+            int menuSelected = utility.SelectOption(3, 4);
             ActivateSelectedMenu(menuSelected);
  
         }
