@@ -21,12 +21,13 @@ namespace GuardsOfAetheria
         public int DexterityAtt { get; set; }
         public int WisdomAtt { get; set; }
 
-        public int VitalityAtt { get; set; }
-        public int BaseVit { get; set; }
+        public int BaseVitality { get; set; }
         public int CurrentVitality { get; set; }
         //Rename Mana to something better
-        public int ManaAtt { get; set; }
-        public int EnduranceAtt { get; set; }
+        public int BaseMana { get; set; }
+        public int CurrentMana { get; set; }
+        public int BaseEndurance { get; set; }
+        public int CurrentEndurance { get; set; }
 
         public int DefenceAtt { get; set; }
         public int AttackAtt { get; set; }
@@ -40,11 +41,35 @@ namespace GuardsOfAetheria
         public int SecondaryAtt { get; set; }
         public int TertiaryAtt { get; set; }
 
+        public int PerceptionAtt { get; set; }
+
         public string Location { get; set; }
 
         public void UpdateAttributes()
         {
             //DO THIS DAMNIT
+            //Note, similar to AssignAtts, but different
+        }
+        public void AssignAtts()
+        {
+            switch (Player.Instance.PlayerClass)
+            {
+                case Player.Class.Melee:
+                    Player.Instance.PrimaryAtt = Player.Instance.StrengthAtt;
+                    Player.Instance.SecondaryAtt = Player.Instance.WisdomAtt;
+                    Player.Instance.TertiaryAtt = Player.Instance.DexterityAtt;
+                    break;
+                case Player.Class.Magic:
+                    Player.Instance.PrimaryAtt = Player.Instance.WisdomAtt;
+                    Player.Instance.SecondaryAtt = Player.Instance.DexterityAtt;
+                    Player.Instance.TertiaryAtt = Player.Instance.StrengthAtt;
+                    break;
+                case Player.Class.Ranged:
+                    Player.Instance.PrimaryAtt = Player.Instance.StrengthAtt;
+                    Player.Instance.SecondaryAtt = Player.Instance.WisdomAtt;
+                    Player.Instance.TertiaryAtt = Player.Instance.DexterityAtt;
+                    break;
+            }
         }
 
         private static readonly Player instance = new Player();

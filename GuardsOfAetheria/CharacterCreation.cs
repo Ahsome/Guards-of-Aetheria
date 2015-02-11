@@ -66,35 +66,18 @@ namespace GuardsOfAetheria
 
         private void SetClassAttributes()
         {
-            switch (Player.Instance.PlayerClass)
-            {
-                case Player.Class.Melee:
-                    Player.Instance.StrengthAtt = 13;
-                    Player.Instance.DexterityAtt = 7;
-                    Player.Instance.WisdomAtt = 10;
-                    break;
-                case Player.Class.Magic:
-                    Player.Instance.StrengthAtt = 7;
-                    Player.Instance.DexterityAtt = 10;
-                    Player.Instance.WisdomAtt = 13;
-                    break;
-                case Player.Class.Ranged:
-                    Player.Instance.StrengthAtt = 10;
-                    Player.Instance.DexterityAtt = 13;
-                    Player.Instance.WisdomAtt = 7;
-                    break;
-            }
-            Player.Instance.VitalityAtt = Player.Instance.StrengthAtt * 10;
-            Player.Instance.CurrentVitality = Player.Instance.VitalityAtt;
-            Player.Instance.ManaAtt = Player.Instance.WisdomAtt * 10;
-            Player.Instance.EnduranceAtt = Player.Instance.DexterityAtt * 10;
+            Player.Instance.PrimaryAtt = 13;
+            Player.Instance.SecondaryAtt = 10;
+            Player.Instance.TertiaryAtt = 7;
+            var Utility = new Utility();
+            Utility.UpdateAtts();
         }
 
         private void ManualAttributes()
         {
             Console.Clear();
             int pointsLeft = 16;
-            int[] tempPoints = { 0, 0, 0, 0, 0, 0 };
+            int[] tempPoints = { 0, 0, 0 };
             int menuSelected = 0;
             CreationAttributeGraphics(pointsLeft, tempPoints);
             Console.SetCursorPosition(14, 1);
@@ -133,9 +116,6 @@ namespace GuardsOfAetheria
                         Player.Instance.StrengthAtt += tempPoints[0];
                         Player.Instance.DexterityAtt += tempPoints[1];
                         Player.Instance.WisdomAtt += tempPoints[2];
-                        Player.Instance.VitalityAtt += tempPoints[3];
-                        Player.Instance.ManaAtt += tempPoints[4];
-                        Player.Instance.EnduranceAtt += tempPoints[5];
                         return;
                 }
 
@@ -159,9 +139,6 @@ namespace GuardsOfAetheria
             Console.WriteLine("Strength:       {0}", Player.Instance.StrengthAtt + tempPoints[0]);
             Console.WriteLine("Dexterity:      {0}", Player.Instance.DexterityAtt + tempPoints[1]);
             Console.WriteLine("Wisdom:         {0}", Player.Instance.WisdomAtt + tempPoints[2]);
-            Console.WriteLine("Vitality:       {0}", Player.Instance.VitalityAtt + tempPoints[3]);
-            Console.WriteLine("Mana:           {0}", Player.Instance.ManaAtt + tempPoints[4]);
-            Console.WriteLine("Endurance:      {0}\n", Player.Instance.EnduranceAtt + tempPoints[5]);
             Console.WriteLine("Points left to use: {0}", pointsLeft);
         }
     }
