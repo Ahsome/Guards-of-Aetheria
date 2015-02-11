@@ -33,11 +33,11 @@ namespace GuardsOfAetheria
         public void UpdateAtts()
         {
             Player.Instance.BaseVitality = Player.Instance.StrengthAtt * 10;
-            Player.Instance.CurrentVitality = Player.Instance.BaseVitality;
+            Player.Instance.CurrentVitality = Player.Instance.BaseVitality + 0;
             Player.Instance.BaseMana = Player.Instance.WisdomAtt * 10;
-            Player.Instance.CurrentMana = Player.Instance.BaseMana;
+            Player.Instance.CurrentMana = Player.Instance.BaseMana + 0;
             Player.Instance.BaseEndurance = Player.Instance.DexterityAtt * 10;
-            Player.Instance.CurrentEndurance = Player.Instance.BaseEndurance;
+            Player.Instance.CurrentEndurance = Player.Instance.BaseEndurance + 0;
             switch (Player.Instance.PlayerClass)
             {
                 case Player.Class.Melee:
@@ -76,6 +76,15 @@ namespace GuardsOfAetheria
                     Player.Instance.SecondaryAtt = Player.Instance.WisdomAtt;
                     Player.Instance.TertiaryAtt = Player.Instance.DexterityAtt;
                     break;
+            }
+        }
+        public void UpdateExp()
+        {
+            int ExpNeeded = Convert.ToInt16(Math.Pow(1.05, Player.Instance.Level) * 1000);
+            if (Player.Instance.Experience > ExpNeeded)
+            {
+                Player.Instance.Level++;
+                Player.Instance.Experience = Player.Instance.Experience - ExpNeeded;
             }
         }
     }

@@ -17,6 +17,9 @@ namespace GuardsOfAetheria
         public string PlayerName { get; set; }
         public Class PlayerClass { get; set; }
 
+        public int Experience { get; set; }
+        public int Level { get; set; }
+
         public int StrengthAtt { get; set; }
         public int DexterityAtt { get; set; }
         public int WisdomAtt { get; set; }
@@ -42,6 +45,7 @@ namespace GuardsOfAetheria
         public int TertiaryAtt { get; set; }
 
         public int PerceptionAtt { get; set; }
+        public string[,] inventory { get; set; }
 
         public string Location { get; set; }
 
