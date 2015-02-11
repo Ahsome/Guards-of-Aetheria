@@ -63,7 +63,6 @@ namespace GuardsOfAetheria
                         Console.SetCursorPosition(0, menuSelected + 6);
                         Console.Write('>');
                     }
-                    break;
                 default:
                     Console.WriteLine("Sorry I haven't bothered to give any options, {0}", Player.Instance.PlayerName);
                     Console.ReadKey();

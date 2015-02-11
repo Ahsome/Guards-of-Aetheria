@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CharacterCreation.cs" />
+    <Compile Include="Data.cs" />
     <Compile Include="GUIMainMenu.cs" />
     <Compile Include="Movement.cs" />
     <Compile Include="Player.cs" />
