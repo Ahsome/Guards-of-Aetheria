@@ -33,37 +33,6 @@ namespace GuardsOfAetheria
                 case "TutorialArea":
                     Console.SetCursorPosition(0, 6);
                     Console.WriteLine("> Corridor\n  Random House (NOT WORKING)\n  A subway (NOT WORKING)\n  Heaven (NOT DEAD ENOUGH)");
-                    //int menuSelected = 0;
-                    //while (true)
-                    //{
-                    //    ConsoleKey input = Console.ReadKey().Key;
-                    //    Console.SetCursorPosition(0, menuSelected + 6);
-                    //    Console.Write(' ');
-
-                    //    switch (input)
-                    //    {
-                    //        case ConsoleKey.UpArrow:
-                    //            menuSelected--;
-                    //            break;
-                    //        case ConsoleKey.DownArrow:
-                    //            menuSelected++;
-                    //            break;
-                    //        case ConsoleKey.Enter:
-                    //            SetLocation("Corridor");
-                    //            return menuSelected;
-                    //    }
-
-                    //    if (menuSelected < 0)
-                    //    {
-                    //        menuSelected = 3;
-                    //    }
-                    //    else if (menuSelected > 3)
-                    //    {
-                    //        menuSelected = 0;
-                    //    }
-                    //    Console.SetCursorPosition(0, menuSelected + 6);
-                    //    Console.Write('>');
-                    //}
                     int option = utility.SelectOption(5, 3);
                     if (option == 1)
                     {
