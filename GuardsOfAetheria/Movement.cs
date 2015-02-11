@@ -27,12 +27,12 @@ namespace GuardsOfAetheria
 
         public int LocationOption()
         {
-            switch(Player.Instance.Location)
+            switch (Player.Instance.Location)
             {
                 case "TutorialArea":
                     Console.SetCursorPosition(0, 6);
                     Console.WriteLine("> Corridor\n  Random House (NOT WORKING)\n  A subway (NOT WORKING)\n  Heaven (NOT DEAD ENOUGH)");
-                    int menuSelected=0;
+                    int menuSelected = 0;
                     while (true)
                     {
                         ConsoleKey input = Console.ReadKey().Key;
