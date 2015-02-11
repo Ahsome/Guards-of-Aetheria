@@ -11,7 +11,7 @@ namespace GuardsOfAetheria
         static void Main(string[] args)
         {
             //Change input to use UniversalMethod (PLEASE)
-            //Set the proper attribute values for different clases
+            //Set the proper attribute values for different classes
             //Add method to change Vit/End/Mana when Str/Dex/Wis changes.
             //Player.Instance.Vit = Player.Instance.BaseVit + Player.Instance.VitMod
             //Player.Instance.BaseVit = Player.Instance.Strength
