@@ -10,8 +10,8 @@ namespace GuardsOfAetheria
     {
             // Gets the player and enemy.
             // TODO: Give an ID assigning system for identification in fights.
-            public string CombatEnemy { get; set; }
-            public string CombatFighter { get; set; }
+            public int CombatEnemy { get; set; }
+            public int CombatFighter { get; set; }
             private int figherHealth { get; set; }
             private int enemyHealth { get; set; }
             private int fighterStrength { get; set; }
@@ -24,17 +24,19 @@ namespace GuardsOfAetheria
             fight();
             outputFight();
         }
-        public static getProps(int combatEnemy, int combatFighter)
+        private void getProps(int combatEnemy, int combatFighter)
         {
             // Gets and calculates the attack scenerio's numbers.
-            
+            fighterHealth = 0;
+            enemyHealth = 0;
+            fighterStrength = Player
         }
-        public void fight
+        private void fight
         {
             // Does the calculations.
 
         }
-        public void output
+        private void output
         {
             // Outputs the result.
 

@@ -16,18 +16,27 @@ namespace GuardsOfAetheria
         }
         public string PlayerName { get; set; }
         public Class PlayerClass { get; set; }
+        public int entId { get; set; }
 
         public int StrengthAtt { get; set; }
         public int DexterityAtt { get; set; }
         public int WisdomAtt { get; set; }
 
+        //You mean health?
         public int BaseVitality { get; set; }
         public int CurrentVitality { get; set; }
+        public int VitalityStr { get; set; }
+        public int MaxVitality { get; set; }
+
         //Rename Mana to something better
         public int BaseMana { get; set; }
         public int CurrentMana { get; set; }
+        public int MaxMana { get; set; }
+        public int ManaStr { get; set; } // How much effect wisom attributes have.
         public int BaseEndurance { get; set; }
         public int CurrentEndurance { get; set; }
+        public int MaxEndurance { get; set; }
+        public int EnduranceStr { get; set; } // How much effect strength attributes have. Should change name to something else.
 
         public int DefenceAtt { get; set; }
         public int AttackAtt { get; set; }
@@ -44,6 +53,9 @@ namespace GuardsOfAetheria
         public int PerceptionAtt { get; set; }
 
         public string Location { get; set; }
+
+        public int PhysArmor { get; set;}
+        public int MagicArmor { get; set; }
 
         public void UpdateAttributes()
         {
@@ -88,6 +100,15 @@ namespace GuardsOfAetheria
             {
                 return instance;
             }
+        }
+        public void updateStats
+        {
+            // set {BaseMana = stuffs in inv + base + effects}
+            set {MaxMana = BaseMana + (WisdomAtt * ManaStr)}
+            set {MaxVitality = BaseVitality + (StrengthAtt * VitalityStr)}
+            set {MaxEndurance = BaseEndurance + (StrengthAtt * EnduranceStr)};
+
+            // Todo: Must figure out set{} and get{}
         }
     }
 }
