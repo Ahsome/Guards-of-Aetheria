@@ -33,7 +33,7 @@ namespace GuardsOfAetheria
                 case "TutorialArea":
                     Console.SetCursorPosition(0, 6);
                     Console.WriteLine("> Corridor\n  Random House (NOT WORKING)\n  A subway (NOT WORKING)\n  Heaven (NOT DEAD ENOUGH)");
-                    int option = utility.SelectOption(5, 3);
+                    int option = utility.SelectOption(0, 3, 5);
                     if (option == 1)
                     {
                         SetLocation("Corridor");

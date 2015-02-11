@@ -11,5 +11,7 @@ namespace GuardsOfAetheria
         string[] Places = {"House", "a"};
         string[,] ThingsSeen = {{"", ""},{"", ""}};
         int[,] PerceptionNeeded = {{0, 0},{0, 0}};
+        string[,,] Equipment = {{{"A Sword"}, {"A Staff"}, {"A Bow"}}};
+        int[,,,] AttsNeeded;
     }
 }
