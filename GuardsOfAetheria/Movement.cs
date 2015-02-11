@@ -8,6 +8,7 @@ namespace GuardsOfAetheria
 {
     class Movement
     {
+        Utility utility = new Utility();
         public void ShowLocation()
         {
             Console.Clear();
@@ -32,37 +33,17 @@ namespace GuardsOfAetheria
                 case "TutorialArea":
                     Console.SetCursorPosition(0, 6);
                     Console.WriteLine("> Corridor\n  Random House (NOT WORKING)\n  A subway (NOT WORKING)\n  Heaven (NOT DEAD ENOUGH)");
-                    int menuSelected = 0;
-                    while (true)
+                    int option = utility.SelectOption(5, 3);
+                    if (option == 1)
                     {
-                        ConsoleKey input = Console.ReadKey().Key;
-                        Console.SetCursorPosition(0, menuSelected + 6);
-                        Console.Write(' ');
-
-                        switch (input)
-                        {
-                            case ConsoleKey.UpArrow:
-                                menuSelected--;
-                                break;
-                            case ConsoleKey.DownArrow:
-                                menuSelected++;
-                                break;
-                            case ConsoleKey.Enter:
-                                SetLocation("Corridor");
-                                return menuSelected;
-                        }
-
-                        if (menuSelected < 0)
-                        {
-                            menuSelected = 3;
-                        }
-                        else if (menuSelected > 3)
-                        {
-                            menuSelected = 0;
-                        }
-                        Console.SetCursorPosition(0, menuSelected + 6);
-                        Console.Write('>');
+                        SetLocation("Corridor");
+                        return option;
                     }
+                    else
+                    {
+                        LocationOption();
+                    }
+                    break;
                 default:
                     Console.WriteLine("Sorry I haven't bothered to give any options, {0}", Player.Instance.PlayerName);
                     Console.ReadKey();
