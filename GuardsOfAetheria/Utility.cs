@@ -8,26 +8,29 @@ namespace GuardsOfAetheria
 {
     class Utility
     {
-        public int optionSelected;
-        public int SelectOption(int startLine, int endLine)
+        public int menuSelected = 1;
+        int optionSelected = 0;
+        public int SelectOption(int startLine, int possibleOptions)
         {
-            int numberOfOptions = endLine - startLine + 1;
-            optionSelected = 1;
             ConsoleKey input;
-            int enter = 0;
-            while (enter == 0)
+            while (true)
             {
                 input = Console.ReadKey().Key;
-                if (input == ConsoleKey.Enter) { enter = 1; }
-                Console.SetCursorPosition(0, optionSelected + startLine);
+                if (input == ConsoleKey.Enter) 
+                {
+                    optionSelected = menuSelected;
+                    break; 
+                }
+                Console.SetCursorPosition(0, menuSelected + startLine);
                 Console.Write(' ');
-                if (input == ConsoleKey.UpArrow) { optionSelected--; }
-                if (input == ConsoleKey.DownArrow) { optionSelected++; }
-                if (optionSelected < 1) { optionSelected = numberOfOptions; }
-                if (optionSelected > numberOfOptions) { optionSelected = 1; }
-                Console.SetCursorPosition(0, optionSelected + startLine);
+                if (input == ConsoleKey.UpArrow) { menuSelected--; }
+                if (input == ConsoleKey.DownArrow) { menuSelected++; }
+                if (menuSelected < 1) { menuSelected = possibleOptions+1; }
+                if (menuSelected > possibleOptions+1) { menuSelected = 1; }
+                Console.SetCursorPosition(0, menuSelected + startLine);
                 Console.Write('>');
             }
+            menuSelected = 1;
             return optionSelected;
         }
     }
