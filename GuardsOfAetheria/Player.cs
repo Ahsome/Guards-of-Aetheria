@@ -104,9 +104,9 @@ namespace GuardsOfAetheria
         public void updateStats
         {
             // set {BaseMana = stuffs in inv + base + effects}
-            set {MaxMana = BaseMana + (WisdomAtt * ManaStr)}
-            set {MaxVitality = BaseVitality + (StrengthAtt * VitalityStr)}
-            set {MaxEndurance = BaseEndurance + (StrengthAtt * EnduranceStr)};
+            Player.Instance.MaxMana = Player.Instance.BaseMana + (Player.Instance.WisdomAtt * Player.Instance.ManaStr);
+            Player.Instance.MaxVitality = Player.Instance.BaseVitality + (Player.Instance.StrengthAtt * Player.Instance.VitalityStr);
+            Player.Instance.MaxEndurance = Player.Instance.BaseEndurance + (Player.Instance.StrengthAtt * Player.Instance.EnduranceStr);
 
             // Todo: Must figure out set{} and get{}
         }
