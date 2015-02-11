@@ -10,6 +10,7 @@ namespace GuardsOfAetheria
     {
         public void DisplayMainMenu()
         {
+
             Console.Clear();
             Console.WriteLine("Welcome to the Guards of Atheria");
             Console.WriteLine("A simple game, set in the land of Aesrin");
@@ -18,7 +19,7 @@ namespace GuardsOfAetheria
 
             int menuSelected = SetMainCursor();
             ActivateSelectedMenu(menuSelected);
-            DisplayMainMenu();
+ 
         }
 
         private void ActivateSelectedMenu(int menuSelected)

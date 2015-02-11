@@ -8,24 +8,28 @@ namespace GuardsOfAetheria
 {
     class Player
     {
-        public enum playerClass
+        public enum Class
         {
-            Melee, Magic, Ranged
+            Melee,
+            Magic,
+            Ranged
         }
         public string PlayerName { get; set; }
-        public playerClass PlayerClass { get; set; }
+        public Class PlayerClass { get; set; }
 
         public int StrengthAtt { get; set; }
         public int DexterityAtt { get; set; }
         public int WisdomAtt { get; set; }
 
         public int VitalityAtt { get; set; }
+        public int BaseVit { get; set; }
+        public int CurrentVitality { get; set; }
         //Rename Mana to something better
         public int ManaAtt { get; set; }
         public int EnduranceAtt { get; set; }
 
-        public int AttackAtt { get; set; }
         public int DefenceAtt { get; set; }
+        public int AttackAtt { get; set; }
 
         public int AccuracyAtt { get; set; }
         public int EvasionAtt { get; set; }
@@ -35,5 +39,30 @@ namespace GuardsOfAetheria
         public int PrimaryAtt { get; set; }
         public int SecondaryAtt { get; set; }
         public int TertiaryAtt { get; set; }
+
+        public string Location { get; set; }
+
+        public void UpdateAttributes()
+        {
+            //DO THIS DAMNIT
+        }
+
+        private static readonly Player instance = new Player();
+
+        static Player()
+        {
+        }
+
+        private Player()
+        {
+        }
+
+        public static Player Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
     }
 }

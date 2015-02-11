@@ -43,9 +43,11 @@
   <ItemGroup>
     <Compile Include="CharacterCreation.cs" />
     <Compile Include="GUIMainMenu.cs" />
+    <Compile Include="Movement.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
