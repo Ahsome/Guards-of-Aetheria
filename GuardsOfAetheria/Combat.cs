@@ -29,7 +29,7 @@ namespace GuardsOfAetheria
             // Gets and calculates the attack scenerio's numbers.
             fighterHealth = 0;
             enemyHealth = 0;
-            fighterStrength = 0;
+            fighterStrength = Player
         }
         private void fight
         {
