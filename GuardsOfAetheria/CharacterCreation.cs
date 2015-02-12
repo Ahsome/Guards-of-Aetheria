@@ -15,7 +15,7 @@ namespace GuardsOfAetheria
             Console.WriteLine("What is your character's name?");
             Player.Instance.PlayerName = Console.ReadLine();
             ChooseClass();
-            Player.Instance.AssignAtts();
+            Player.Instance.InitialiseAtts();
             ManualAttributes();
         }
         private void ChooseClass()

@@ -39,9 +39,9 @@ namespace GuardsOfAetheria
             while (true)
             {
                 input = Console.ReadKey().Key;
-                if (input == ConsoleKey.Enter) 
-                { 
-                    break; 
+                if (input == ConsoleKey.Enter)
+                {
+                    break;
                 }
                 Console.SetCursorPosition(fromLeft, menuSelected + startLine);
                 Console.Write(' ');
@@ -62,7 +62,24 @@ namespace GuardsOfAetheria
             Player.Instance.CurrentMana = Player.Instance.BaseMana + 0;
             Player.Instance.BaseEndurance = Player.Instance.DexterityAtt * 10;
             Player.Instance.CurrentEndurance = Player.Instance.BaseEndurance + 0;
-            AssignAtts();
+            switch (Player.Instance.PlayerClass)
+            {
+                case Player.Class.Melee:
+                    Player.Instance.StrengthAtt = Player.Instance.PrimaryAtt;
+                    Player.Instance.WisdomAtt = Player.Instance.SecondaryAtt;
+                    Player.Instance.DexterityAtt = Player.Instance.TertiaryAtt;
+                    break;
+                case Player.Class.Magic:
+                    Player.Instance.WisdomAtt = Player.Instance.PrimaryAtt;
+                    Player.Instance.DexterityAtt = Player.Instance.SecondaryAtt;
+                    Player.Instance.StrengthAtt = Player.Instance.TertiaryAtt;
+                    break;
+                case Player.Class.Ranged:
+                    Player.Instance.StrengthAtt = Player.Instance.PrimaryAtt;
+                    Player.Instance.WisdomAtt = Player.Instance.SecondaryAtt;
+                    Player.Instance.DexterityAtt = Player.Instance.TertiaryAtt;
+                    break;
+            }
         }
         public void AssignAtts()
         {

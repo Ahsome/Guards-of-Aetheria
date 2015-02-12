@@ -11,16 +11,18 @@ namespace GuardsOfAetheria
         Utility utility = new Utility();
         public void ShowLocation()
         {
+            //Use database for locations and intro messages, look shows hidden stuff based on perception
             Console.Clear();
+            Console.WriteLine("You are in the {0}.", Player.Instance.Location);
             switch (Player.Instance.Location)
             {
                 case "TutorialArea":
-                    Console.WriteLine("Welcome to the game, {0}. Test the movement system. Good luck with that", Player.Instance.PlayerName);
+                    Console.WriteLine("Test the movement system. Good luck with that");
                     Console.WriteLine("Your given options are located below");
                     Console.WriteLine("Use your arrow keys to move, press ENTER to select");
                     break;
                 case "Corridor":
-                    Console.WriteLine("Welcome to the corridor, {0}", Player.Instance.PlayerName);
+                    Console.WriteLine("You see ... .");
                     break;
             }
             LocationOption();
@@ -28,6 +30,7 @@ namespace GuardsOfAetheria
 
         public int LocationOption()
         {
+            //Implement database
             switch (Player.Instance.Location)
             {
                 case "TutorialArea":

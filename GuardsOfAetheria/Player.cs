@@ -8,6 +8,7 @@ namespace GuardsOfAetheria
 {
     class Player
     {
+        Utility utility = new Utility();
         public enum Class
         {
             Melee,
@@ -49,34 +50,12 @@ namespace GuardsOfAetheria
 
         public string Location { get; set; }
 
-        public void UpdateAttributes()
-        {
-            //DO THIS DAMNIT
-            //Note, similar to AssignAtts, but different
-        }
-        public void AssignAtts()
+        public void InitialiseAtts()
         {
             Player.Instance.PrimaryAtt = 13;
             Player.Instance.SecondaryAtt = 10;
             Player.Instance.TertiaryAtt = 7;
-            switch (Player.Instance.PlayerClass)
-            {
-                case Player.Class.Melee:
-                    Player.Instance.StrengthAtt = Player.Instance.PrimaryAtt;
-                    Player.Instance.WisdomAtt = Player.Instance.SecondaryAtt;
-                    Player.Instance.DexterityAtt = Player.Instance.TertiaryAtt;
-                    break;
-                case Player.Class.Magic:
-                    Player.Instance.StrengthAtt = Player.Instance.TertiaryAtt;
-                    Player.Instance.WisdomAtt = Player.Instance.PrimaryAtt;
-                    Player.Instance.DexterityAtt = Player.Instance.SecondaryAtt;
-                    break;
-                case Player.Class.Ranged:
-                    Player.Instance.StrengthAtt = Player.Instance.SecondaryAtt;
-                    Player.Instance.WisdomAtt = Player.Instance.TertiaryAtt;
-                    Player.Instance.DexterityAtt = Player.Instance.PrimaryAtt;
-                    break;
-            }
+            utility.UpdateAtts();
         }
 
         private static readonly Player instance = new Player();
