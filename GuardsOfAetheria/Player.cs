@@ -59,8 +59,13 @@ namespace GuardsOfAetheria
 
         public void UpdateAttributes()
         {
-            //DO THIS DAMNIT
-            //Note, similar to AssignAtts, but different
+            // set {BaseMana = stuffs in inv + base + effects}
+            Player.Instance.MaxMana = Player.Instance.BaseMana + (Player.Instance.WisdomAtt * Player.Instance.ManaStr);
+            Player.Instance.MaxVitality = Player.Instance.BaseVitality + (Player.Instance.StrengthAtt * Player.Instance.VitalityStr);
+            Player.Instance.MaxEndurance = Player.Instance.BaseEndurance + (Player.Instance.StrengthAtt * Player.Instance.EnduranceStr);
+
+            //Player.Instance.AttackAtt = stuff in equipped + bonus from str + buff
+            //Player.Instance.DefenceAtt = stuff equipped + bonus from str + buff
         }
         public void AssignAtts()
         {
@@ -101,14 +106,10 @@ namespace GuardsOfAetheria
                 return instance;
             }
         }
-        public void updateStats
+        public void onEnterNewInstance 
         {
-            // set {BaseMana = stuffs in inv + base + effects}
-            Player.Instance.MaxMana = Player.Instance.BaseMana + (Player.Instance.WisdomAtt * Player.Instance.ManaStr);
-            Player.Instance.MaxVitality = Player.Instance.BaseVitality + (Player.Instance.StrengthAtt * Player.Instance.VitalityStr);
-            Player.Instance.MaxEndurance = Player.Instance.BaseEndurance + (Player.Instance.StrengthAtt * Player.Instance.EnduranceStr);
+            // Stuff that happens when new instance..
 
-            // Todo: Must figure out set{} and get{}
         }
     }
 }
