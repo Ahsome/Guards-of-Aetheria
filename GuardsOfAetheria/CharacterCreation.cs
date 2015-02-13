@@ -13,7 +13,7 @@ namespace GuardsOfAetheria
         {
             Console.Clear();
             Console.WriteLine("What is your character's name?");
-            Player.Instance.PlayerName = Console.ReadLine();
+            Player.Instance.Name = Console.ReadLine();
             ChooseClass();
             Player.Instance.AssignAtts();
             ManualAttributes();
@@ -48,7 +48,7 @@ namespace GuardsOfAetheria
             while (true)
             {
                 ConsoleKey input = Console.ReadKey().Key;
-                Console.SetCursorPosition(14, menuSelected + 1);
+                Console.SetCursorPosition(14, menuSelected+1);
                 Console.Write(' ');
 
                 switch (input)
@@ -76,21 +76,21 @@ namespace GuardsOfAetheria
                         }
                         break;
                     case ConsoleKey.Enter:
-                        Player.Instance.StrengthAtt += tempPoints[0];
-                        Player.Instance.DexterityAtt += tempPoints[1];
-                        Player.Instance.WisdomAtt += tempPoints[2];
+                        Player.Instance.Strength += tempPoints[0];
+                        Player.Instance.Dexterity += tempPoints[1];
+                        Player.Instance.Wisdom += tempPoints[2];
                         return;
                 }
 
                 if (menuSelected < 0)
                 {
-                    menuSelected = 5;
+                    menuSelected = 2;
                 }
-                else if (menuSelected > 5)
+                else if (menuSelected > 2)
                 {
                     menuSelected = 0;
                 }
-                Console.SetCursorPosition(14, menuSelected + 1);
+                Console.SetCursorPosition(14, menuSelected+1);
                 Console.Write('>');
             }
         }
@@ -99,9 +99,9 @@ namespace GuardsOfAetheria
         {
             Console.Clear();
             Console.WriteLine("Set your attributes manually. Points left are indicated below");
-            Console.WriteLine("Strength:       {0}", Player.Instance.StrengthAtt + tempPoints[0]);
-            Console.WriteLine("Dexterity:      {0}", Player.Instance.DexterityAtt + tempPoints[1]);
-            Console.WriteLine("Wisdom:         {0}", Player.Instance.WisdomAtt + tempPoints[2]);
+            Console.WriteLine("Strength:       {0}", Player.Instance.Strength + tempPoints[0]);
+            Console.WriteLine("Dexterity:      {0}", Player.Instance.Dexterity + tempPoints[1]);
+            Console.WriteLine("Wisdom:         {0}", Player.Instance.Wisdom + tempPoints[2]);
             Console.WriteLine("Points left to use: {0}", pointsLeft);
         }
     }

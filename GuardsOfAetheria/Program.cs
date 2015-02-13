@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace GuardsOfAetheria
 {
@@ -12,13 +14,16 @@ namespace GuardsOfAetheria
         {
             //Think about these:
             //Damage = MainAtt * random.Next(-lvl,lvl+1) + DamageModifier;
-            //Fake Class: Spaghetti Monster ;)
+            //Fake Class: Spaghetti Monster ;)"r
 
             Console.CursorVisible = false;
+            Player.Instance.LocationRegion = "TestRegion";
+            Player.Instance.LocationArea = "TestArea";
+            Player.Instance.LocationBuilding = "Outside";
+            Player.Instance.LocationRoom = "TutorialRoom";
+
             var guiMenu = new GUIMainMenu();
             guiMenu.DisplayMainMenu();
-
-            Player.Instance.Location = "TutorialArea";
 
             Movement movement = new Movement();
             while (true)
