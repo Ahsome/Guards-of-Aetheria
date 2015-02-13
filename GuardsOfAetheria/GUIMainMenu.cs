@@ -20,7 +20,7 @@ namespace GuardsOfAetheria
             Utility utility = new Utility();
             int menuSelected = utility.SelectOption(3, 4);
             ActivateSelectedMenu(menuSelected);
- 
+
         }
 
         private void ActivateSelectedMenu(int menuSelected)
@@ -55,6 +55,7 @@ namespace GuardsOfAetheria
         {
             Console.Clear();
             //Credits
+            Console.WriteLine("GUI by Ahsome\nMovement by Ahsome\nEquipment by Lafamas\nMap by Lafamas\nCombat by aytimothy\n© Ahsome Productions 2014-2015");
             return;
         }
     }
