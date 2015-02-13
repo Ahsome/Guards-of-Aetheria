@@ -39,13 +39,13 @@ namespace GuardsOfAetheria
                         switch (menuSelected)
                         {
                             case 1:
-                                Player.Instance.PlayerClass = Player.Class.Melee;
+                                Player.Instance.PlayerClass = "Knight"; // Melee
                                 return;
                             case 2:
-                                Player.Instance.PlayerClass = Player.Class.Ranged;
+                                Player.Instance.PlayerClass = "Ranger"; // Range
                                 return;
                             case 3:
-                                Player.Instance.PlayerClass = Player.Class.Magic;
+                                Player.Instance.PlayerClass = "Wizard"; // Magic
                                 return;
                         }
                         break;
@@ -113,9 +113,9 @@ namespace GuardsOfAetheria
                         }
                         break;
                     case ConsoleKey.Enter:
-                        Player.Instance.StrengthAtt += tempPoints[0];
+                        Player.Instance.Strength += tempPoints[0];
                         Player.Instance.DexterityAtt += tempPoints[1];
-                        Player.Instance.WisdomAtt += tempPoints[2];
+                        Player.Instance.Wisdom += tempPoints[2];
                         return;
                 }
 
@@ -136,9 +136,9 @@ namespace GuardsOfAetheria
         {
             Console.Clear();
             Console.WriteLine("Set your attributes manually. Points left are indicated below");
-            Console.WriteLine("Strength:       {0}", Player.Instance.StrengthAtt + tempPoints[0]);
+            Console.WriteLine("Strength:       {0}", Player.Instance.Strength + tempPoints[0]);
             Console.WriteLine("Dexterity:      {0}", Player.Instance.DexterityAtt + tempPoints[1]);
-            Console.WriteLine("Wisdom:         {0}", Player.Instance.WisdomAtt + tempPoints[2]);
+            Console.WriteLine("Wisdom:         {0}", Player.Instance.Wisdom + tempPoints[2]);
             Console.WriteLine("Points left to use: {0}", pointsLeft);
         }
     }

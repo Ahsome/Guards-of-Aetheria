@@ -8,84 +8,82 @@ namespace GuardsOfAetheria
 {
     class Player
     {
-        public enum Class
-        {
-            Melee,
-            Magic,
-            Ranged
-        }
+        // General Character Stats
         public string PlayerName { get; set; }
-        public Class PlayerClass { get; set; }
-        public int entId { get; set; }
+        public string PlayerClass { get; set; }
 
-        public int StrengthAtt { get; set; }
-        public int DexterityAtt { get; set; }
-        public int WisdomAtt { get; set; }
+        // Character Attributes
+        public int Strength { get; set; }
+        public int Agility { get; set; }
+        public int Wisdom { get; set; }
 
-        //You mean health?
-        public int BaseVitality { get; set; }
-        public int CurrentVitality { get; set; }
-        public int VitalityStr { get; set; }
-        public int MaxVitality { get; set; }
+        // Strength-related Stuffs
+        private int BaseHealth { get; set; }
+        private int BuffHealth { get; set; }
+        private int BuffHealthPerCent { get; set; }
+        public int MaxHealth { get; set; }
+        public int CurrentHealth { get; set; }
+        private int BaseStamina { get; set; }
+        private int BuffStaminia { get; set; }
+        private int BuffStaminiaPerCent { get; set; }
+        public int MaxStaminia { get; set; }
+        public int CurrentStaminia { get; set; }
 
-        //Rename Mana to something better
-        public int BaseMana { get; set; }
-        public int CurrentMana { get; set; }
+        // Agility-related stuff
+        // None. They're all mostly calculated.
+
+        // Wisdom-related stuff
+        private int BaseMana { get; set; }
+        private int BuffMana { get; set; }
+        private int BuffManaPerCent { get; set; }
         public int MaxMana { get; set; }
-        public int ManaStr { get; set; } // How much effect wisom attributes have.
-        public int BaseEndurance { get; set; }
-        public int CurrentEndurance { get; set; }
-        public int MaxEndurance { get; set; }
-        public int EnduranceStr { get; set; } // How much effect strength attributes have. Should change name to something else.
+        public int CurrentMana { get; set; }
+        private int BaseLuck { get; set; }
+        public int Luck { get; set; }
 
-        public int DefenceAtt { get; set; }
-        public int AttackAtt { get; set; }
+        // Stuff that has calcuation in it.
+        public int Attack { get; set; }
+        public int Defence { get; set; } // Physical Def.
+        public int Shield { get; set; } // Magic Def.
+        public int Evasion { get; set; }
+        private int EvasionBuff { get; set; }
+        private int EvasionBuffPerCent { get; set; }
+        public int Speed { get; set; }
+        private int SpeedBuff { get; set; }
+        private int SpeedBuffPerCent { get; set; }
+        public int Vision { get; set; }
+        public int ArmorPenetration { get; set; }
 
-        public int AccuracyAtt { get; set; }
-        public int EvasionAtt { get; set; }
-
-        public int LuckAtt { get; set; }
-
-        public int PrimaryAtt { get; set; }
-        public int SecondaryAtt { get; set; }
-        public int TertiaryAtt { get; set; }
-
-        public int PerceptionAtt { get; set; }
-
+        // Locational Data
         public string Location { get; set; }
-
-        public int PhysArmor { get; set;}
-        public int MagicArmor { get; set; }
 
         public void UpdateAttributes()
         {
-            // set {BaseMana = stuffs in inv + base + effects}
-            Player.Instance.MaxMana = Player.Instance.BaseMana + (Player.Instance.WisdomAtt * Player.Instance.ManaStr);
-            Player.Instance.MaxVitality = Player.Instance.BaseVitality + (Player.Instance.StrengthAtt * Player.Instance.VitalityStr);
-            Player.Instance.MaxEndurance = Player.Instance.BaseEndurance + (Player.Instance.StrengthAtt * Player.Instance.EnduranceStr);
 
-            //Player.Instance.AttackAtt = stuff in equipped + bonus from str + buff
-            //Player.Instance.DefenceAtt = stuff equipped + bonus from str + buff
         }
         public void AssignAtts()
         {
             switch (Player.Instance.PlayerClass)
             {
-                case Player.Class.Melee:
-                    Player.Instance.PrimaryAtt = Player.Instance.StrengthAtt;
-                    Player.Instance.SecondaryAtt = Player.Instance.WisdomAtt;
-                    Player.Instance.TertiaryAtt = Player.Instance.DexterityAtt;
-                    break;
-                case Player.Class.Magic:
-                    Player.Instance.PrimaryAtt = Player.Instance.WisdomAtt;
-                    Player.Instance.SecondaryAtt = Player.Instance.DexterityAtt;
-                    Player.Instance.TertiaryAtt = Player.Instance.StrengthAtt;
-                    break;
-                case Player.Class.Ranged:
-                    Player.Instance.PrimaryAtt = Player.Instance.StrengthAtt;
-                    Player.Instance.SecondaryAtt = Player.Instance.WisdomAtt;
-                    Player.Instance.TertiaryAtt = Player.Instance.DexterityAtt;
-                    break;
+                if (Player.Instance.PlayerClass = "Knight") {
+                    Player.Instance.Strength; = Player.Instance.Strength + 5;
+                    Player.Instance.Wisdom; = Player.Instance.Wisdom + 1;
+                    Player.Instance.Agility; = Player.Instance.Agility + 3;
+                }
+                else if (Player.Instace.PlayerClass = "Ranger") {
+                    Player.Instance.Strength; = Player.Instance.Strength + 1;
+                    Player.Instance.Wisdom; = Player.Instance.Wisdom + 3;
+                    Player.Instance.Agility; = Player.Instance.Agility + 5;
+                }
+                else if (Player.Instance.PlayerClass = "Wizard") {
+                    Player.Instance.Strength; = Player.Instance.Strength + 3;
+                    Player.Instance.Wisdom; = Player.Instance.Wisdom + 5;
+                    Player.Instance.Agility; = Player.Instance.Agility + 1;
+                }
+                else {
+                    // Complain.
+                    return;
+                };
             }
         }
 
@@ -105,11 +103,6 @@ namespace GuardsOfAetheria
             {
                 return instance;
             }
-        }
-        public void onEnterNewInstance 
-        {
-            // Stuff that happens when new instance..
-
         }
     }
 }

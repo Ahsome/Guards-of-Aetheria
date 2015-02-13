@@ -8,38 +8,29 @@ namespace GuardsOfAetheria
 {
     class Combat
     {
-            // Gets the player and enemy.
-            // TODO: Give an ID assigning system for identification in fights.
-            public int CombatEnemy { get; set; }
-            public int CombatFighter { get; set; }
-            private int figherHealth { get; set; }
-            private int enemyHealth { get; set; }
-            private int fighterStrength { get; set; }
-            private int enemyStrength { get; set; }
-            private int figherArmor { get; set;}
-            private int enemyStrength { get; set; }
-        public void combat() 
+        class Battlefield
         {
-            getProps(combatEnemy, combatFighter);
-            fight();
-            outputFight();
-        }
-        private void getProps(int combatEnemy, int combatFighter)
-        {
-            // Gets and calculates the attack scenerio's numbers.
-            fighterHealth = 0;
-            enemyHealth = 0;
-            fighterStrength = 0;
-        }
-        private void fight
-        {
-            // Does the calculations.
+            // Enemy Slot 1
+            // Enemy Slot 2
+            // Enemy Slot 3
+            // Enemy Slot 4
+            // Enemy Slot 5
+            // Enemy Slot 6
 
+            // Player
+            public int Player_Attack { get; set; }
+            public int Player_Defence { get; set; }
+            public int Player_Shield { get; set; }
+            public int Player_Attack { get; set; }
+            // Player Party Slot 1
+            // Player Party Slot 2
+            // Player Party Slot 3
+            // Player Party Slot 4
         }
-        private void output
+        
+        public void loadEnemy(string type, string variant, int slot) 
         {
-            // Outputs the result.
-
+            
         }
     }
 }
