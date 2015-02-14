@@ -15,13 +15,13 @@ namespace GuardsOfAetheria
             Console.WriteLine("What is your character's name?");
             Player.Instance.Name = Console.ReadLine();
             ChooseClass();
-            Player.Instance.InitialiseAtts();
+            Player.Instance.AssignAtts();
             ManualAttributes();
         }
         private void ChooseClass()
         {
-            Console.WriteLine("\nWhat is your class?\n> Warrior\n  Archer\n  Mage");
-            int menuSelected = utility.SelectOption(3, 2);
+            Console.WriteLine("\nWhat is your class?\n  Warrior\n  Archer\n  Mage");
+            int menuSelected = utility.SelectOption(3, 3);
             switch (menuSelected)
             {
                 case 1:
@@ -41,14 +41,14 @@ namespace GuardsOfAetheria
             Console.Clear();
             int pointsLeft = 16;
             int[] tempPoints = { 0, 0, 0 };
-            int menuSelected = 0;
+            int menuSelected = 1;
             AttributeGraphics(pointsLeft, tempPoints);
             Console.SetCursorPosition(14, 1);
             Console.Write('>');
             while (true)
             {
                 ConsoleKey input = Console.ReadKey().Key;
-                Console.SetCursorPosition(14, menuSelected+1);
+                Console.SetCursorPosition(14, menuSelected);
                 Console.Write(' ');
 
                 switch (input)
@@ -60,9 +60,9 @@ namespace GuardsOfAetheria
                         menuSelected++;
                         break;
                     case ConsoleKey.LeftArrow:
-                        if (tempPoints[menuSelected] > 0)
+                        if (tempPoints[menuSelected-1] > 0)
                         {
-                            tempPoints[menuSelected]--;
+                            tempPoints[menuSelected-1]--;
                             pointsLeft++;
                             AttributeGraphics(pointsLeft, tempPoints);
                         }
@@ -70,7 +70,7 @@ namespace GuardsOfAetheria
                     case ConsoleKey.RightArrow:
                         if (pointsLeft > 0)
                         {
-                            tempPoints[menuSelected]++;
+                            tempPoints[menuSelected-1]++;
                             pointsLeft--;
                             AttributeGraphics(pointsLeft, tempPoints);
                         }
@@ -82,15 +82,15 @@ namespace GuardsOfAetheria
                         return;
                 }
 
-                if (menuSelected < 0)
+                if (menuSelected < 1)
                 {
-                    menuSelected = 2;
+                    menuSelected = 3;
                 }
-                else if (menuSelected > 2)
+                else if (menuSelected > 3)
                 {
-                    menuSelected = 0;
+                    menuSelected = 1;
                 }
-                Console.SetCursorPosition(14, menuSelected+1);
+                Console.SetCursorPosition(14, menuSelected);
                 Console.Write('>');
             }
         }

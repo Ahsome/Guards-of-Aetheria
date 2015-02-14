@@ -6,8 +6,17 @@
         <building name="Outside">
           <room name="TutorialRoom">
             <textToDisplay>Welcome to the game, {0}. Test the movement system, {0}.\nGood luck with that\nYour given options are located below\nUse your arrow keys to move, press ENTER to select</textToDisplay>
-            <textVariables>Word,Word</textVariables>
-            <options number="4">PL,PL,PL,PL</options>
+            <textVariables>Player.Instance.Name, Player.Instance.Name</textVariables>
+            <options>PL,PL,PL,PL</options>
+            <optionRegion>TestRegion,TestRegion,TestRegion,TestRegion</optionRegion>
+            <optionArea>TestArea,TestArea,TestArea,TestArea</optionArea>
+            <optionBuilding>Outside,Outside,Outside,Outside</optionBuilding>
+            <optionRoom>AB,TutorialRoom,TutorialRoom,TutorialRoom</optionRoom>
+          </room>
+         <room name="AB">
+            <textToDisplay>Welcome to the game again, {0}.\nYou sucessfully tested the movement, {0}.\nGood luck with the next one\nYour given options are located below\nUse your arrow keys to move, press ENTER to select</textToDisplay>
+            <textVariables>Player.Instance.Name, Player.Instance.Name</textVariables>
+            <options>PL,PL,PL,PL</options>
             <optionRegion>
               TestRegion,TestRegion,TestRegion,TestRegion
             </optionRegion>
@@ -18,7 +27,7 @@
               Outside,Outside,Outside,Outside
             </optionBuilding>
             <optionRoom>
-              TutorialRoom,TutorialRoom,TutorialRoom,TutorialRoom
+              AB,TutorialRoom,TutorialRoom,TutorialRoom
             </optionRoom>
           </room>
         </building>

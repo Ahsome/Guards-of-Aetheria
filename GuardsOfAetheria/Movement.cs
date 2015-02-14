@@ -9,66 +9,83 @@ using System.Xml.Linq;
 namespace GuardsOfAetheria
 {
     class Movement
-    { 
+    {
         Utility utility = new Utility();
         public void ShowLocation()
         {
-            Console.Clear();
-           
-            DisplayLocationText();
-            LocationOption();
-        }
-
-        public int LocationOption()
-        {
-            switch (Player.Instance.LocationRoom)
-            {
-                case "TutorialRoom":
-                    Console.SetCursorPosition(0, 6);
-                    Console.WriteLine("> Corridor\n  Random House (NOT WORKING)\n  A subway (NOT WORKING)\n  Heaven (NOT DEAD ENOUGH)");
-                    int option = utility.SelectOption(5, 3);
-                    switch (option)
-                    {
-                        case 1:
-                            SetLocation("Corridor");
-                            break;
-                        default:
-                            LocationOption();
-                            break;
-                    }
-                    break;
-                case "Corridor":
-                    Console.WriteLine("Sorry I haven't bothered to give any options, {0}", Player.Instance.Name);
-                    Console.ReadKey();
-                    break;
-            }
-            return 0;
-        }
-
-        private void DisplayLocationText()
-        {
             XElement xelement = XElement.Load("..\\..\\LocationDatabase.xml");
+            var XmlData = xelement.Elements("world")
+                .Elements("region")
+                .Where(r => (string)r.Attribute("name") == Player.Instance.LocationRegion)
+                .Elements("area")
+                .Where(a => (string)a.Attribute("name") == Player.Instance.LocationArea)
+                .Elements("building")
+                .Where(b => (string)b.Attribute("name") == Player.Instance.LocationBuilding)
+                .Elements("room")
+                .Where(ro => (string)ro.Attribute("name") == Player.Instance.LocationRoom);
 
-            var textToDisplay = xelement.Elements("world")
-                .Elements("region").Where(region => (string)region.Attribute("name") == Player.Instance.LocationRegion)
-                .Elements("area").Where(area => (string)area.Attribute("name") == Player.Instance.LocationArea)
-                .Elements("building").Where(building => (string)building.Attribute("name") == Player.Instance.LocationBuilding)
-                .Elements("room").Where(room => (string)room.Attribute("name") == Player.Instance.LocationRoom)
-                .Elements("textToDisplay");
+            Console.Clear();
+            DisplayLocation(XmlData);
 
-            var textVariables = xelement.Elements("world")
-                .Elements("region").Where(region => (string)region.Attribute("name") == Player.Instance.LocationRegion)
-                .Elements("area").Where(area => (string)area.Attribute("name") == Player.Instance.LocationArea)
-                .Elements("building").Where(building => (string)building.Attribute("name") == Player.Instance.LocationBuilding)
-                .Elements("room").Where(room => (string)room.Attribute("name") == Player.Instance.LocationRoom)
-                .Elements("textVariables");
+            int possibleOptions = DisplayOption(XmlData);
+            int optionSelected = utility.SelectOption(5, possibleOptions);
 
-            Console.WriteLine(((string)textToDisplay.First()).Replace(@"\n", Environment.NewLine), ((string)textVariables.First()).Split(','));
+            SetLocation(optionSelected, XmlData);
         }
 
-        private void SetLocation(string newArea)
+        private void DisplayLocation(IEnumerable<XElement> locationXmlData)
         {
-            Player.Instance.LocationRoom = newArea;
+            var textToDisplay = (string)locationXmlData.Elements("textToDisplay").FirstOrDefault();
+
+            string[] tempVariable = ((string)locationXmlData.Elements("textVariables").FirstOrDefault()).Split(',');
+
+            var variableDictionary = LocationDictionary();
+
+            object[] textVariable = new object[tempVariable.Length];
+
+            for (int i = 0; i < tempVariable.Length; i++ )
+            {
+                if (variableDictionary.ContainsKey(tempVariable[i]))
+                {
+                    textVariable[i] = variableDictionary[tempVariable[i]];
+                }
+            }
+            Console.WriteLine(textToDisplay.Replace(@"\n", Environment.NewLine), textVariable);
+        }
+
+        private int DisplayOption(IEnumerable<XElement> locationXmlData)
+        {
+            var possibleOptions = locationXmlData.Elements("options");
+            string[] options = ((string)possibleOptions.FirstOrDefault()).Split(',');
+            Console.SetCursorPosition(0, 6);
+            foreach (var element in options)
+            {
+                Console.WriteLine("  {0}", element);
+            }
+            return options.Length;
+        }
+
+        private Dictionary<string, object> LocationDictionary()
+        {
+            var variableDictionary = new Dictionary<string, object>();
+            variableDictionary.Add("Player.Instance.Name", Player.Instance.Name);
+            return variableDictionary;
+        }
+
+        private void SetLocation(int option, IEnumerable<XElement> xmlData)
+        {
+            var newRegion = ((string)xmlData.Elements("optionRegion").FirstOrDefault()).Split(',');
+
+            var newArea = ((string)xmlData.Elements("optionArea").FirstOrDefault()).Split(',');
+
+            var newBuilding = ((string)xmlData.Elements("optionBuilding").FirstOrDefault()).Split(',');
+
+            var newRoom = ((string)xmlData.Elements("optionRoom").FirstOrDefault()).Split(',');
+
+            Player.Instance.LocationRegion = newRegion[option-1];
+            Player.Instance.LocationArea = newArea[option - 1];
+            Player.Instance.LocationBuilding = newBuilding[option - 1];
+            Player.Instance.LocationRoom = newRoom[option - 1];
         }
     }
 }
