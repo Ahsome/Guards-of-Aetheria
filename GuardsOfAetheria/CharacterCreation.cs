@@ -114,7 +114,7 @@ namespace GuardsOfAetheria
                         break;
                     case ConsoleKey.Enter:
                         Player.Instance.Strength += tempPoints[0];
-                        Player.Instance.DexterityAtt += tempPoints[1];
+                        Player.Instance.Agility += tempPoints[1];
                         Player.Instance.Wisdom += tempPoints[2];
                         return;
                 }
