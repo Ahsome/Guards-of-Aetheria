@@ -8,18 +8,14 @@ namespace GuardsOfAetheria
 {
     class Combat
     {
-        class Battlefield
-        {
-            // Array lots 1-6 = Player, 7+ = Enemy
-            public int[] CurrentVitality;
-            public int[] CurrentMana;
-            public int[] CurrentEndurance;
+        public int[] CurrentVitality { get; set; }
+        public int[] CurrentMana { get; set; }
+        public int[] CurrentEndurance { get; set; }
 
-            public string[] Name;
-            public int[] Attack;
-            public int[] Defence;
-            public int[] Shield;
-        }
+        public string[] Name { get; set; }
+        public int[] Attack { get; set; }
+        public int[] Defence { get; set; }
+        public int[] Shield { get; set; }
 
         public void loadEnemy(string type, string variant, int slot)
         {
@@ -28,7 +24,9 @@ namespace GuardsOfAetheria
 
         public void loadPlayer()
         {
-            
+            Combat.instance.CurrentVitality[1] = Player.Instance.CurrentVitality;
+            Combat.instance.CurrentMana[1] = Player.Instance.CurrentMana;
+            Combat.instance.CurrentEndurance[1] = Player.Instance.CurrentEndurance;
         }
 
         public void loadPlayerParty()
@@ -49,6 +47,14 @@ namespace GuardsOfAetheria
         public void endFight()
         {
             // Write values back to character data.
+        }
+
+        public static Combat instance
+        {
+            get
+            {
+                return instance;
+            }
         }
     }
 }
