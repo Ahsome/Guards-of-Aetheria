@@ -26,15 +26,19 @@ namespace GuardsOfAetheria
 
         public int BaseVitality { get; set; }
         public int CurrentVitality { get; set; }
+        public int MaxVitality { get; set; } // Max. Health?
 
         public int BaseMana { get; set; }
         public int CurrentMana { get; set; }
+        public int MaxMana { get; set; }
 
         public int BaseEndurance { get; set; }
         public int CurrentEndurance { get; set; }
+        public int MaxEndurance { get; set; }
 
         public int Defence { get; set; }
-        public int AttackAtt { get; set; }
+        public int Attack { get; set; }
+        public int Sheild { get; set; } // Magic Resist
 
         public int AccuracyAtt { get; set; }
         public int EvasionAtt { get; set; }
@@ -46,7 +50,8 @@ namespace GuardsOfAetheria
         public int TertiaryAtt { get; set; }
 
         public int PerceptionAtt { get; set; }
-        public string[,] inventory { get; set; }
+        public string[] inventoryItems { get; set; }
+        public int[] inventoryCount { get; set; }
 
         public string LocationRegion { get; set; }
         public string LocationArea { get; set; }
