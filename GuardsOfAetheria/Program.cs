@@ -24,7 +24,7 @@ namespace GuardsOfAetheria
             Player.Instance.LocationBuilding = "Outside";
             Player.Instance.LocationRoom = "TutorialRoom";
 
-            var guiMenu = new GUIMainMenu();
+            var guiMenu = new MainMenu();
             guiMenu.DisplayMainMenu();
 
             while (true)

@@ -6,19 +6,26 @@ using System.Threading.Tasks;
 
 namespace GuardsOfAetheria
 {
-    class GUIMainMenu
+    class MainMenu
     {
         public void DisplayMainMenu()
         {
 
             Console.Clear();
+            Console.WriteLine("                                                                               ");
+            Console.WriteLine("               ╔═╗┬ ┬┌─┐┬─┐┌┬┐┌─┐  ┌─┐┌─┐  ╔═╗┌─┐┌┬┐┬ ┬┌─┐┬─┐┬┌─┐              ");
+            Console.WriteLine("               ║ ╦│ │├─┤├┬┘ ││└─┐  │ │├┤   ╠═╣├┤  │ ├─┤├┤ ├┬┘│├─┤              ");
+            Console.WriteLine("               ╚═╝└─┘┴ ┴┴└──┴┘└─┘  └─┘└    ╩ ╩└─┘ ┴ ┴ ┴└─┘┴└─┴┴ ┴              ");
+            Console.WriteLine("                                                                               ");
             Console.WriteLine("Welcome to the Guards of Atheria");
             Console.WriteLine("A simple game, set in the land of Aesrin");
             Console.WriteLine("What would you like to do?\n");
             Console.WriteLine("  New Game\n  Load Game\n  Options\n  Credits\n  Quit Game");
-
+            Console.SetCursorPosition(0, 22);
+            Console.WriteLine(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+            Console.WriteLine("                      (C) Black-Strike Studios, {0}                          ",DateTime.Now.Year);
             Utility utility = new Utility();
-            int menuSelected = utility.SelectOption(3, 5);
+            int menuSelected = utility.SelectOption(9, 5);
             ActivateSelectedMenu(menuSelected);
 
         }
