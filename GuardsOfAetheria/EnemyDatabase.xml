@@ -8,7 +8,7 @@
           <defence value="0" \>
         </attributes>
         <attacks>
-          <attack type="basic">
+          <attack type="basic" id="1">
             <damage value="0">
             <description>
               <name>Stare</name>
@@ -16,7 +16,7 @@
               <actionline>The %ATTACKER jumps onto %DEFENDER. Annoyed, you simply swipe it off.</actionline>
             </description>
           </attack>
-          <attack type="magic">
+          <attack type="magic" id="2">
             <damage value="0">
             <description>
               <name>Stare</name>
