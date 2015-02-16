@@ -31,12 +31,17 @@ namespace GuardsOfAetheria
 
         public void loadPlayerParty()
         {
-
+            // If party has nobody but the player, break.
+            // If party 1 or more members, load member #1, else, break.
+            // If party 2 or more members, load member #2, else, break.
+            // Etc. etc. etc.
         }
 
-        public void fight(string AttackerSlot, string DefenderSlot)
+        public void fight(int AttackerSlot, int DefenderSlot)
         {
-
+            // TODO: Print the action line.
+            Console.WriteLine(Combat.instance.Name[AttackerSlot] + "used a basic attack and dealt " + (Combat.instance.Attack[AttackerSlot] - Combat.instance.Defence[DefenderSlot]) + " damage!");
+            Combat.instance.CurrentVitality[DefenderSlot] = Combat.instance.CurrentVitality[DefenderSlot] - (Combat.instance.Attack[AttackerSlot] - Combat.instance.Defence[DefenderSlot]);
         }
 
         public void startFight()
@@ -46,7 +51,8 @@ namespace GuardsOfAetheria
 
         public void endFight()
         {
-            // Write values back to character data.
+            Player.Instance.CurrentMana = Combat.instance.CurrentMana[1];
+            Player.Instance.CurrentVitality = Combat.instance.CurrentVitality[1];
         }
 
         public static Combat instance
