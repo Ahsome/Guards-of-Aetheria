@@ -37,7 +37,7 @@ namespace GuardsOfAetheria
             // Etc. etc. etc.
         }
 
-        public void fight(int AttackerSlot, int DefenderSlot)
+        public void fight(int AttackerSlot, int DefenderSlot, int AttackType)
         {
             // TODO: Print the action line.
             Console.WriteLine(Combat.instance.Name[AttackerSlot] + "used a basic attack and dealt " + (Combat.instance.Attack[AttackerSlot] - Combat.instance.Defence[DefenderSlot]) + " damage!");
