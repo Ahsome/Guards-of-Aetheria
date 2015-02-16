@@ -16,6 +16,10 @@ namespace GuardsOfAetheria
         public int[] Attack { get; set; }
         public int[] Defence { get; set; }
         public int[] Shield { get; set; }
+        
+        // Slot 0 = Player
+        // Slot 1-6 = Player's Party (up to 6)
+        // Slot 7+ = Enemies (as many as you want)
 
         public void loadEnemy(string type, string variant, int slot)
         {
@@ -24,9 +28,9 @@ namespace GuardsOfAetheria
 
         public void loadPlayer()
         {
-            Combat.instance.CurrentVitality[1] = Player.Instance.CurrentVitality;
-            Combat.instance.CurrentMana[1] = Player.Instance.CurrentMana;
-            Combat.instance.CurrentEndurance[1] = Player.Instance.CurrentEndurance;
+            Combat.instance.CurrentVitality[0] = Player.Instance.CurrentVitality;
+            Combat.instance.CurrentMana[0] = Player.Instance.CurrentMana;
+            Combat.instance.CurrentEndurance[0] = Player.Instance.CurrentEndurance;
         }
 
         public void loadPlayerParty()
@@ -51,8 +55,8 @@ namespace GuardsOfAetheria
 
         public void endFight()
         {
-            Player.Instance.CurrentMana = Combat.instance.CurrentMana[1];
-            Player.Instance.CurrentVitality = Combat.instance.CurrentVitality[1];
+            Player.Instance.CurrentMana = Combat.instance.CurrentMana[0];
+            Player.Instance.CurrentVitality = Combat.instance.CurrentVitality[0];
         }
 
         public static Combat instance
