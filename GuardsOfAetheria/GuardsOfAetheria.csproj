@@ -58,7 +58,8 @@
   <ItemGroup>
     <Compile Include="CharacterCreation.cs" />
     <Compile Include="Combat.cs" />
-    <Compile Include="GUIMainMenu.cs" />
+    <Compile Include="Equipment.cs" />
+    <Compile Include="MainMenu.cs" />
     <Compile Include="Movement.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />

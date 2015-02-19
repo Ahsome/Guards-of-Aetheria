@@ -17,7 +17,7 @@ namespace GuardsOfAetheria
             {
                 Console.SetCursorPosition(0, menuSelected + startLine);
                 Console.Write('>');
-                input = Console.ReadKey().Key;
+                input = Console.ReadKey(true).Key;
                 if (input == ConsoleKey.Enter)
                 {
                     break;

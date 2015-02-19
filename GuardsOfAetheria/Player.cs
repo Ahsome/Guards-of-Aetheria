@@ -58,6 +58,8 @@ namespace GuardsOfAetheria
         public string LocationBuilding { get; set; }
         public string LocationRoom { get; set; }
 
+        public int[][][][] inventory { get; set; }
+
         public void AssignAtts()
         {
             Player.Instance.PrimaryAtt = 13;
