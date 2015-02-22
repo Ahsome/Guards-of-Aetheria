@@ -1,21 +1,17 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GuardsOfAetheria
 {
     class CharacterCreation
     {
-        Utility utility = new Utility();
+        readonly Utility utility = new Utility();
         public void CreateCharacter()
         {
             Console.Clear();
             Console.WriteLine("What is your character's name?");
             Player.Instance.Name = Console.ReadLine();
             ChooseClass();
-            Player.Instance.AssignAtts();
+            Player.Instance.UpdateAtts();
             ManualAttributes();
         }
         private void ChooseClass()

@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <root>
   <enemies>
-    <enemy name="slime"
+    <enemy name="slime">
       <type name="slime" variant="0">
         <attributes>
-          <attack value="1" \>
-          <defence value="0" \>
+          <attack value="1"></attack>
+          <defence value="0"></defence>
         </attributes>
         <attacks>
           <attack type="basic" id="1">
-            <damage value="0">
+            <damage value="0"></damage>
             <description>
-              <name>Stare</name>
+              <name>Jump</name>
               <description>Does nothing but jumps onto you.</description>
               <actionline>The %ATTACKER jumps onto %DEFENDER. Annoyed, you simply swipe it off.</actionline>
             </description>
           </attack>
           <attack type="magic" id="2">
-            <damage value="0">
+            <damage value="0"></damage>
             <description>
               <name>Stare</name>
               <description>Does nothing but stare at you.. Even though it has no eyes.</description>

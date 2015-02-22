@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GuardsOfAetheria
 {
@@ -56,14 +52,12 @@ namespace GuardsOfAetheria
         {
             Console.Clear();
             //Options
-            return;
         }
         private void DisplayCredits()
         {
             Console.Clear();
             //Credits
-            Console.WriteLine("GUI by Ahsome\nMovement by Ahsome\nEquipment by Lafamas\nMap by Lafamas\nCombat by aytimothy\n� Ahsome Productions 2014-2015");
-            return;
+            Console.WriteLine("Coders:\nAhsome\naytimothy\nsomebody1234\n\nWriter:\nLafamas");
         }
     }
 }

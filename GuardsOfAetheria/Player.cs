@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace GuardsOfAetheria
 {
     class Player
@@ -50,50 +44,72 @@ namespace GuardsOfAetheria
         public int TertiaryAtt { get; set; }
 
         public int PerceptionAtt { get; set; }
-        public string[] inventoryItems { get; set; }
-        public int[] inventoryCount { get; set; }
+        public string[] InventoryItems { get; set; }
+        public int[] InventoryCount { get; set; }
 
         public string LocationRegion { get; set; }
         public string LocationArea { get; set; }
         public string LocationBuilding { get; set; }
         public string LocationRoom { get; set; }
 
-        public int[][][][] inventory { get; set; }
+        public int[][][][] Inventory { get; set; }
 
-        public void AssignAtts()
+        public void InitialiseAtts()
         {
-            Player.Instance.PrimaryAtt = 13;
-            Player.Instance.SecondaryAtt = 10;
-            Player.Instance.TertiaryAtt = 7;
-            switch (Player.Instance.PlayerClass)
-            {
-                case Player.Class.Melee:
-                    Player.Instance.Strength = Player.Instance.PrimaryAtt;
-                    Player.Instance.Wisdom = Player.Instance.SecondaryAtt;
-                    Player.Instance.Dexterity = Player.Instance.TertiaryAtt;
-                    break;
-                case Player.Class.Magic:
-                    Player.Instance.Strength = Player.Instance.TertiaryAtt;
-                    Player.Instance.Wisdom = Player.Instance.PrimaryAtt;
-                    Player.Instance.Dexterity = Player.Instance.SecondaryAtt;
-                    break;
-                case Player.Class.Ranged:
-                    Player.Instance.Strength = Player.Instance.SecondaryAtt;
-                    Player.Instance.Wisdom = Player.Instance.TertiaryAtt;
-                    Player.Instance.Dexterity = Player.Instance.PrimaryAtt;
-                    break;
-            }
+            PrimaryAtt = 13;
+            SecondaryAtt = 10;
+            TertiaryAtt = 7;
+            UpdateAtts();
         }
         public void UpdateAtts()
         {
-            Player.Instance.BaseVitality = Player.Instance.Strength * 10;
-            Player.Instance.CurrentVitality = Player.Instance.BaseVitality + 0;
-            Player.Instance.BaseMana = Player.Instance.Wisdom * 10;
-            Player.Instance.CurrentMana = Player.Instance.BaseMana + 0;
-            Player.Instance.BaseEndurance = Player.Instance.Dexterity * 10;
-            Player.Instance.CurrentEndurance = Player.Instance.BaseEndurance + 0;
-            AssignAtts();
+            switch (PlayerClass)
+            {
+                case Class.Melee:
+                    Instance.Strength = Instance.PrimaryAtt;
+                    Instance.Wisdom = Instance.SecondaryAtt;
+                    Instance.Dexterity = Instance.TertiaryAtt;
+                    break;
+                case Class.Magic:
+                    Instance.Strength = Instance.TertiaryAtt;
+                    Instance.Wisdom = Instance.PrimaryAtt;
+                    Instance.Dexterity = Instance.SecondaryAtt;
+                    break;
+                case Class.Ranged:
+                    Instance.Strength = Instance.SecondaryAtt;
+                    Instance.Wisdom = Instance.TertiaryAtt;
+                    Instance.Dexterity = Instance.PrimaryAtt;
+                    break;
+            }
         }
+        public void AssignAtts()
+        {
+            Instance.BaseVitality = Instance.Strength * 10;
+            Instance.CurrentVitality = Instance.BaseVitality + 0;
+            Instance.BaseMana = Instance.Wisdom * 10;
+            Instance.CurrentMana = Instance.BaseMana + 0;
+            Instance.BaseEndurance = Instance.Dexterity * 10;
+            Instance.CurrentEndurance = Instance.BaseEndurance + 0;
+            switch (PlayerClass)
+            {
+                case Class.Melee:
+                    Instance.PrimaryAtt = Instance.Strength;
+                    Instance.SecondaryAtt = Instance.Wisdom;
+                    Instance.TertiaryAtt = Instance.Dexterity;
+                    break;
+                case Class.Magic:
+                    Instance.TertiaryAtt = Instance.Strength;
+                    Instance.PrimaryAtt = Instance.Wisdom;
+                    Instance.SecondaryAtt = Instance.Dexterity;
+                    break;
+                case Class.Ranged:
+                    Instance.SecondaryAtt = Instance.Strength;
+                    Instance.TertiaryAtt = Instance.Wisdom;
+                    Instance.PrimaryAtt = Instance.Dexterity;
+                    break;
+            }
+        }
+        
 
         private static readonly Player instance = new Player();
 

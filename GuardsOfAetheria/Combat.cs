@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GuardsOfAetheria
 {
@@ -21,49 +17,50 @@ namespace GuardsOfAetheria
         // Slot 1-6 = Player's Party (up to 6)
         // Slot 7+ = Enemies (as many as you want)
 
-        public void loadEnemy(string type, string variant, int slot)
+        public void LoadEnemy(string type, string variant, int slot)
         {
             // TODO: Review XML code, see how to use it.
         }
 
-        public void loadPlayer()
+        public void LoadPlayer()
         {
-            Combat.instance.CurrentVitality[0] = Player.Instance.CurrentVitality;
-            Combat.instance.CurrentMana[0] = Player.Instance.CurrentMana;
-            Combat.instance.CurrentEndurance[0] = Player.Instance.CurrentEndurance;
+            Instance.CurrentVitality[0] = Player.Instance.CurrentVitality;
+            Instance.CurrentMana[0] = Player.Instance.CurrentMana;
+            Instance.CurrentEndurance[0] = Player.Instance.CurrentEndurance;
         }
 
-        public void loadPlayerParty()
+        public void LoadPlayerParty()
         {
             // If party has nobody but the player, break.
             // If party 1 or more members, load member #1, else, break.
             // If party 2 or more members, load member #2, else, break.
             // Etc. etc. etc.
+            // Use a loop
         }
 
-        public void fight(int AttackerSlot, int DefenderSlot, int AttackType)
+        public void Fight(int attackerSlot, int defenderSlot, int attackType)
         {
             // TODO: Print the action line.
-            Console.WriteLine(Combat.instance.Name[AttackerSlot] + "used a basic attack and dealt " + (Combat.instance.Attack[AttackerSlot] - Combat.instance.Defence[DefenderSlot]) + " damage!");
-            Combat.instance.CurrentVitality[DefenderSlot] = Combat.instance.CurrentVitality[DefenderSlot] - (Combat.instance.Attack[AttackerSlot] - Combat.instance.Defence[DefenderSlot]);
+            Console.WriteLine(Name[attackerSlot] + "used a basic attack and dealt " + (Attack[attackerSlot] - Defence[defenderSlot]) + " damage!");
+            CurrentVitality[defenderSlot] = CurrentVitality[defenderSlot] - (Attack[attackerSlot] - Defence[defenderSlot]);
         }
 
-        public void startFight()
+        public void StartFight()
         {
             // See how to handle from script
         }
 
-        public void endFight()
+        public void EndFight()
         {
-            Player.Instance.CurrentMana = Combat.instance.CurrentMana[0];
-            Player.Instance.CurrentVitality = Combat.instance.CurrentVitality[0];
+            Player.Instance.CurrentMana = Instance.CurrentMana[0];
+            Player.Instance.CurrentVitality = Instance.CurrentVitality[0];
         }
 
-        public static Combat instance
+        public static Combat Instance
         {
             get
             {
-                return instance;
+                return Instance;
             }
         }
     }

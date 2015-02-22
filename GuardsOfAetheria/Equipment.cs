@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GuardsOfAetheria
 {
@@ -17,64 +13,76 @@ namespace GuardsOfAetheria
             Legendary,
             Supreme
         }
+        public enum Material
+        {
+            Copper,
+            Iron,
+            Steel
+        }
+        public enum MaterialMods
+        {
+            Silvered,
+            Gilded
+        }
+        public enum Alloys
+        {
+            //Brass?
+        }
     }
     class Weapon
     {
-        string[][][] Weapons = new string[][][]
-    {
-        new string[][]
+        readonly string[][][] _weapons = {
+        new[]
         {
-            new string[]
+            new[]
             {
                 "Broadsword",
                 "Shortsword"
             },
-            new string[]
+            new[]
             {
                 "Axe"
             },
-            new string[]
+            new[]
             {
                 "Club",
                 "Mace",
                 "Flail"
             },
-            new string[]
+            new[]
             {
                 "Spear",
-                "Halberd?",
+                "Halberd?"
             }
         },
-        new string[][]
+        new[]
         {
-            new string[]
+            new[]
             {
                 "Javelin"
             },
-            new string[]
+            new[]
             {
                 "Bow"
             }
         },
-        new string[][]
+        new[]
         {
-            new string[]
+            new[]
             {
-                "Wand",
-                "Staff",
-                "Tome"
+                "Tomes",
+                "?",
+                "?"
             }
         }
     };
-        string[] Prefixes = new string[]
-        {
+        string[] _prefixes = {
             "Featherweight (+speed, -damage)",
             "Light (+speed, -damage)",
             "Heavy (-speed, +damage)",
-            "Leadweight? (-speed, +damage)",
+            "Leadweight? (-speed, +damage)"
         };
-        string[] Craftmanship = new string[]
-        {
+        string[] _craftmanship = {
             "Use as prefixes?",
             "Terrible? (-all)",
             "Shoddy (-all)",
@@ -83,20 +91,14 @@ namespace GuardsOfAetheria
             "Excellent (+all)",
             "Superb (+all)"
         };
-        public enum Material
-        {
-            Copper,
-            Iron,
-            Steel
-        }
-        public void WeaponGen(Material mat)
+        public void WeaponGen(General.Material mat)
         {
             Random rand = new Random();
             int weaponClass = rand.Next(0, 3);
-            int weaponType = rand.Next(0, Weapons[weaponClass].Length);
-            int weapon = rand.Next(0, Weapons[weaponClass][weaponType].Length);
+            int weaponType = rand.Next(0, _weapons[weaponClass].Length);
+            int weapon = rand.Next(0, _weapons[weaponClass][weaponType].Length);
             int firstEmptySlot = -1;
-            firstEmptySlot = Array.IndexOf(Player.Instance.inventory, "");
+            firstEmptySlot = Array.IndexOf(Player.Instance.Inventory, "");
             if (firstEmptySlot == -1)
             {
                 Console.WriteLine("Your inventory is full\n> Replace\n  Sell ({0} gold)");
@@ -105,25 +107,17 @@ namespace GuardsOfAetheria
     }
     class Armour
     {
-        string[] Armours = new string[]
-        {
+        readonly string[] _armours = {
             "Chain",
             "Plate"
         };
-        public enum Material
-        {
-            Leather,
-            Copper,
-            Iron,
-            Steel
-        }
-        public void ArmourGen(Material mat)
+        public void ArmourGen(General.Material mat)
         {
             Random rand = new Random();
             int armourClass = rand.Next(0, 3);
-            int armour = rand.Next(0, Armours[armourClass].Length);
+            int armour = rand.Next(0, _armours[armourClass].Length);
             int firstEmptySlot = -1;
-            firstEmptySlot = Array.IndexOf(Player.Instance.inventory, "");
+            firstEmptySlot = Array.IndexOf(Player.Instance.Inventory, "");
             if (firstEmptySlot == -1)
             {
                 Console.WriteLine("Your inventory is full\n> Replace\n  Sell ({0} gold)");

@@ -1,20 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 using System.Xml.Linq;
 
 namespace GuardsOfAetheria
 {
     class Movement
     {
-        Utility utility = new Utility();
+        readonly Utility _utility = new Utility();
         public void ShowLocation()
         {
             XElement xelement = XElement.Load("..\\..\\LocationDatabase.xml");
-            var XmlData = xelement.Elements("world")
+            var xmlData = xelement.Elements("world")
                 .Elements("region")
                 .Where(r => (string)r.Attribute("name") == Player.Instance.LocationRegion)
                 .Elements("area")
@@ -25,12 +22,12 @@ namespace GuardsOfAetheria
                 .Where(ro => (string)ro.Attribute("name") == Player.Instance.LocationRoom);
 
             Console.Clear();
-            DisplayLocation(XmlData);
+            DisplayLocation(xmlData);
 
-            int possibleOptions = DisplayOption(XmlData);
-            int optionSelected = utility.SelectOption(5, possibleOptions);
+            int possibleOptions = DisplayOption(xmlData);
+            int optionSelected = _utility.SelectOption(5, possibleOptions);
 
-            SetLocation(optionSelected, XmlData);
+            SetLocation(optionSelected, xmlData);
         }
 
         private void DisplayLocation(IEnumerable<XElement> locationXmlData)
@@ -67,8 +64,7 @@ namespace GuardsOfAetheria
 
         private Dictionary<string, object> LocationDictionary()
         {
-            var variableDictionary = new Dictionary<string, object>();
-            variableDictionary.Add("Player.Instance.Name", Player.Instance.Name);
+            var variableDictionary = new Dictionary<string, object> {{"Player.Instance.Name", Player.Instance.Name}};
             return variableDictionary;
         }
 

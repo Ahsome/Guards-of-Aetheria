@@ -1,16 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Linq;
 
 namespace GuardsOfAetheria
 {
     class MainProgram
     {
-        static void Main(string[] args)
+        private static void Main()
         {
             /*Think about these:
             /Damage = rounddown?(BaseDamage * random.Next(0, 10001) * .00002 + .9)
@@ -36,7 +30,6 @@ namespace GuardsOfAetheria
             }
             //Took way to long to make this ;)
         }
-
     }
 }
 /* Save:
