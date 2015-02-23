@@ -10,6 +10,8 @@ namespace GuardsOfAetheria
             Uncommon,
             Rare,
             Epic,
+            Fabled,
+            Mythical,
             Legendary,
             Supreme
         }
@@ -31,7 +33,30 @@ namespace GuardsOfAetheria
     }
     class Weapon
     {
-        readonly string[][][] _weapons = {
+        readonly string[] weaponClassName = {
+            "Melee",
+            "Ranged",
+            "Magic"
+        };
+        readonly string[][] weaponTypeName = {
+        new[]
+        {
+            "Sword",
+            "Axe",
+            "Club",
+            "Polearm"
+        },
+        new []
+        {
+            "Javelin",
+            "Bow",
+        },
+        new[]
+        {
+            "Catalyst"
+        }
+        };
+        readonly string[][][] weapons = {
         new[]
         {
             new[]
@@ -76,38 +101,54 @@ namespace GuardsOfAetheria
             }
         }
     };
-        string[] _prefixes = {
-            "Featherweight (+speed, -damage)",
+        readonly string[][] prefixes = { //split?
+            new[]
+            {
             "Light (+speed, -damage)",
             "Heavy (-speed, +damage)",
-            "Leadweight? (-speed, +damage)"
-        };
-        string[] _craftmanship = {
-            "Use as prefixes?",
-            "Terrible? (-all)",
-            "Shoddy (-all)",
+            
             "Bad? (-all)",
-            "Good? (+all)",
-            "Excellent (+all)",
-            "Superb (+all)"
+            "Good? (+all)"
+            },
+            new[]
+            {
+                "Featherweight (+speed, -damage)",
+                "Leadweight? (-speed, +damage)",
+                "Shoddy (-all)",
+                "Excellent (+all)"
+            },
+            new[]
+            {
+                "Terrible? (-all)",
+                "Superb (+all)"
+            }
         };
         public void WeaponGen(General.Material mat)
         {
-            Random rand = new Random();
-            int weaponClass = rand.Next(0, 3);
-            int weaponType = rand.Next(0, _weapons[weaponClass].Length);
-            int weapon = rand.Next(0, _weapons[weaponClass][weaponType].Length);
-            int firstEmptySlot = -1;
-            firstEmptySlot = Array.IndexOf(Player.Instance.Inventory, "");
+            var rand = new Random();
+            var weaponClass = rand.Next(0, 3);
+            var weaponType = rand.Next(0, weapons[weaponClass].Length);
+            var weapon = rand.Next(0, weapons[weaponClass][weaponType].Length);
+            var weaponName = weapons[weaponClass][weaponType][weapon];
+            var prefixRarity = Convert.ToInt16(Math.Round(Math.Log10(rand.Next(0, 10001))));
+            var prefixGoodOrBad = rand.Next(0, 2);
+            var prefixNumber = rand.Next(0, prefixes[prefixRarity].Length / 2);
+            var prefix = prefixes[prefixRarity][prefixNumber * 2 + prefixGoodOrBad];
+            Console.WriteLine("You found a {0} {1}.", prefix, weaponName);
+            var firstEmptySlot = Array.IndexOf(Player.Instance.Weapons, 0);
             if (firstEmptySlot == -1)
             {
-                Console.WriteLine("Your inventory is full\n> Replace\n  Sell ({0} gold)");
+                Console.WriteLine("Your inventory is full\n> Replace\n  Discard");
             }
+            Player.Instance.Weapons[firstEmptySlot] = new[]
+            {
+                weaponClass, weaponType, weapon, prefixRarity, prefixNumber * 2 + prefixGoodOrBad, 0, 0
+            };
         }
     }
     class Armour
     {
-        readonly string[] _armours = {
+        readonly string[] armours = {
             "Chain",
             "Plate"
         };
@@ -115,9 +156,8 @@ namespace GuardsOfAetheria
         {
             Random rand = new Random();
             int armourClass = rand.Next(0, 3);
-            int armour = rand.Next(0, _armours[armourClass].Length);
-            int firstEmptySlot = -1;
-            firstEmptySlot = Array.IndexOf(Player.Instance.Inventory, "");
+            int armour = rand.Next(0, armours[armourClass].Length);
+            int firstEmptySlot = Array.IndexOf(Player.Instance.Armours, 0);
             if (firstEmptySlot == -1)
             {
                 Console.WriteLine("Your inventory is full\n> Replace\n  Sell ({0} gold)");
