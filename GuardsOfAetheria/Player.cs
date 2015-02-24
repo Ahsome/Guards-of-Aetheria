@@ -52,12 +52,21 @@ namespace GuardsOfAetheria
         public string LocationBuilding { get; set; }
         public string LocationRoom { get; set; }
 
+        public int InventorySpace { get; set; }
         public int[][] Weapons { get; set; }
         public int[][] Armours { get; set; }
         public int[][] Consumables { get; set; }
         public int[][] Materials { get; set; }
-        // Melee = 1, Ranged = 2
-        // [] = {(Class, Class, Type, Material), (Weapon, Armour, Item), (Prefix), (Suffix), (Tier), (Rarity)}
+        public string[] WeaponsName { get; set; }
+        public string[] ArmoursName { get; set; }
+        public string[] ConsumablesName { get; set; }
+        public string[] MaterialsName { get; set; }
+        public int[][] WeaponsOld { get; set; }
+        public int[][] ArmoursOld { get; set; }
+        public int[][] ConsumablesOld { get; set; }
+        public int[][] MaterialsOld { get; set; }
+        // Melee = 1, Ranged = 2, Magic = 3
+        // [] = {(Class, Class, Type, Material), (Weapon, Armour, Item), (Prefix, sortNumber), (Suffix), (Tier), (Rarity), (ortNumber)}
 
         public void InitialiseAtts()
         {

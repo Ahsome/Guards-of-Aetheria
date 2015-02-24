@@ -7,7 +7,7 @@ namespace GuardsOfAetheria
 {
     class Movement
     {
-        readonly Utility _utility = new Utility();
+        readonly Utility utility = new Utility();
         public void ShowLocation()
         {
             XElement xelement = XElement.Load("..\\..\\LocationDatabase.xml");
@@ -24,8 +24,9 @@ namespace GuardsOfAetheria
             Console.Clear();
             DisplayLocation(xmlData);
 
-            int possibleOptions = DisplayOption(xmlData);
-            int optionSelected = _utility.SelectOption(5, possibleOptions);
+            string[] options = DisplayOption(xmlData);
+            Console.SetCursorPosition(0, 5);
+            int optionSelected = utility.SelectOption(options);
 
             SetLocation(optionSelected, xmlData);
         }
@@ -50,16 +51,11 @@ namespace GuardsOfAetheria
             Console.WriteLine(textToDisplay.Replace(@"\n", Environment.NewLine), textVariable);
         }
 
-        private int DisplayOption(IEnumerable<XElement> locationXmlData)
+        private string[] DisplayOption(IEnumerable<XElement> locationXmlData)
         {
             var possibleOptions = locationXmlData.Elements("options");
             string[] options = ((string)possibleOptions.FirstOrDefault()).Split(',');
-            Console.SetCursorPosition(0, 6);
-            foreach (var element in options)
-            {
-                Console.WriteLine("  {0}", element);
-            }
-            return options.Length;
+            return options;
         }
 
         private Dictionary<string, object> LocationDictionary()

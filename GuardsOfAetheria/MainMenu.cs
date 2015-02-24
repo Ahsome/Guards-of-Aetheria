@@ -21,7 +21,9 @@ namespace GuardsOfAetheria
             Console.WriteLine(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
             Console.WriteLine("                     (C) Black-Strike Studios, 2014 - {0}                     ",DateTime.Now.Year);
             Utility utility = new Utility();
-            int menuSelected = utility.SelectOption(8, 5);
+            Console.SetCursorPosition(0, 8);
+            string[] options = { "New Game", "Load Game", "Options", "Credits", "Quit Game" };
+            var menuSelected = utility.SelectOption(options);
             ActivateSelectedMenu(menuSelected);
 
         }
@@ -35,7 +37,8 @@ namespace GuardsOfAetheria
                     characterCreation.CreateCharacter();
                     break;
                 case 2:
-                //LoadGame
+                    //LoadGame
+                    break;
                 case 3:
                     DisplayOptions();
                     break;

@@ -11,13 +11,14 @@ namespace GuardsOfAetheria
             Console.WriteLine("What is your character's name?");
             Player.Instance.Name = Console.ReadLine();
             ChooseClass();
-            Player.Instance.UpdateAtts();
+            Player.Instance.InitialiseAtts();
             ManualAttributes();
         }
         private void ChooseClass()
         {
-            Console.WriteLine("\nWhat is your class?\n  Warrior\n  Archer\n  Mage");
-            int menuSelected = utility.SelectOption(3, 3);
+            Console.WriteLine("\nWhat is your class?");
+            string[] options = {"Warrior", "Archer", "Mage"};
+            int menuSelected = utility.SelectOption(options);
             switch (menuSelected)
             {
                 case 1:

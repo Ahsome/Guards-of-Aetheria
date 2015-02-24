@@ -4,29 +4,69 @@ namespace GuardsOfAetheria
 {
     class Utility
     {
-        public int SelectOption(int startLine, int possibleOptions)
+        public int SelectOption(string[] options) //if (CursorTop > maxline) then (new page)
         {
-            int menuSelected = 1;
-            possibleOptions--;
+            var menuSelected = 1;
+            var startLine = Console.CursorTop;
+            decimal numberOfLines = 23 - startLine;
+            var totalLines = Convert.ToInt32(numberOfLines);
+            var pages = Convert.ToInt32(Math.Round(((options.Length + numberOfLines) / (2 * numberOfLines)), MidpointRounding.AwayFromZero));
+            var pageNumber = 1;
+            var oldPageNumber = 0;
+            var firstIteration = true;
+            var possibleOptions = options.Length - (totalLines * (pageNumber - 1));
+            if (totalLines < possibleOptions)
+            {
+                possibleOptions = totalLines;
+            }
+            for (var i = 0; i < possibleOptions; i++)
+            {
+                Console.SetCursorPosition(2, startLine + i + 1);
+                Console.Write("                       ");
+                Console.SetCursorPosition(2, startLine + i + 1);
+                Console.Write(options[i]);
+            }
             while (true)
             {
                 Console.SetCursorPosition(0, menuSelected + startLine);
                 Console.Write('>');
-                var input = Console.ReadKey(true).Key;
-                if (input == ConsoleKey.Enter)
+                while (true)
                 {
-                    break;
+                    var lastPage = false;
+                    var nextPage = false;
+                    var input = Console.ReadKey(true).Key;
+                    if (input == ConsoleKey.Enter) { return (menuSelected + (totalLines * (pageNumber - 1))); }
+                    Console.SetCursorPosition(0, menuSelected + startLine);
+                    Console.Write(' ');
+                    if (input == ConsoleKey.UpArrow) { menuSelected--; }
+                    if (input == ConsoleKey.DownArrow) { menuSelected++; }
+                    if (menuSelected < 1 ) { lastPage = true; pageNumber--; }
+                    if (menuSelected > possibleOptions) { nextPage = true; pageNumber++; }
+                    if (pageNumber < 1) { pageNumber = pages; }
+                    if (pageNumber > pages) { pageNumber = 1; }
+                    if (lastPage || nextPage)
+                    {
+                        possibleOptions = options.Length - (totalLines * (pageNumber - 1));
+                        if (totalLines < possibleOptions)
+                        {
+                            possibleOptions = totalLines;
+                        }
+                        if (lastPage) { menuSelected = possibleOptions; }
+                        if (nextPage) { menuSelected = 1; }
+                        for (var i = 0; i < possibleOptions; i++)
+                        {
+                            Console.SetCursorPosition(2, startLine + i + 1);
+                            Console.Write("                       ");
+                            Console.SetCursorPosition(2, startLine + i + 1);
+                            Console.Write(options[i]);
+                        }
+                    }
+                    Console.SetCursorPosition(0, menuSelected + startLine);
+                    Console.Write('>');
+                    firstIteration = false;
+                    oldPageNumber = pageNumber;
                 }
-                Console.SetCursorPosition(0, menuSelected + startLine);
-                Console.Write(' ');
-                if (input == ConsoleKey.UpArrow) { menuSelected--; }
-                else if (input == ConsoleKey.DownArrow) { menuSelected++; }
-                if (menuSelected < 1) { menuSelected = possibleOptions + 1; }
-                else if (menuSelected > possibleOptions + 1) { menuSelected = 1; }
-                Console.SetCursorPosition(0, menuSelected + startLine);
-                Console.Write('>');
             }
-            return menuSelected;
         }
         
         public void UpdateExp()
@@ -36,6 +76,24 @@ namespace GuardsOfAetheria
             {
                 Player.Instance.Level++;
                 Player.Instance.Experience = Player.Instance.Experience - expNeeded;
+            }
+        }
+        public void NumberInventoryItems()
+        {
+            //integer, 10^5? * most important etc
+        }
+        public int InventorySelect()
+        {
+            int menuSelected = 0;
+            return menuSelected;
+        }
+        public void InventoryToStringArray(int[][] input, string[] output)
+        {
+            var general = new General();
+            var weapons = new Weapon();
+             for (var i = 0; i < input.Length; i++)
+            {
+                output[i] = general.Prefixes[input[i][4]][input[i][5]] + weapons.Weapons[input[i][1]][input[i][2]][input[i][3]];
             }
         }
     }
