@@ -133,10 +133,17 @@ namespace GuardsOfAetheria
             var weaponName = Weapons[weaponClass][weaponType][weapon];
             var prefixRarity = Convert.ToInt16(Math.Round(Math.Log10(rand.Next(0, 10001))));
             var prefixNumber = rand.Next(0, general.Prefixes[prefixRarity].Length / 2);
-            var prefixFinal = prefixNumber*2 + rand.Next(0, 2);
+            var prefixFinal = prefixNumber * 2 + rand.Next(0, 2);
             var prefix = general.Prefixes[prefixRarity][prefixFinal];
             Console.WriteLine("You found a {0} {1}.", prefix, weaponName);
-            var firstEmptySlot = Array.IndexOf(Player.Instance.Weapons, 0);
+            var firstEmptySlot = -1;
+            for (var i = 1; i < 51; i++)
+            {
+                if(Player.Instance.Inventory[1][i][1] == 0)
+                {
+                    firstEmptySlot = i;
+                }
+            }
             if (firstEmptySlot == -1)
             {
                 Console.WriteLine("Your inventory is full. You:");
@@ -153,34 +160,71 @@ namespace GuardsOfAetheria
             }
             else
             {
-                Player.Instance.Weapons[firstEmptySlot] = new[]
+                Player.Instance.Inventory[1][firstEmptySlot] = new[]
             {
                 weaponClass, weaponType, weapon, prefixRarity, prefixFinal, 0, 0
             };
+                Player.Instance.InventoryName[1][firstEmptySlot] = general.Prefixes[prefixRarity][prefixFinal] +
+                                                              Weapons[weaponClass][weaponType][weapon];
             }
         }
     }
-    class Armour
+
+    internal class Armour
     {
-        readonly string[] armours = {
+        private readonly string[] armours =
+        {
             "Chain",
             "Plate"
+        };
+
+        private readonly string[] parts =
+        {
+            "Helmet",
+            "Chestplate",
+            "Gloves",
+            "Leggings",
+            "Boots"
+        };
+
+        private readonly int[] partSpaces = 
+        {
+            1, 4, 1, 2, 1
         };
         public void ArmourGen(General.Material mat)
         {
             var general = new General();
             var utility = new Utility();
             var rand = new Random();
-            var armourClass = rand.Next(0, 3);
-            var armour = rand.Next(0, armours[armourClass].Length);
-            var armourName = armours[armour];
-            var firstEmptySlot = Array.IndexOf(Player.Instance.Armours, 0);
+            //var armourClass = rand.Next(0, 3);
+            //var armour = rand.Next(0, armours[armourClass].Length);
+            //var armourName = armours[armour];
+            var armourType = rand.Next(0, 2);
+            var armourTypeName = armours[armourType];
+            var armourPart = rand.Next(0, 5);
+            var armourPartName = parts[armourPart];
+            var armourSpace = partSpaces[armourPart];
             var prefixRarity = Convert.ToInt16(Math.Round(Math.Log10(rand.Next(0, 10001))));
             var prefixNumber = rand.Next(0, general.Prefixes[prefixRarity].Length / 2);
             var prefixFinal = prefixNumber*2 + rand.Next(0, 2);
             var prefix = general.Prefixes[prefixRarity][prefixFinal];
-            Console.WriteLine("You found a {0} {1}.", prefix, armourName);
-            if (firstEmptySlot == -1)
+            Console.WriteLine("You found a {0} {1} {2}.", prefix, armourTypeName, armourPartName);
+            var firstEmptySlot = -1;
+            var spaceLeft = utility.SpaceLeft();
+            for (var i = 1; i < 51; i++)
+            {
+                if (Player.Instance.Inventory[2][i][1] == 0)
+                {
+                    if (firstEmptySlot == -1)
+                    {
+                        firstEmptySlot = i;
+                        break;
+                    }
+                    if (firstEmptySlot != -1) { break; }
+                }
+                if (firstEmptySlot != -1) { break; }
+            }
+            if (spaceLeft == 0)
             {
                 Console.WriteLine("Your inventory is full. You:");
                 string[] options = {"replace another item with this one", "discard this item"};
@@ -196,9 +240,9 @@ namespace GuardsOfAetheria
             }
             else
             {
-                Player.Instance.Weapons[firstEmptySlot] = new[]
+                Player.Instance.Inventory[2][firstEmptySlot] = new[]
             {
-                armour, prefixRarity, prefixFinal, 0, 0
+                armourType, armourPart, prefixRarity, prefixFinal, 0, 0, armourSpace
             };
             }
         }

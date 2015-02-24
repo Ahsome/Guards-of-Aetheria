@@ -13,7 +13,6 @@ namespace GuardsOfAetheria
             var pages = Convert.ToInt32(Math.Round(((options.Length + numberOfLines) / (2 * numberOfLines)), MidpointRounding.AwayFromZero));
             var pageNumber = 1;
             var oldPageNumber = 0;
-            var firstIteration = true;
             var possibleOptions = options.Length - (totalLines * (pageNumber - 1));
             if (totalLines < possibleOptions)
             {
@@ -63,7 +62,6 @@ namespace GuardsOfAetheria
                     }
                     Console.SetCursorPosition(0, menuSelected + startLine);
                     Console.Write('>');
-                    firstIteration = false;
                     oldPageNumber = pageNumber;
                 }
             }
@@ -95,6 +93,23 @@ namespace GuardsOfAetheria
             {
                 output[i] = general.Prefixes[input[i][4]][input[i][5]] + weapons.Weapons[input[i][1]][input[i][2]][input[i][3]];
             }
+        }
+
+        public int SpaceLeft()
+        {
+            int spaceLeft = Player.Instance.InventorySpace;
+            for (var i = 1; i < 51; i++)
+            {
+                if (Player.Instance.Inventory[1][i][1] != 0)
+                {
+                    spaceLeft--;
+                }
+                if (Player.Instance.Inventory[2][i][1] != 0)
+                {
+                    spaceLeft = spaceLeft - Player.Instance.Inventory[1][i][7];
+                }
+            }
+            return spaceLeft;
         }
     }
     class Quicksort //From http://www.softwareandfinance.com/CSharp/QuickSort_Recursive.html

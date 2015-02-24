@@ -22,20 +22,22 @@ namespace GuardsOfAetheria
                 .Where(ro => (string)ro.Attribute("name") == Player.Instance.LocationRoom);
 
             Console.Clear();
-            DisplayLocation(xmlData);
+            var locationXmlData = xmlData as XElement[] ?? xmlData.ToArray();
+            DisplayLocation(locationXmlData);
 
-            string[] options = DisplayOption(xmlData);
+            string[] options = DisplayOption(locationXmlData);
             Console.SetCursorPosition(0, 5);
             int optionSelected = utility.SelectOption(options);
 
-            SetLocation(optionSelected, xmlData);
+            SetLocation(optionSelected, locationXmlData);
         }
 
         private void DisplayLocation(IEnumerable<XElement> locationXmlData)
         {
-            var textToDisplay = (string)locationXmlData.Elements("textToDisplay").FirstOrDefault();
+            var xElements = locationXmlData as XElement[] ?? locationXmlData.ToArray();
+            var textToDisplay = (string)xElements.Elements("textToDisplay").FirstOrDefault();
 
-            string[] tempVariable = ((string)locationXmlData.Elements("textVariables").FirstOrDefault()).Split(',');
+            string[] tempVariable = ((string)xElements.Elements("textVariables").FirstOrDefault()).Split(',');
 
             var variableDictionary = LocationDictionary();
 
@@ -66,13 +68,14 @@ namespace GuardsOfAetheria
 
         private void SetLocation(int option, IEnumerable<XElement> xmlData)
         {
-            var newRegion = ((string)xmlData.Elements("optionRegion").FirstOrDefault()).Split(',');
+            var xElements = xmlData as XElement[] ?? xmlData.ToArray();
+            var newRegion = ((string)xElements.Elements("optionRegion").FirstOrDefault()).Split(',');
 
-            var newArea = ((string)xmlData.Elements("optionArea").FirstOrDefault()).Split(',');
+            var newArea = ((string)xElements.Elements("optionArea").FirstOrDefault()).Split(',');
 
-            var newBuilding = ((string)xmlData.Elements("optionBuilding").FirstOrDefault()).Split(',');
+            var newBuilding = ((string)xElements.Elements("optionBuilding").FirstOrDefault()).Split(',');
 
-            var newRoom = ((string)xmlData.Elements("optionRoom").FirstOrDefault()).Split(',');
+            var newRoom = ((string)xElements.Elements("optionRoom").FirstOrDefault()).Split(',');
 
             Player.Instance.LocationRegion = newRegion[option-1];
             Player.Instance.LocationArea = newArea[option - 1];
