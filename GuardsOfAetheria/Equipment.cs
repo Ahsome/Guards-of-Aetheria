@@ -151,7 +151,8 @@ namespace GuardsOfAetheria
                 int menuSelected = utility.SelectOption(options);
                 switch (menuSelected)
                 {
-                    case 1:
+                    case 1: //Console.Clear(); ?
+                        utility.SelectOption(Player.Instance.InventoryNameAll[]);
                         //InventorySelect(); (use InventoryView();)
                         break;
                     case 2: //Do nothing - the item is discarded, the inventory is unchanged :)

@@ -54,15 +54,40 @@ namespace GuardsOfAetheria
         public string LocationBuilding { get; set; }
         public string LocationRoom { get; set; }
 
+        // Temp initialisation
+        public string[] Settings = { "Pages" };
+        // Temp end
+
         public int InventorySpace { get; set; }
         //Compartments -> weapons/armours/consumables/materials -> details
         //Inventory[][][] { get; set; }
         public int[][][] Inventory { get; set; }
         public string[][] InventoryName { get; set; }
+        public string[] InventoryNameAll { get; set; }
         public int[][][] InventoryOld { get; set; }
         // Melee = 1, Ranged = 2, Magic = 3
         // [] = {(Class, Class, Type, Material), (Weapon, Armour, Item), (Prefix, sortNumber), (Suffix), (Tier), (Rarity), (ortNumber)}
 
+        public void UpdateInventoryNameAll()
+        {
+            for (var i = 0; i < 4; i++)
+            {
+                for (var j = 0; j < 50; j++)
+                {
+                    InventoryNameAll[50 * i + j + 1] = InventoryName[i][j];
+                }
+            }
+        }
+        public void UpdateInventoryName()
+        {
+            for (var i = 0; i < 4; i++)
+            {
+                for (var j = 0; j < InventoryName[i].Length; j++)
+                {
+                    InventoryName[i][j] = InventoryNameAll[50 * i + j + 1];
+                }
+            }
+        }
         public void InitialiseAtts()
         {
             Instance.PrimaryAtt = 13;
@@ -72,7 +97,7 @@ namespace GuardsOfAetheria
         }
         public void UpdateAtts()
         {
-            Instance.BaseVitality = Instance.Strength * 10 + Instance.Level * 5; //Change level effect amount for divverent classes?
+            Instance.BaseVitality = Instance.Strength * 10; //Change level effect amount for divverent classes?
             Instance.CurrentVitality = Instance.BaseVitality + 0;
             Instance.BaseMana = Instance.Wisdom * 10 + Instance.Level * 5;
             Instance.CurrentMana = Instance.BaseMana + 0;

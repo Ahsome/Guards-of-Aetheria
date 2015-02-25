@@ -16,7 +16,6 @@ namespace GuardsOfAetheria
             Console.WriteLine("Welcome to the Guards of Atheria");
             Console.WriteLine("A simple game, set in the land of Aesrin");
             Console.WriteLine("What would you like to do?\n");
-            Console.WriteLine("> New Game\n  Load Game\n  Options\n  Credits\n  Quit Game");
             Console.SetCursorPosition(0, 22);
             Console.WriteLine(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
             Console.WriteLine("                     (C) Black-Strike Studios, 2014 - {0}                     ",DateTime.Now.Year);
@@ -51,16 +50,21 @@ namespace GuardsOfAetheria
             }
         }
 
-        private void DisplayOptions()
+        private void DisplayOptions() //Autosave options somewhere player cannot edit
         {
             Console.Clear();
             //Options
+            Console.WriteLine("Options\n"); //Make it bigger
+            Console.WriteLine("Menu display method      Pages   Scroll");
+            // select
+            DisplayMainMenu();
         }
         private void DisplayCredits()
         {
             Console.Clear();
             //Credits
             Console.WriteLine("Coders:\nAhsome\naytimothy\nsomebody1234\n\nWriter:\nLafamas");
+            DisplayMainMenu();
         }
     }
 }

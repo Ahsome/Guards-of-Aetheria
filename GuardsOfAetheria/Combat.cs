@@ -11,7 +11,6 @@ namespace GuardsOfAetheria
         public string[] Name { get; set; }
         public int[] Attack { get; set; }
         public int[] Defence { get; set; }
-        public int[] Shield { get; set; }
         
         // Slot 0 = Player
         // Slot 1-6 = Player's Party (up to 6)
@@ -35,7 +34,7 @@ namespace GuardsOfAetheria
             // If party 1 or more members, load member #1, else, break.
             // If party 2 or more members, load member #2, else, break.
             // Etc. etc. etc.
-            // Use a loop
+            // Array + for loop?
         }
 
         public void Fight(int attackerSlot, int defenderSlot, int attackType)
@@ -54,6 +53,7 @@ namespace GuardsOfAetheria
         {
             Player.Instance.CurrentMana = Instance.CurrentMana[0];
             Player.Instance.CurrentVitality = Instance.CurrentVitality[0];
+            // Include Endurance? Regen while out of fight?
         }
 
         public static Combat Instance
