@@ -1,5 +1,3 @@
-using System.ComponentModel;
-
 namespace GuardsOfAetheria
 {
     class Player
@@ -10,8 +8,17 @@ namespace GuardsOfAetheria
             Magic,
             Ranged
         }
+
+        public enum Origin
+        {
+            Nation,
+            Treaty,
+            Refugee
+        }
+
         public string Name { get; set; }
         public Class PlayerClass { get; set; }
+        public Origin PlayerOrigin { get; set; }
 
         public int Experience { get; set; }
         public int Level { get; set; }
@@ -53,10 +60,6 @@ namespace GuardsOfAetheria
         public string LocationArea { get; set; }
         public string LocationBuilding { get; set; }
         public string LocationRoom { get; set; }
-
-        // Temp initialisation
-        public string[] Settings = { "Pages" };
-        // Temp end
 
         public int InventorySpace { get; set; }
         //Compartments -> weapons/armours/consumables/materials -> details

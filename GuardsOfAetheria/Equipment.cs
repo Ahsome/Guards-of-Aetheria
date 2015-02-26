@@ -70,7 +70,7 @@ namespace GuardsOfAetheria
         new []
         {
             "Javelin",
-            "Bow",
+            "Bow"
         },
         new[]
         {
@@ -152,7 +152,7 @@ namespace GuardsOfAetheria
                 switch (menuSelected)
                 {
                     case 1: //Console.Clear(); ?
-                        utility.SelectOption(Player.Instance.InventoryNameAll[]);
+                        utility.SelectOption(Player.Instance.InventoryNameAll);
                         //InventorySelect(); (use InventoryView();)
                         break;
                     case 2: //Do nothing - the item is discarded, the inventory is unchanged :)

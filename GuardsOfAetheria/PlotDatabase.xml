@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <plot>
+    <arc name="Introduction">
+      <chapter name="1. To War We Go">
+        <encounter name="Going To War">
+          <part name="... ... ...?">
+            <origin name="Nation">
+              <textToDisplay>Welcome to the game, {0}. Test the movement system, {0}.\nGood luck with that\nYour given options are located below\nUse your arrow keys to move, press ENTER to select</textToDisplay>
+              <textVariables>Player.Instance.Name, Player.Instance.Name</textVariables>
+              <nextPart>TestRegion,TestRegion,TestRegion,TestRegion</nextPart>
+              <nextEncounter>Yes or No</nextEncounter>
+              <nextChapter>No</nextChapter>
+              <nextArc>No</nextArc>
+            </origin>
+            <origin name="Treaty">
+              <textToDisplay>Welcome to the game, {0}. Test the movement system, {0}.\nGood luck with that\nYour given options are located below\nUse your arrow keys to move, press ENTER to select</textToDisplay>
+              <textVariables>Player.Instance.Name, Player.Instance.Name</textVariables>
+              <nextPart>TestRegion,TestRegion,TestRegion,TestRegion</nextPart>
+              <nextEncounter>Yes or No</nextEncounter>
+              <nextChapter>No</nextChapter>
+              <nextArc>No</nextArc>
+              <origin name="Refugee">
+                <textToDisplay>Welcome to the game, {0}. Test the movement system, {0}.\nGood luck with that\nYour given options are located below\nUse your arrow keys to move, press ENTER to select</textToDisplay>
+                <textVariables>Player.Instance.Name, Player.Instance.Name</textVariables>
+                <nextPart>TestRegion,TestRegion,TestRegion,TestRegion</nextPart>
+                <nextEncounter>Yes or No</nextEncounter>
+                <nextChapter>No</nextChapter>
+                <nextArc>No</nextArc>
+              </origin>
+            </origin>
+          </part>
+          <part name="TutorialRoom">
+            <textToDisplay>Welcome to the game, {0}. Test the movement system, {0}.\nGood luck with that\nYour given options are located below\nUse your arrow keys to move, press ENTER to select</textToDisplay>
+            <textVariables>Player.Instance.Name, Player.Instance.Name</textVariables>
+            <options>PL,PL,PL,PL</options>
+            <optionRegion>TestRegion,TestRegion,TestRegion,TestRegion</optionRegion>
+            <optionArea>TestArea,TestArea,TestArea,TestArea</optionArea>
+            <optionBuilding>Outside,Outside,Outside,Outside</optionBuilding>
+            <optionRoom>AB,TutorialRoom,TutorialRoom,TutorialRoom</optionRoom>
+          </part>
+        </encounter>
+      </chapter>
+    </arc>
+  </plot>
+</root>

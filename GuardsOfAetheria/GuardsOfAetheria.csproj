@@ -61,6 +61,7 @@
     <Compile Include="Equipment.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="Movement.cs" />
+    <Compile Include="Options.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

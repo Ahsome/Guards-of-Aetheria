@@ -4,6 +4,7 @@ namespace GuardsOfAetheria
 {
     class Combat
     {
+        //selectOption(options (array), true) to hide player menu
         public int[] CurrentVitality { get; set; }
         public int[] CurrentMana { get; set; }
         public int[] CurrentEndurance { get; set; }
@@ -40,6 +41,7 @@ namespace GuardsOfAetheria
         public void Fight(int attackerSlot, int defenderSlot, int attackType)
         {
             // TODO: Print the action line.
+            //
             Console.WriteLine(Name[attackerSlot] + "used a basic attack and dealt " + (Attack[attackerSlot] - Defence[defenderSlot]) + " damage!");
             CurrentVitality[defenderSlot] = CurrentVitality[defenderSlot] - (Attack[attackerSlot] - Defence[defenderSlot]);
         }

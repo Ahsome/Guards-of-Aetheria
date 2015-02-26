@@ -4,14 +4,14 @@ namespace GuardsOfAetheria
 {
     class Utility
     {
-        public int SelectOption(string[] options)
+        public int SelectOption(string[] options, bool showMenu = false )
         {
             var menuSelected = 1;
             int pageScroll = -1;
-            if (Player.Instance.Settings[0] == "Pages") { pageScroll = 0; }
-            if (Player.Instance.Settings[0] == "Scroll") { pageScroll = 1; }
+            if (Options.Instance.CurrentSettings[0] == Options.Settings.Pages) { pageScroll = 0; }
+            if (Options.Instance.CurrentSettings[0] == Options.Settings.Scroll) { pageScroll = 1; }
             var startLine = Console.CursorTop;
-            decimal numberOfLines = 23 - startLine;
+            decimal numberOfLines = 22 - startLine;
             var totalLines = Convert.ToInt32(numberOfLines);
             var pages = Convert.ToInt32(Math.Round(((options.Length + numberOfLines) / (2 * numberOfLines)), MidpointRounding.AwayFromZero));
             var pageNumber = 1;
@@ -30,6 +30,11 @@ namespace GuardsOfAetheria
                 Console.SetCursorPosition(50, startLine);
                 Console.Write("{0}/{1}", pageNumber, pages);
             }
+            if (showMenu)
+            {
+                Console.SetCursorPosition(10, 23);
+                Console.Write("[M] Player Menu");
+            }
             while (true)
             {
                 Console.SetCursorPosition(0, menuSelected + startLine);
@@ -43,8 +48,18 @@ namespace GuardsOfAetheria
 
                     Console.SetCursorPosition(0, menuSelected + startLine);
                     Console.Write(' ');
-                    if (input == ConsoleKey.UpArrow) { menuSelected--; }
-                    if (input == ConsoleKey.DownArrow) { menuSelected++; }
+                    switch (input)
+                    {
+                        case ConsoleKey.UpArrow:
+                            menuSelected--;
+                            break;
+                        case ConsoleKey.DownArrow:
+                            menuSelected++;
+                            break;
+                        case ConsoleKey.M:
+                            if (showMenu) { PlayerMenu(); }
+                            break;
+                    }
                     if (scroll)
                     {
                         if (menuSelected < 1) { lastPage = true; }
@@ -81,7 +96,7 @@ namespace GuardsOfAetheria
                         for (var i = 0; i < possibleOptions; i++)
                         {
                             Console.SetCursorPosition(2, startLine + i + 1);
-                            Console.Write("                       "); //make it better
+                            Console.Write("                       "); // TODO: make it better
                             Console.SetCursorPosition(2, startLine + i + 1);
                             if (pageScroll == 0)
                             {
@@ -101,7 +116,15 @@ namespace GuardsOfAetheria
                 }
             }
         }
-        
+
+        public void PlayerMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("Inventory");
+            SelectOption(Player.Instance.InventoryNameAll);
+            //TODO: Add more options
+        }
+
         public void UpdateExp()
         {
             int expNeeded = Convert.ToInt16(Math.Pow(1.05, Player.Instance.Level) * 1000);
@@ -113,7 +136,9 @@ namespace GuardsOfAetheria
         }
         public void PrioritiseInventoryItems()
         {
-            //integer, 10^5? * most important etc
+            Player.Instance.InventoryOld = Player.Instance.Inventory;
+            //TODO: integer, 10^5? * most important etc
+            //TODO: quicksort
         }
 
         public int SpaceLeft()
