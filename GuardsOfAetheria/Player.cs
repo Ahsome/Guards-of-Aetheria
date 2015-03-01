@@ -41,7 +41,7 @@ namespace GuardsOfAetheria
 
         public int Defence { get; set; }
         public int Attack { get; set; }
-        public int Sheild { get; set; } // Magic Resist
+        public int Shield { get; set; } // Magic Resist
 
         public int AccuracyAtt { get; set; }
         public int EvasionAtt { get; set; }

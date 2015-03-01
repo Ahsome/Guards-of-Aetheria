@@ -10,7 +10,7 @@ namespace GuardsOfAetheria
         readonly Utility utility = new Utility();
         public void ShowLocation()
         {
-            XElement xelement = XElement.Load("..\\..\\LocationDatabase.xml");
+            var xelement = XElement.Load("..\\..\\LocationDatabase.xml");
             var xmlData = xelement.Elements("world")
                 .Elements("region")
                 .Where(r => (string)r.Attribute("name") == Player.Instance.LocationRegion)
@@ -27,7 +27,7 @@ namespace GuardsOfAetheria
 
             string[] options = DisplayOption(locationXmlData);
             Console.SetCursorPosition(0, 5);
-            int optionSelected = utility.SelectOption(options);
+            var optionSelected = utility.SelectOption(options);
 
             SetLocation(optionSelected, locationXmlData);
         }

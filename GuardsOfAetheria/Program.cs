@@ -23,7 +23,7 @@ namespace GuardsOfAetheria
 
             while (true)
             {
-                Movement movement = new Movement();
+                var movement = new Movement();
                 movement.ShowLocation();
                 Console.SetCursorPosition(0, 0);
                 Console.Clear();
@@ -34,8 +34,9 @@ namespace GuardsOfAetheria
 }
 /* Save:
  *  XmlDocument doc = new XmlDocument();
- *  doc.AppendChild(doc.CreateElement("<name>","<value>")); 
- *  doc.Save("C:\Program Files\Guards of Aetheria\Character\<destination>.GoA"); or maybe
+ *  doc.AppendChild(doc.CreateElement("<name>","<value>"));
+ *  var appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+ *  doc.Save(appdata + @"\Guards of Aetheria\Character\<destination>.GoA"); or maybe
  *  doc.Save("<destination>.GoA"); 
  *  to read, use XmlDocument.Load 
  */

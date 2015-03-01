@@ -1,14 +1,38 @@
 using System;
+using System.IO;
+using System.Linq;
+using System.Xml;
 
 namespace GuardsOfAetheria
 {
     class MainMenu
     {
+        readonly string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         public void DisplayMainMenu()
         {
-
             Console.Clear();
-            Options.Instance.InitialiseOptions(); // TODO: Check if options are initialised
+            if (!Directory.Exists(appdata + @"\Guards of Aetheria"))
+            {
+                Directory.CreateDirectory(appdata + @"\Guards of Aetheria");
+            }
+            if (!File.Exists(appdata + @"\Guards of Aetheria\Options.options"))
+            {
+                Options.Instance.InitialiseOptions();
+            }
+            else
+            {
+                Options.Instance.CurrentSettings = new Options.Settings[Options.Instance.SettingsList.Length];
+                var doc = new XmlDocument();
+                doc.Load(appdata + @"\Guards of Aetheria\Options.options");
+                //TODO: convert xml elements to enum
+                var values = doc.SelectNodes("/setting/value");
+                var i = 0;
+                foreach (var value in from XmlNode node in values select Int32.Parse(node.ToString()))
+                {
+                    Options.Instance.CurrentSettings[i] = Options.Instance.SettingsList[i][value];
+                    i++;
+                }
+            }
             Console.WriteLine("                                                                               ");
             Console.WriteLine("               ╔═╗┬ ┬┌─┐┬─┐┌┬┐┌─┐  ┌─┐┌─┐  ╔═╗┌─┐┌┬┐┬ ┬┌─┐┬─┐┬┌─┐              ");
             Console.WriteLine("               ║ ╦│ │├─┤├┬┘ ││└─┐  │ │├┤   ╠═╣├┤  │ ├─┤├┤ ├┬┘│├─┤              ");
@@ -23,7 +47,7 @@ namespace GuardsOfAetheria
             Utility utility = new Utility();
             Console.SetCursorPosition(0, 8);
             string[] options = { "New Game", "Load Game", "Options", "Credits", "Quit Game" };
-            var menuSelected = utility.SelectOption(options, true);
+            var menuSelected = utility.SelectOption(options);
             ActivateSelectedMenu(menuSelected);
 
         }
@@ -51,7 +75,7 @@ namespace GuardsOfAetheria
             }
         }
 
-        private void DisplayOptions() // TODO: Autosave options in program files/mac equivalent/linux equivlent
+        private void DisplayOptions()
         {
             Console.Clear();
             Console.WriteLine("Options\n"); // TODO: Make it bigger
@@ -72,7 +96,7 @@ namespace GuardsOfAetheria
             while (true)
             {
                 var input = Console.ReadKey().Key;
-                Console.SetCursorPosition(38 + optionChoice * 8, optionNumber + 2);
+                Console.SetCursorPosition(38 + 12 * optionChoice, optionNumber + 2);
                 Console.Write(' ');
 
                 switch (input)
@@ -90,6 +114,13 @@ namespace GuardsOfAetheria
                         optionChoice++;
                         break;
                     case ConsoleKey.Enter:
+                        var doc = new XmlDocument();
+                        for (var i = 0; i < Options.Instance.SettingNames.Length; i++)
+                        {
+                            doc.AppendChild(doc.CreateElement(Convert.ToString(optionNumber), Convert.ToString(optionChoice)));
+                        }
+                        doc.Save(appdata + @"\Guards of Aetheria\Options.GoA");
+                        DisplayMainMenu();
                         return;
                 }
 
