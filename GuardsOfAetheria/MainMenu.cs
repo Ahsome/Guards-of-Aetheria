@@ -24,7 +24,6 @@ namespace GuardsOfAetheria
                 Options.Instance.CurrentSettings = new Options.Settings[Options.Instance.SettingsList.Length];
                 var doc = new XmlDocument();
                 doc.Load(appdata + @"\Guards of Aetheria\Options.options");
-                //TODO: convert xml elements to enum
                 var values = doc.SelectNodes("/setting/value");
                 var i = 0;
                 foreach (var value in from XmlNode node in values select Int32.Parse(node.ToString()))
@@ -78,7 +77,7 @@ namespace GuardsOfAetheria
         private void DisplayOptions()
         {
             Console.Clear();
-            Console.WriteLine("Options\n"); // TODO: Make it bigger
+            Console.WriteLine("Options\n");
             for (var i = 0; i < Options.Instance.SettingNames.Length; i++)
             {
                 Console.SetCursorPosition(0, 2 + i);
@@ -119,7 +118,7 @@ namespace GuardsOfAetheria
                         {
                             doc.AppendChild(doc.CreateElement(Convert.ToString(optionNumber), Convert.ToString(optionChoice)));
                         }
-                        doc.Save(appdata + @"\Guards of Aetheria\Options.GoA");
+                        doc.Save(appdata + @"\Guards of Aetheria\Options.option");
                         DisplayMainMenu();
                         return;
                 }
