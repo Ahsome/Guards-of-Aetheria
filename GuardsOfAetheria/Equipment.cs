@@ -5,7 +5,7 @@ namespace GuardsOfAetheria
     class General
     {
         readonly public string[][] Prefixes = { //split into categories?
-            new[]
+            new[] //TODO: convert to xml?
             {
             "Light (+speed, -damage)",
             "Heavy (-speed, +damage)",
@@ -25,7 +25,7 @@ namespace GuardsOfAetheria
                 "Superb (+all)"
             }
         };
-        public enum Rarity
+        public enum Rarity : byte
         {
             Common,
             Uncommon,
@@ -34,91 +34,172 @@ namespace GuardsOfAetheria
             Fabled,
             Mythical,
             Legendary,
-            Supreme
+            Supreme,
+            Unique
         }
-        public enum Material
+
+        public string[] RarityNames =
+        {
+            "Common",
+            "Uncommon",
+            "Rare",
+            "Epic",
+            "Fabled",
+            "Mythical",
+            "Legendary",
+            "Supreme",
+            "Unique"
+        };
+        public enum Material : byte
         {
             Copper,
             Iron,
             Steel
         }
-        public enum MaterialMods
+        public enum MaterialMods : byte
         {
             Silvered,
             Gilded
         }
-        public enum Alloys
+        public enum Alloys : byte
         {
             //Brass?
         }
     }
     class Weapon
     {
-        readonly string[] weaponClassName = {
-            "Melee",
-            "Ranged",
-            "Magic"
-        };
-        readonly string[][] weaponTypeName = {
-        new[]
-        {
-            "Sword",
-            "Axe",
-            "Club",
-            "Polearm"
-        },
-        new []
-        {
-            "Javelin",
-            "Bow"
-        },
-        new[]
-        {
-            "Catalyst"
-        }
-        };
         readonly public string[][][] Weapons = {
-        new[]
+        new[] //Melee
         {
-            new[]
+            new[] //Sword
             {
                 "Broadsword",
-                "Shortsword"
+                "Shortsword",
+                "Dagger"
             },
-            new[]
+            new[] //Axe
             {
                 "Axe"
             },
-            new[]
+            new[] //Club
             {
                 "Club",
                 "Mace",
                 "Flail"
             },
-            new[]
+            new[] //Polearm
             {
                 "Spear",
                 "Halberd?"
             }
         },
-        new[]
+        new[] //Ranged
         {
-            new[]
+            new[] //Throwing
             {
                 "Javelin"
             },
-            new[]
+            new[] //Bow
             {
                 "Bow"
             }
         },
-        new[]
+        new[] //Magic
+        {
+            new[] //Stick
+            {
+                "Wand",
+                "Staff",
+                "Hand"
+            }
+        }
+    };
+        readonly public int[][][][] WeaponStats = {
+        new[] //Melee
+        {
+            new[] //Swords
+            {
+                new[] //Broadsword
+                {
+                    1, //Damage to end
+                    1, //Crit damage to vit
+                    1, //Armour penetration
+                },
+                new[] //Shortsword
+                {
+                    1
+                },
+                new[] //Dagger
+                {
+                    1
+                }
+            },
+            new[] //Axes
+            {
+                new[] //Axe
+                {
+                    1
+                }
+            },
+            new[] //Clubs
+            {
+                new[] //Club
+                {
+                    1
+                },
+                new[] //Mace
+                {
+                    1
+                },
+                new[] //Flail
+                {
+                    1
+                }},
+            new[] //Polearms
+            {
+                new[] //Spear
+                {
+                    1
+                },
+                new[] //Halberd?
+                {
+                    1
+                }
+            }
+        },
+        new[] //Ranged
+        {
+            new[] //Throwing
+            {
+                new[] //Javelin
+                {
+                    1
+                }
+            },
+            new[] //Bows
+            {
+                new[] //Bow
+                {
+                    1
+                }
+            }
+        },
+        new[] //Magic
         {
             new[]
             {
-                "Tomes",
-                "?",
-                "?"
+                new[] //Wand
+                {
+                    1
+                },
+                new[] //Staff
+                {
+                    1
+                },
+                new[] //Hand
+                {
+                    1
+                }
             }
         }
     };
@@ -137,23 +218,25 @@ namespace GuardsOfAetheria
             var prefix = general.Prefixes[prefixRarity][prefixFinal];
             Console.WriteLine("You found a {0} {1}.", prefix, weaponName);
             var firstEmptySlot = -1;
+            var spaceLeft =  utility.SpaceLeft();
             for (var i = 1; i < 51; i++)
             {
-                if(Player.Instance.Inventory[1][i][1] == 0)
+                if (Player.Instance.Inventory[1][i][1] == 0)
                 {
                     firstEmptySlot = i;
+                    break;
                 }
+                if (firstEmptySlot != -1) { break; }
             }
-            if (firstEmptySlot == -1)
+            if (firstEmptySlot == -1 || spaceLeft < 1)
             {
                 Console.WriteLine("Your inventory is full. You:");
                 string[] options = { "replace another item with this one", "discard this item" };
-                int menuSelected = utility.SelectOption(options);
+                var menuSelected = utility.SelectOption(options);
                 switch (menuSelected)
                 {
                     case 1: //Console.Clear(); ?
                         utility.SelectOption(Player.Instance.InventoryNameAll);
-                        //InventorySelect(); (use InventoryView();)
                         break;
                     case 2: //Do nothing - the item is discarded, the inventory is unchanged :)
                         break;
@@ -212,16 +295,12 @@ namespace GuardsOfAetheria
             Console.WriteLine("You found a {0} {1} {2}.", prefix, armourTypeName, armourPartName);
             var firstEmptySlot = -1;
             var spaceLeft = utility.SpaceLeft();
-            for (var i = 1; i < 51; i++)
+            for (var i = 0; i < 50; i++)
             {
                 if (Player.Instance.Inventory[2][i][1] == 0)
                 {
-                    if (firstEmptySlot == -1)
-                    {
-                        firstEmptySlot = i;
-                        break;
-                    }
-                    if (firstEmptySlot != -1) { break; }
+                    firstEmptySlot = i;
+                    break;
                 }
                 if (firstEmptySlot != -1) { break; }
             }
@@ -229,13 +308,13 @@ namespace GuardsOfAetheria
             {
                 Console.WriteLine("Your inventory is full. You:");
                 string[] options = {"replace another item with this one", "discard this item"};
-                int menuSelected = utility.SelectOption(options);
+                var menuSelected = utility.SelectOption(options);
                 switch (menuSelected)
                 {
-                    case 1:
-                        //InventorySelect(); (use InventoryView();)
+                    case 1: //Console.Clear(); ?
+                        utility.SelectOption(Player.Instance.InventoryNameAll);
                         break;
-                    case 2: //Do nothing :)
+                    case 2: //Do nothing - the item is discarded, the inventory is unchanged :)
                         break;
                 }
             }

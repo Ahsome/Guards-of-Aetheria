@@ -8,8 +8,10 @@ namespace GuardsOfAetheria
     class MainMenu
     {
         readonly string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        //TODO: autosave plot story selected to .txt
         public void DisplayMainMenu()
         {
+            var utility = new Utility();
             Console.Clear();
             if (!Directory.Exists(appdata + @"\Guards of Aetheria"))
             {
@@ -24,9 +26,9 @@ namespace GuardsOfAetheria
                 Options.Instance.CurrentSettings = new Options.Settings[Options.Instance.SettingsList.Length];
                 var doc = new XmlDocument();
                 doc.Load(appdata + @"\Guards of Aetheria\Options.options");
-                var values = doc.SelectNodes("/setting/value");
+                var values = doc.SelectNodes("/setting/value/"); //TODO: is it /@number? - it's working
                 var i = 0;
-                foreach (var value in from XmlNode node in values select Int32.Parse(node.ToString()))
+                foreach (var value in from XmlNode node in values select utility.IntParseFast(node.ToString()))
                 {
                     Options.Instance.CurrentSettings[i] = Options.Instance.SettingsList[i][value];
                     i++;
@@ -42,25 +44,23 @@ namespace GuardsOfAetheria
             Console.WriteLine("What would you like to do?\n");
             Console.SetCursorPosition(0, 22);
             Console.WriteLine(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
-            Console.WriteLine("                     (C) Black-Strike Studios, 2014 - {0}                     ",DateTime.Now.Year);
-            Utility utility = new Utility();
+            Console.WriteLine("                     (C) Black-Strike Studios, 2014 - {0}                     ", DateTime.Now.Year);
             Console.SetCursorPosition(0, 8);
             string[] options = { "New Game", "Load Game", "Options", "Credits", "Quit Game" };
             var menuSelected = utility.SelectOption(options);
             ActivateSelectedMenu(menuSelected);
-
         }
 
         private void ActivateSelectedMenu(int menuSelected)
         {
+            var charCreation = new CharacterCreation();
             switch (menuSelected)
             {
                 case 1:
-                    var characterCreation = new CharacterCreation();
-                    characterCreation.CreateCharacter();
+                    charCreation.CreateCharacter();
                     break;
                 case 2:
-                    // TODO: LoadGame();, SaveGame(); ( in location 'home'/'base' )
+                    // TODO: LoadGame();, (SaveGame(); in location 'home'/'base' )
                     break;
                 case 3:
                     DisplayOptions();
@@ -74,7 +74,7 @@ namespace GuardsOfAetheria
             }
         }
 
-        private void DisplayOptions()
+        private void DisplayOptions() //TODO: make general method for options?
         {
             Console.Clear();
             Console.WriteLine("Options\n");
@@ -137,8 +137,7 @@ namespace GuardsOfAetheria
         private void DisplayCredits()
         {
             Console.Clear();
-            //Credits
-            Console.WriteLine("Coders:\nAhsome\naytimothy\nsomebody1234\n\nWriter:\nLafamas");
+            Console.WriteLine("Coders:\nAhsome\naytimothy\nsomebody1234\n\nWriter/Designer:\nLafamas");
             DisplayMainMenu();
         }
     }

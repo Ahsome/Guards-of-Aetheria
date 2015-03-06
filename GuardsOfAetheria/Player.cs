@@ -1,15 +1,17 @@
+using System;
+
 namespace GuardsOfAetheria
 {
     class Player
     {
-        public enum Class
+        public enum Class : byte
         {
             Melee,
             Magic,
             Ranged
         }
 
-        public enum Origin
+        public enum Origin : byte
         {
             Nation,
             Treaty,
@@ -38,6 +40,10 @@ namespace GuardsOfAetheria
         public int BaseEndurance { get; set; }
         public int CurrentEndurance { get; set; }
         public int MaxEndurance { get; set; }
+
+        public int BaseStamina { get; set; }
+        public int CurrentStamina { get; set; }
+        public int MaxStamina { get; set; }
 
         public int Defence { get; set; }
         public int Attack { get; set; }
@@ -100,12 +106,13 @@ namespace GuardsOfAetheria
         }
         public void UpdateAtts()
         {
-            Instance.BaseVitality = Instance.Strength * 10; //Change level effect amount for divverent classes?
-            Instance.CurrentVitality = Instance.BaseVitality + 0;
-            Instance.BaseMana = Instance.Wisdom * 10 + Instance.Level * 5;
+            Instance.BaseEndurance = 50 + Instance.Strength * 5 + Instance.Level * 5;
+            Instance.CurrentEndurance = Instance.BaseVitality + 0;
+            Instance.BaseMana = 50 + Instance.Wisdom * 5 + Instance.Level * 5;
             Instance.CurrentMana = Instance.BaseMana + 0;
-            Instance.BaseEndurance = Instance.Dexterity * 10 + Instance.Level * 5;
-            Instance.CurrentEndurance = Instance.BaseEndurance + 0;
+            Instance.BaseStamina = 50 + Instance.Dexterity * 5 + Instance.Level * 5;
+            Instance.CurrentStamina = Instance.BaseEndurance + 0;
+            Instance.BaseVitality = Convert.ToInt32(Math.Round(9.5 + Instance.BaseEndurance * 0.01));
             switch (PlayerClass)
             {
                 case Class.Melee:

@@ -5,7 +5,7 @@ namespace GuardsOfAetheria
 {
     public class Options
     {
-        public enum Settings
+        public enum Settings : byte
         {
             Pages,
             Scroll

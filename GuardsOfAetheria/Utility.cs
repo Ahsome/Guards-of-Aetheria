@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace GuardsOfAetheria
 {
@@ -7,7 +8,7 @@ namespace GuardsOfAetheria
         public int SelectOption(string[] options, bool showMenu = false )
         {
             var menuSelected = 1;
-            int pageScroll = -1;
+            var pageScroll = -1;
             if (Options.Instance.CurrentSettings[0] == Options.Settings.Pages) { pageScroll = 0; }
             if (Options.Instance.CurrentSettings[0] == Options.Settings.Scroll) { pageScroll = 1; }
             var startLine = Console.CursorTop;
@@ -15,7 +16,7 @@ namespace GuardsOfAetheria
             var totalLines = Convert.ToInt32(numberOfLines);
             var pages = Convert.ToInt32(Math.Round(((options.Length + numberOfLines) / (2 * numberOfLines)), MidpointRounding.AwayFromZero));
             var pageNumber = 1;
-            var scroll = options.Length - 1 > totalLines ? true : false;
+            var scroll = options.Length - 1 > totalLines;
             var possibleOptions = options.Length - (totalLines * (pageNumber - 1));
             if (totalLines < possibleOptions) { possibleOptions = totalLines; }
             for (var i = 0; i < possibleOptions; i++)
@@ -125,14 +126,17 @@ namespace GuardsOfAetheria
             //TODO: Add more options
         }
 
+        public void CalculateWeaponStats()
+        {
+            //TODO: everything 
+        }
+
         public void UpdateExp()
         {
             int expNeeded = Convert.ToInt16(Math.Pow(1.05, Player.Instance.Level) * 1000);
-            if (Player.Instance.Experience > expNeeded)
-            {
-                Player.Instance.Level++;
-                Player.Instance.Experience = Player.Instance.Experience - expNeeded;
-            }
+            if (Player.Instance.Experience <= expNeeded) return;
+            Player.Instance.Level++;
+            Player.Instance.Experience = Player.Instance.Experience - expNeeded;
         }
         public void PrioritiseInventoryItems()
         {
@@ -143,7 +147,7 @@ namespace GuardsOfAetheria
 
         public int SpaceLeft()
         {
-            int spaceLeft = Player.Instance.InventorySpace;
+            var spaceLeft = Player.Instance.InventorySpace;
             for (var i = 1; i < 51; i++)
             {
                 if (Player.Instance.Inventory[1][i][1] != 0)
@@ -165,6 +169,100 @@ namespace GuardsOfAetheria
             }
             return spaceLeft;
         }
+        public int IntParseFast(string value) //from http://www.dotnetperls.com/int-parse
+        {
+            // An optimized int parse method. converted into linq, still as efficient?
+            return value.Aggregate(0, (current, t) => 10 * current + (t - 48));
+        }
+        public int[] Spend(string[] text, string[] names, int[] currentItems, int[] newItems, int[] cost, int currency, int arrowPosition, int[] value = null)
+        {
+            Console.Clear();
+            var menuSelected = 1;
+            SpendGraphics(text, names, currency, currentItems, arrowPosition);
+            Console.SetCursorPosition(arrowPosition, 2); //TODO: Change 2 to var later (after word wrap)
+            Console.Write('>');
+            while (true)
+            {
+                var totalItems = new int[currentItems.Length];
+                var input = Console.ReadKey().Key;
+                Console.SetCursorPosition(arrowPosition, menuSelected + 1); //change here too
+                Console.Write(' ');
+
+                switch (input)
+                {
+                    case ConsoleKey.UpArrow:
+                        menuSelected--;
+                        break;
+                    case ConsoleKey.DownArrow:
+                        menuSelected++;
+                        break;
+                    case ConsoleKey.LeftArrow:
+                        if (newItems[menuSelected - 1] > 0)
+                        {
+                            newItems[menuSelected - 1]--;
+                            currency += cost[menuSelected - 1];
+                        }
+                        else if (value != null && currentItems[menuSelected - 1] + newItems[menuSelected - 1] > 0)
+                        {
+                            newItems[menuSelected - 1]--;
+                            currency += value[menuSelected - 1];
+                        }
+                        break;
+                    case ConsoleKey.RightArrow:
+                        if (currency > 0)
+                        {
+                            newItems[menuSelected - 1]++;
+                            currency -= cost[menuSelected - 1];
+                        }
+                        else if (value != null && newItems[menuSelected - 1] < 0)
+                        {
+                            newItems[menuSelected - 1]++;
+                            currency -= value[menuSelected - 1];
+                        }
+                        break;
+                    case ConsoleKey.Enter:
+                        for (var i = 0; i < currentItems.Length; i++)
+                        {
+                            currentItems[i] += newItems[i];
+                        }
+                        return currentItems;
+                }
+                if (input == ConsoleKey.RightArrow || input == ConsoleKey.LeftArrow)
+                {
+                    for (var i = 0; i < currentItems.Length; i++)
+                    {
+                        totalItems[i] = currentItems[i] + newItems[i];
+                    }
+                    SpendGraphics(text, names, currency, totalItems, arrowPosition);
+                }
+
+                if (menuSelected < 1)
+                {
+                    menuSelected = currentItems.Length;
+                }
+                else if (menuSelected > currentItems.Length)
+                {
+                    menuSelected = 1;
+                }
+                Console.SetCursorPosition(arrowPosition, menuSelected + 1); //and here
+                Console.Write('>');
+            }
+        }
+        //TODO: possibly optimise by putting it in spend()
+        private void SpendGraphics(string[] text, string[] names, int currency, int[] items, int arrowPosition)
+        {
+            Console.Clear(); //TODO: see if this needs to be removed when shops are implemented
+            Console.WriteLine(text[0]); //TODO: word wrap - string.split(), whatever > columns
+            for (var i = 0; i < items.Length; i++)
+            {
+                Console.SetCursorPosition(0, Console.CursorTop + 1);
+                Console.Write(names[i]);
+                Console.SetCursorPosition(arrowPosition + 2, Console.CursorTop);
+                Console.Write(items[i]);
+            }
+            Console.SetCursorPosition(0, Console.CursorTop + 1);
+            Console.WriteLine("{0} {1} {2}", text[1], currency, text[2]);
+        }
     }
     class Quicksort //From http://www.softwareandfinance.com/CSharp/QuickSort_Recursive.html
     {
@@ -181,7 +279,7 @@ namespace GuardsOfAetheria
 
                 if (left < right)
                 {
-                    int temp = numbers[right];
+                    var temp = numbers[right];
                     numbers[right] = numbers[left];
                     numbers[left] = temp;
                 }
@@ -197,7 +295,7 @@ namespace GuardsOfAetheria
             // For Recursion
             if (left < right)
             {
-                int pivot = Partition(arr, left, right);
+                var pivot = Partition(arr, left, right);
 
                 if (pivot > 1)
                     QuickSort_Recursive(arr, left, pivot - 1);

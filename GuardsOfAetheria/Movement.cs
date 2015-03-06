@@ -25,7 +25,7 @@ namespace GuardsOfAetheria
             var locationXmlData = xmlData as XElement[] ?? xmlData.ToArray();
             DisplayLocation(locationXmlData);
 
-            string[] options = DisplayOption(locationXmlData);
+            var options = DisplayOption(locationXmlData);
             Console.SetCursorPosition(0, 5);
             var optionSelected = utility.SelectOption(options);
 
@@ -37,13 +37,13 @@ namespace GuardsOfAetheria
             var xElements = locationXmlData as XElement[] ?? locationXmlData.ToArray();
             var textToDisplay = (string)xElements.Elements("textToDisplay").FirstOrDefault();
 
-            string[] tempVariable = ((string)xElements.Elements("textVariables").FirstOrDefault()).Split(',');
+            var tempVariable = ((string)xElements.Elements("textVariables").FirstOrDefault()).Split(',');
 
             var variableDictionary = LocationDictionary();
 
-            object[] textVariable = new object[tempVariable.Length];
+            var textVariable = new object[tempVariable.Length];
 
-            for (int i = 0; i < tempVariable.Length; i++ )
+            for (var i = 0; i < tempVariable.Length; i++ )
             {
                 if (variableDictionary.ContainsKey(tempVariable[i]))
                 {
@@ -56,7 +56,7 @@ namespace GuardsOfAetheria
         private string[] DisplayOption(IEnumerable<XElement> locationXmlData)
         {
             var possibleOptions = locationXmlData.Elements("options");
-            string[] options = ((string)possibleOptions.FirstOrDefault()).Split(',');
+            var options = ((string)possibleOptions.FirstOrDefault()).Split(',');
             return options;
         }
 

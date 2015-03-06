@@ -28,7 +28,7 @@ namespace GuardsOfAetheria
                 Console.SetCursorPosition(0, 0);
                 Console.Clear();
             }
-            //Took way to long to make this ;)
+            //Took way too long to make this ;)
         }
     }
 }
