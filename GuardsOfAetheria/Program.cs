@@ -2,15 +2,14 @@ using System;
 
 namespace GuardsOfAetheria
 {
-    class MainProgram
+    internal class MainProgram
     {
         private static void Main()
         {
-            /*Think about these:
-            /Damage = rounddown?(BaseDamage * random.Next(0, 10001) * .00002 + .9)
-            /Damage = MainAtt * random.Next(-lvl,lvl+1) + DamageModifier;
-            /Fake Class: Spaghetti Monster ;)
-            */
+            /* Think about these:
+             * Damage = MainAtt * random.Next(-lvl,lvl+1) + DamageModifier;
+             * Fake Class: Spaghetti Monster ;)
+             */
 
             Console.CursorVisible = false;
             Player.Instance.LocationRegion = "TestRegion";
@@ -18,8 +17,8 @@ namespace GuardsOfAetheria
             Player.Instance.LocationBuilding = "Outside";
             Player.Instance.LocationRoom = "TutorialRoom";
 
-            var guiMenu = new MainMenu();
-            guiMenu.DisplayMainMenu();
+            var mainMenu = new MainMenu();
+            mainMenu.DisplayMainMenu();
 
             while (true)
             {
@@ -29,14 +28,7 @@ namespace GuardsOfAetheria
                 Console.Clear();
             }
             //Took way too long to make this ;)
+            //TODO: environemnt.exit in inventory options?
         }
     }
 }
-/* Save:
- *  XmlDocument doc = new XmlDocument();
- *  doc.AppendChild(doc.CreateElement("<name>","<value>"));
- *  var appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
- *  doc.Save(appdata + @"\Guards of Aetheria\Character\<destination>.GoA"); or maybe
- *  doc.Save("<destination>.GoA"); 
- *  to read, use XmlDocument.Load 
- */

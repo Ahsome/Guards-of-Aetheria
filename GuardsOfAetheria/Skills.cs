@@ -1,6 +1,6 @@
 ﻿namespace GuardsOfAetheria
 {
-    class Skills
+    internal class Skills
     {
         public void GetSkills() //TODO: how to unlock other class skills? amount of a certain att?
         {
@@ -15,9 +15,8 @@
             }
         }
 
-        public void ViewSkills()
-        {
-            
-        }
+        //public void ViewSkills()
+        //{
+        //}
     }
 }
