@@ -6,7 +6,6 @@ namespace GuardsOfAetheria
     internal class CharacterCreation
     {
         private readonly Utility utility = new Utility();
-        //TODO: name check
         public void CreateCharacter()
         {
             ChooseName();
@@ -17,7 +16,7 @@ namespace GuardsOfAetheria
             ManualAttributes();
         }
 
-        private void static ChooseName()
+        private static void ChooseName()
         {
             while (true)
             {
@@ -25,10 +24,7 @@ namespace GuardsOfAetheria
                 Console.Write("Your name is ");
                 Console.SetCursorPosition(13, 0);
                 var name = Console.ReadLine();
-                while (name != null && name.Contains("  "))
-                {
-                    name = name.Replace("  ", " ");
-                } //TODO: optimise?
+                while (name != null && name.Contains("  ")) name = name.Replace("  ", " ");
                 Console.Clear();
                 Console.Write("Your name is {0}", name);
                 if (Console.ReadKey(true).Key == ConsoleKey.Enter &&

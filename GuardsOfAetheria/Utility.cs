@@ -22,7 +22,7 @@ namespace GuardsOfAetheria
             for (var i = 0; i < possibleOptions; i++)
             {
                 Console.SetCursorPosition(2, startLine + i + 1);
-                Console.Write("                       "); //TODO: optimise
+                Console.Write(new string(' ', Console.WindowWidth));
                 Console.SetCursorPosition(2, startLine + i + 1);
                 Console.Write(options[i]);
             }
@@ -48,7 +48,6 @@ namespace GuardsOfAetheria
                 while (true)
                 {
                     var input = Console.ReadKey(true).Key;
-
                     Console.SetCursorPosition(0, menuSelected + startLine);
                     Console.Write(' ');
                     switch (input)
@@ -117,7 +116,7 @@ namespace GuardsOfAetheria
                         for (var i = 0; i < possibleOptions; i++)
                         {
                             Console.SetCursorPosition(2, startLine + i + 1);
-                            Console.Write("                       "); // TODO: make it better
+                            Console.Write(new string(' ', Console.WindowWidth));
                             Console.SetCursorPosition(2, startLine + i + 1);
                             if (pageScroll == 0) Console.Write(options[i + (numberOfLines*(pageNumber - 1))]);
                             if (pageScroll != 1) continue;
@@ -140,12 +139,12 @@ namespace GuardsOfAetheria
             //TODO: Add more options
         }
 
-        public static void CalculateWeaponStats()
+        public void CalculateWeaponStats()
         {
             //TODO: everything 
         }
 
-        public static void UpdateExp()
+        public void UpdateExp()
         {
             int expNeeded = Convert.ToInt16(Math.Pow(1.05, Player.Instance.Level)*1000);
             if (Player.Instance.Experience < expNeeded) return;
@@ -172,18 +171,14 @@ namespace GuardsOfAetheria
             return spaceLeft;
         }
 
-        public int IntParseFast(string value) //from http://www.dotnetperls.com/int-parse
-        {
-            return value.Aggregate(0, (current, t) => 10*current + (t - 48));
-        }
+        public int IntParseFast(string value) { return value.Aggregate(0, (current, t) => 10 * current + (t - 48)); } //from http://www.dotnetperls.com/int-parse
 
         public void WordWrap(string paragraph) //Remember to SetCursorPosition() before this
         {
-            string[] split = {" "};
-            var words = paragraph.Split(split, StringSplitOptions.RemoveEmptyEntries);
+            var words = paragraph.Split(new[] {" "}, StringSplitOptions.RemoveEmptyEntries);
             var left = Console.CursorLeft;
             var lines = new string[23];
-           var j = 0;
+            var j = 0;
             var maxChars = 79 - left;
             for (var i = 0; i < 23; i++)
             {
@@ -251,29 +246,17 @@ namespace GuardsOfAetheria
                         }
                         break;
                     case ConsoleKey.Enter:
-                        for (var i = 0; i < currentItems.Length; i++)
-                        {
-                            currentItems[i] += newItems[i];
-                        }
+                        for (var i = 0; i < currentItems.Length; i++) currentItems[i] += newItems[i];
                         return currentItems;
                 }
                 if (input == ConsoleKey.RightArrow || input == ConsoleKey.LeftArrow)
                 {
-                    for (var i = 0; i < currentItems.Length; i++)
-                    {
-                        totalItems[i] = currentItems[i] + newItems[i];
-                    }
+                    for (var i = 0; i < currentItems.Length; i++) totalItems[i] = currentItems[i] + newItems[i];
                     SpendGraphics(text, names, currency, totalItems, arrowPosition);
                 }
 
-                if (menuSelected < 1)
-                {
-                    menuSelected = currentItems.Length;
-                }
-                else if (menuSelected > currentItems.Length)
-                {
-                    menuSelected = 1;
-                }
+                if (menuSelected < 1) menuSelected = currentItems.Length;
+                else if (menuSelected > currentItems.Length) menuSelected = 1;
                 Console.SetCursorPosition(arrowPosition, menuSelected + 1); //and here
                 Console.Write('>');
             }
@@ -303,11 +286,9 @@ namespace GuardsOfAetheria
             var pivot = numbers[left];
             while (true)
             {
-                while (numbers[left] < pivot)
-                    left++;
+                while (numbers[left] < pivot) left++;
 
-                while (numbers[right] > pivot)
-                    right--;
+                while (numbers[right] > pivot) right--;
 
                 if (left < right)
                 {
@@ -315,24 +296,27 @@ namespace GuardsOfAetheria
                     numbers[right] = numbers[left];
                     numbers[left] = temp;
                 }
-                else
-                {
-                    return right;
-                }
+                else return right;
             }
         }
 
         public static void QuickSortRecursive(int[] arr, int left, int right)
         {
-            // For Recursion
-            if (left >= right) return;
-            var pivot = Partition(arr, left, right);
+            while (true)
+            {
+                // For Recursion
+                if (left >= right) return;
+                var pivot = Partition(arr, left, right);
 
-            if (pivot > 1)
-                QuickSortRecursive(arr, left, pivot - 1);
+                if (pivot > 1) QuickSortRecursive(arr, left, pivot - 1);
 
-            if (pivot + 1 < right)
-                QuickSortRecursive(arr, pivot + 1, right);
+                if (pivot + 1 < right)
+                {
+                    left = pivot + 1;
+                    continue;
+                }
+                break;
+            }
         }
     }
 }

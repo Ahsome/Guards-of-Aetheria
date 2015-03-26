@@ -15,6 +15,7 @@ namespace GuardsOfAetheria
         public int[] CurrentEndurance { get; set; }
         public int[] CurrentStamina { get; set; }
         public string[] Name { get; set; }
+        public string[][] WepNames { get; set; }
         //[n] entity; [0] #1 [1] #2
         public int[][] Attack { get; set; }
         public int[] Defence { get; set; }
@@ -59,49 +60,50 @@ namespace GuardsOfAetheria
             }
         }
 
-        public void Fight(int attackerSlot, int defenderSlot, int attackType)
+        public void Fight(int attacker, int defender, int attackType)
         {
             // TODO: Print the action line.
+            //What is attacktype?
             var rand = new Random();
             decimal damageNumber = rand.Next(0, 10001);
             decimal penetrationNumber = rand.Next(0, 10001);
             decimal armourNumber = rand.Next(0, 10001);
-            string[] options = {"Weapon 1", "Weapon 2"}; //TODO: change
+            string[] options = {WepNames[attacker][0], WepNames[attacker][1]}; //TODO: change
             var weaponNumber = utility.SelectOption(options);
             var totalPenetration =
                 Convert.ToInt32(
-                    Math.Round(ArmourPenetrationRange[attackerSlot][0][weaponNumber] +
+                    Math.Round(ArmourPenetrationRange[attacker][0][weaponNumber] +
                                penetrationNumber*
-                               (ArmourPenetrationRange[attackerSlot][1][weaponNumber] -
-                                ArmourPenetrationRange[attackerSlot][0][weaponNumber])/10000));
+                               (ArmourPenetrationRange[attacker][1][weaponNumber] -
+                                ArmourPenetrationRange[attacker][0][weaponNumber])/10000));
             var totalArmour =
                 Convert.ToInt32(
-                    Math.Round(ArmourToughnessRange[defenderSlot][0] +
+                    Math.Round(ArmourToughnessRange[defender][0] +
                                armourNumber*
-                               (ArmourToughnessRange[defenderSlot][1] -
-                                ArmourToughnessRange[defenderSlot][0])/10000));
+                               (ArmourToughnessRange[defender][1] -
+                                ArmourToughnessRange[defender][0])/10000));
             var penetrationDamage = totalPenetration - totalArmour;
             var totalDamage =
                 Convert.ToInt32(
-                    Math.Round(AtkPercent[attackerSlot][0][weaponNumber] +
+                    Math.Round(AtkPercent[attacker][0][weaponNumber] +
                                damageNumber*
-                               (AtkPercent[attackerSlot][1][weaponNumber] - AtkPercent[attackerSlot][0][weaponNumber])/
+                               (AtkPercent[attacker][1][weaponNumber] - AtkPercent[attacker][0][weaponNumber])/
                                10000));
             var damageDealt = Math.Max(1,
-                (Attack[attackerSlot][weaponNumber] + penetrationDamage)*totalDamage - Defence[defenderSlot]);
+                (Attack[attacker][weaponNumber] + penetrationDamage)*totalDamage - Defence[defender]);
             if (penetrationDamage < 0)
             {
                 damageDealt = 1;
-                Console.WriteLine(Name[attackerSlot] + "struck a glancing blow and dealt 1 damage!");
-                    // TODO: dont say how much damage
+                Console.WriteLine(Name[attacker] + "struck a glancing blow!");
             }
             else
             {
-                Console.WriteLine(Name[attackerSlot] + "used a basic attack and dealt " + damageDealt + " damage!");
+                Console.WriteLine(Name[attacker] + "used a basic attack!");
             }
+            //TODO: for hp: you have several minor cuts and bruises, you have a fatal wound
 
 
-            CurrentVitality[defenderSlot] = CurrentVitality[defenderSlot] - damageDealt;
+            CurrentVitality[defender] = CurrentVitality[defender] - damageDealt;
             // TODO: change attack/defence mechanics, change text, implement misses (accuracy stat)/dodge (evasion stat)
         }
 
@@ -110,9 +112,12 @@ namespace GuardsOfAetheria
             // See how to handle from script - Tim
             // GUI - select enemy to attack - do the same for party? or party autoattack?
             // selectOption(options); to hide player menu where options = string[]
-            string[] names = {"."}; //TODO: how to split string? and show that its attack/defence
-            var partySelected = utility.SelectOption(names);
+            var enemyToAttack= new string[6];
+            for (var i = 6; i < 13; i++) if (!String.IsNullOrEmpty(Name[i])) enemyToAttack[i] = Name[i];
+            //TODO: figure out how to use take()
+            var partySelected = utility.SelectOption(enemyToAttack);
             // Fight();
+            //TODO: loop until player/enemy dies
         }
 
         public void EndFight()
