@@ -27,6 +27,7 @@ namespace GuardsOfAetheria
         public int[][] ArmourToughnessRange { get; set; }
 
         public static Combat Instance { get { return OrigInstance; } }
+        private string[] CombatHistory { get; set; }
 
         //AtkMaxPercent[0] = 1.1 * stuff;
 
@@ -35,7 +36,72 @@ namespace GuardsOfAetheria
         // Slot 1-6 = Player's Party (up to 6)
         // Slot 7-12 = Enemies (up to 6 as well)
         // Party's stats stored here
-
+        
+        Private static int SelectedOption = 0;
+        Private static int MaxOption = 1;
+        Private static int ScreenID = 0;
+        
+        
+        Private static int CurrentHistoryLine = 1; //For page up/down
+        Private static int MaxHistoryLine = 1; // For the limits; this increases every time something is logged.
+        
+        public void main()
+        {
+            while true
+            {
+                // I have no clue whether I got any of the proper words correct because I'm not using Visual Studio... I'm editing straight from Github.
+                // -tim
+                
+                private ConsoleKey KeyPressed = Console.ReadKey;
+                if (KeyPressed = Console.Key.Up)
+                {
+                    SelectedOption++;
+                    if (SelectedOption > MaxOption)
+                    {
+                        SelectedOption = 1;
+                    }
+                    else
+                    {
+                        
+                    }
+                }
+                if (KeyPressed = Console.Key.Down)
+                {
+                    SelectedOption--;
+                    if (SelectedOption < 1)
+                    {
+                        SelectedOption = MaxOption;
+                    }
+                    else
+                    {
+                        
+                    }
+                }
+                if (KeyPressed = Console.Key.Enter)
+                {
+                    // Do something!!!
+                }
+                if (KeyPressed = Console.Key.PageUp)
+                {
+                    
+                }
+                else
+                {
+                    
+                }
+                
+                redraw();
+            }
+        }
+        
+        public void redraw()
+        {
+            if (ScreenID = 0)
+            {
+                Console.WriteLine(TextHistory[])
+            }
+        }
+        
         public void LoadEntities()
         {
             // TODO: Review XML code, see how to use it. - Tim
