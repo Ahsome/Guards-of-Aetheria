@@ -46,7 +46,7 @@ namespace GuardsOfAetheria
             Instance.Name[0] = "You";
 
             utility.CalculateWeaponStats();
-                //TODO: make it faster and have Player.Instance.WeaponStats or check for cheating?
+                //TODO: check cheating
 
             for (var i = 1; i < 7; i++)
             {
@@ -114,8 +114,7 @@ namespace GuardsOfAetheria
             // selectOption(options); to hide player menu where options = string[]
             var enemyToAttack= new string[6];
             for (var i = 6; i < 13; i++) if (!String.IsNullOrEmpty(Name[i])) enemyToAttack[i] = Name[i];
-            //TODO: figure out how to use take()
-            var partySelected = utility.SelectOption(enemyToAttack);
+            // var partySelected = utility.SelectOption(enemyToAttack);
             // Fight();
             //TODO: loop until player/enemy dies
         }

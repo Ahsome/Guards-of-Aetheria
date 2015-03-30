@@ -231,40 +231,28 @@ namespace GuardsOfAetheria
             Console.WriteLine("You found a {0} {1}.", prefix, weaponName);
             var firstEmptySlot = -1;
             var spaceLeft = utility.SpaceLeft();
-            for (var i = 1; i < 51; i++)
-            {
-                if (Player.Instance.Inventory[1][i][1] == 0)
-                {
-                    firstEmptySlot = i;
-                    break;
-                }
-                if (firstEmptySlot != -1)
-                {
-                    break;
-                }
-            }
-            if (firstEmptySlot == -1 || spaceLeft < 1)
+            for (var i = 0; i < 50 && firstEmptySlot == -1; i++) if (Player.Instance.Inventory[1][i][1] == 0) firstEmptySlot = i;
+            //TODO: select where to put it
+            if (spaceLeft < 1)
             {
                 Console.WriteLine("Your inventory is full. You:");
                 string[] options = {"replace another item with this one", "discard this item"};
                 var menuSelected = utility.SelectOption(options);
                 switch (menuSelected)
                 {
-                    case 1: //Console.Clear(); ?
+                    case 1: //Console.Clear();?
                         utility.SelectOption(Player.Instance.InventoryNameAll);
                         break;
-                    case 2: //Do nothing - the item is discarded, the inventory is unchanged :)
+                    case 2: //Do nothing
                         break;
                 }
             }
             else
             {
-                Player.Instance.Inventory[1][firstEmptySlot] = new[]
-                {
-                    weaponClass, weaponType, weapon, prefixRarity, prefixFinal, 0, 0
-                };
-                Player.Instance.InventoryName[1][firstEmptySlot] = general.Prefixes[prefixRarity][prefixFinal] +
-                                                                   Weapons[weaponClass][weaponType][weapon];
+                Player.Instance.Inventory[1][firstEmptySlot] = new[] { weaponClass, weaponType, weapon, prefixRarity, prefixFinal, 0, 0 };
+                Player.Instance.InventoryName[1][firstEmptySlot] =
+                    general.Prefixes[prefixRarity][prefixFinal] +
+                    Weapons[weaponClass][weaponType][weapon];
             }
         }
     }
@@ -286,10 +274,7 @@ namespace GuardsOfAetheria
             "Boots"
         };
 
-        private readonly int[] partSpaces =
-        {
-            1, 4, 1, 2, 1
-        };
+        private readonly int[] partSpaces = { 1, 4, 1, 2, 1 };
 
         public void ArmourGen(General.Material mat)
         {
@@ -311,19 +296,8 @@ namespace GuardsOfAetheria
             Console.WriteLine("You found a {0} {1} {2}.", prefix, armourTypeName, armourPartName);
             var firstEmptySlot = -1;
             var spaceLeft = utility.SpaceLeft();
-            for (var i = 0; i < 50; i++)
-            {
-                if (Player.Instance.Inventory[2][i][1] == 0)
-                {
-                    firstEmptySlot = i;
-                    break;
-                }
-                if (firstEmptySlot != -1)
-                {
-                    break;
-                }
-            }
-            if (spaceLeft == 0)
+            for (var i = 0; i < 50 && firstEmptySlot == -1; i++) if (Player.Instance.Inventory[2][i][1] == 0) firstEmptySlot = i;
+            if (spaceLeft < armourSpace)
             {
                 Console.WriteLine("Your inventory is full. You:");
                 string[] options = {"replace another item with this one", "discard this item"};
@@ -339,10 +313,7 @@ namespace GuardsOfAetheria
             }
             else
             {
-                Player.Instance.Inventory[2][firstEmptySlot] = new[]
-                {
-                    armourType, armourPart, prefixRarity, prefixFinal, 0, 0, armourSpace
-                };
+                Player.Instance.Inventory[2][firstEmptySlot] = new[] { armourType, armourPart, prefixRarity, prefixFinal, 0, 0, armourSpace };
             }
         }
     }

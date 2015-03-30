@@ -1,140 +1,110 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-
 namespace GuardsOfAetheria
 {
     internal class Utility
     {
         public int SelectOption(string[] options, bool showMenu = false)
         {
-            var menuSelected = 1;
-            var pageScroll = -1;
-            if (Options.Instance.CurrentSettings[0] == Options.Settings.Pages) pageScroll = 0;
-            if (Options.Instance.CurrentSettings[0] == Options.Settings.Scroll) pageScroll = 1;
-            var startLine = Console.CursorTop;
+            var menuSelected = 1; bool pScroll; var startLine = Console.CursorTop; var pageNumber = 1;
             var numberOfLines = 22 - startLine;
             var pages = (options.Length - (options.Length % numberOfLines)) / numberOfLines;
-            var pageNumber = 1;
             var scroll = options.Length - 1 > numberOfLines;
-            var possibleOptions = options.Length - (numberOfLines*(pageNumber - 1));
+            var possibleOptions = options.Length - (numberOfLines * (pageNumber - 1));
+            switch (Options.Instance.CurrentSettings[0])
+            {
+                case Options.Settings.Pages: pScroll = false; break;
+                case Options.Settings.Scroll: pScroll = true; break;
+                default: throw new Exception("Someone tampered with the settings >:(");
+            }
+            //TODO: detect cheatengine
             if (numberOfLines < possibleOptions) possibleOptions = numberOfLines;
             for (var i = 0; i < possibleOptions; i++)
             {
-                Console.SetCursorPosition(2, startLine + i + 1);
-                Console.Write(new string(' ', Console.WindowWidth));
-                Console.SetCursorPosition(2, startLine + i + 1);
-                Console.Write(options[i]);
+                Console.SetCursorPosition(2, startLine + i + 1); Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(2, startLine + i + 1); Console.Write(options[i]);
             }
-            if (pages > 1 && pageScroll == 0)
+            if (pages > 1 && !pScroll)
             {
-                Console.SetCursorPosition(50, startLine);
-                Console.Write(pageNumber);
-                Console.SetCursorPosition(52, startLine);
-                Console.Write("/{0}", pages);
+                Console.SetCursorPosition(50, startLine); Console.Write(pageNumber);
+                Console.CursorLeft = 52; Console.Write("/{0}", pages);
             }
             if (showMenu)
             {
-                Console.SetCursorPosition(10, 23);
-                Console.Write("[M]enu");
+                Console.SetCursorPosition(10, 23); Console.Write("[M]enu");
             }
-            var lastPage = false;
-            var nextPage = false;
             while (true)
             {
-                Console.SetCursorPosition(0, menuSelected + startLine);
-                Console.Write('>');
+                Console.SetCursorPosition(0, menuSelected + startLine); Console.Write('>');
                 //TODO: change appearance of arrow? >/-
+                var pageIncrement = 0;
                 while (true)
                 {
                     var input = Console.ReadKey(true).Key;
-                    Console.SetCursorPosition(0, menuSelected + startLine);
-                    Console.Write(' ');
+                    Console.SetCursorPosition(0, menuSelected + startLine); Console.Write(' ');
                     switch (input)
                     {
-                        case ConsoleKey.UpArrow:
-                            menuSelected--;
-                            break;
-                        case ConsoleKey.DownArrow:
-                            menuSelected++;
-                            break;
-                        case ConsoleKey.M:
-                            if (showMenu) PlayerMenu();
-                            break;
-                        case ConsoleKey.Enter:
-                            return (menuSelected + (numberOfLines * (pageNumber - 1)));
+                        case ConsoleKey.UpArrow: menuSelected--; break;
+                        case ConsoleKey.DownArrow: menuSelected++; break;
+                        case ConsoleKey.M: if (showMenu) PlayerMenu(); break;
+                        case ConsoleKey.Enter: return (menuSelected + (numberOfLines * (pageNumber - 1)));
                     }
                     if (scroll)
                     {
-                        if (menuSelected < 1) lastPage = true;
-                        if (menuSelected > possibleOptions) nextPage = true;
-                    } else {
-                        if (menuSelected < 1) menuSelected = possibleOptions;
-                        if (menuSelected > possibleOptions) menuSelected = 1;
+                        if (menuSelected < 1) pageIncrement--;
+                        else if (menuSelected > possibleOptions) pageIncrement++;
                     }
-                    if (lastPage || nextPage)
+                    else
                     {
-                        if (pageScroll == 0)
+                        if (menuSelected < 1) menuSelected = possibleOptions;
+                        else if (menuSelected > possibleOptions) menuSelected = 1;
+                        //TODO: modulo?
+                    }
+                    if (pageIncrement != 0)
+                    {
+                        if (!pScroll)
                         {
-                            possibleOptions = options.Length - (numberOfLines*(pageNumber - 1));
+                            possibleOptions = options.Length - (numberOfLines * (pageNumber - 1));
                             if (numberOfLines < possibleOptions) possibleOptions = numberOfLines;
-                            if (lastPage)
+                            switch (pageIncrement)
                             {
-                                menuSelected = possibleOptions;
-                                pageNumber--;
-                            }
-                            if (nextPage)
-                            {
-                                menuSelected = 1;
-                                pageNumber++;
+                                case -1: menuSelected = possibleOptions; pageNumber--; break;
+                                case 1: menuSelected = 1; pageNumber++; break;
                             }
                             if (pageNumber < 1) pageNumber = pages;
-                            if (pageNumber > pages) pageNumber = 1;
+                            else if (pageNumber > pages) pageNumber = 1;
                             if (pages > 1)
                             {
-                                Console.SetCursorPosition(50, startLine);
-                                Console.Write("{0}/{1}", pageNumber, pages);
+                                Console.SetCursorPosition(50, startLine); Console.Write(pageNumber);
+                                Console.CursorLeft = 52; Console.Write("/{0}", pages);
                             }
                         }
-                        if (pageScroll == 1)
+                        else
                         {
                             if (pageNumber < 1) pageNumber = options.Length;
-                            if (pageNumber > options.Length) pageNumber = 1;
-                            if (lastPage)
+                            else if (pageNumber > options.Length) pageNumber = 1;
+                            switch (pageIncrement)
                             {
-                                menuSelected = 1;
-                                pageNumber--;
-                                lastPage = false;
+                                case -1: menuSelected = 1; pageNumber--; break;
+                                case 1: menuSelected = possibleOptions; pageNumber++; break;
                             }
-                            if (nextPage)
-                            {
-                                menuSelected = possibleOptions;
-                                pageNumber++;
-                                nextPage = false;
-                            }
+                            pageIncrement = 0;
                         }
                         for (var i = 0; i < possibleOptions; i++)
                         {
+                            Console.SetCursorPosition(2, startLine + i + 1); Console.Write(new string(' ', Console.WindowWidth));
                             Console.SetCursorPosition(2, startLine + i + 1);
-                            Console.Write(new string(' ', Console.WindowWidth));
-                            Console.SetCursorPosition(2, startLine + i + 1);
-                            if (pageScroll == 0) Console.Write(options[i + (numberOfLines*(pageNumber - 1))]);
-                            if (pageScroll != 1) continue;
-                            var currentNumber = pageNumber + i;
-                            if (currentNumber - 1 > options.Length) currentNumber = currentNumber - options.Length;
-                            Console.Write(options[currentNumber]);
+                            Console.Write(!pScroll ? options[i + (numberOfLines*(pageNumber - 1))] : options[(pageNumber + i)%options.Length]);
                         }
                     }
-                    Console.SetCursorPosition(0, menuSelected + startLine);
-                    Console.Write('>');
+                    Console.SetCursorPosition(0, menuSelected + startLine); Console.Write('>');
                 }
             }
         }
 
         public void PlayerMenu()
         {
-            Console.Clear();
-            Console.WriteLine("Inventory");
+            Console.Clear(); Console.WriteLine("Inventory");
             SelectOption(Player.Instance.InventoryNameAll);
             //TODO: Add more options
         }
@@ -146,127 +116,54 @@ namespace GuardsOfAetheria
 
         public void UpdateExp()
         {
-            int expNeeded = Convert.ToInt16(Math.Pow(1.05, Player.Instance.Level)*1000);
-            if (Player.Instance.Experience < expNeeded) return;
-            Player.Instance.Level++;
-            Player.Instance.Experience = Player.Instance.Experience - expNeeded;
+            var expNeeded = Convert.ToInt32(Math.Pow(1.05, Player.Instance.Level) * 1000);
+            if (Player.Instance.Experience >= expNeeded)
+                Player.Instance.Level++; Player.Instance.Experience -= expNeeded;
         }
 
         public static void PrioritiseInventoryItems()
         {
             Player.Instance.InventoryOld = Player.Instance.Inventory;
-            //TODO: integer, 10^5? * most important etc, quicksort
+            //TODO: label by importance, .Aggregate() by importance, Quicksort;
         }
 
-        public static int SpaceLeft()
+        public int SpaceLeft()
         {
             var spaceLeft = Player.Instance.InventorySpace;
-            for (var i = 1; i < 51; i++)
+            //TODO: more compartments, large compartments
+            for (var i = 0; i < 50; i++)
             {
                 if (Player.Instance.Inventory[1][i][1] != 0) spaceLeft--;
                 if (Player.Instance.Inventory[2][i][1] != 0) spaceLeft -= Player.Instance.Inventory[1][i][7];
                 if (Player.Instance.Inventory[3][i][1] != 0) spaceLeft--;
                 if (Player.Instance.Inventory[4][i][1] != 0) spaceLeft--;
-            }
-            return spaceLeft;
+            } return spaceLeft;
         }
 
         public int IntParseFast(string value) { return value.Aggregate(0, (current, t) => 10 * current + (t - 48)); } //from http://www.dotnetperls.com/int-parse
 
-        public void WordWrap(string paragraph) //Remember to SetCursorPosition() before this
-        {
-            var words = paragraph.Split(new[] {" "}, StringSplitOptions.RemoveEmptyEntries);
-            var left = Console.CursorLeft;
-            var lines = new string[23];
-            var j = 0;
-            var maxChars = 79 - left;
-            for (var i = 0; i < 23; i++)
+        public int WordWrap(string paragraph)
+        { //int maxchars = 79?
+            var words = paragraph.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+            var left = Console.CursorLeft; var lines = new string[23]; var j = 0; var maxChars = 79 - left; var numLines = 0;
+            for (var i = 0; i < 23 && j < words.Length; i++)
             {
-                var chars = 0;
-                lines[i] = "";
-                while (true) //TODO: optimise
-                {
+                var chars = 0; lines[i] = "";
+                while (j < words.Length)
+                { //TODO: optimise
                     chars += words[j].Length + 1;
-                    if (chars < maxChars) lines[i] += words[j] + " ";
-                    else break;
-                    j++;
-                    if (j > words.Length - 1) break;
+                    if (chars < maxChars) lines[i] += words[j] + " "; else break; j++;
                 }
                 Console.SetCursorPosition(left, Console.CursorTop);
-                if (!String.IsNullOrEmpty(lines[i])) Console.WriteLine(lines[i]);
-                if (j > words.Length - 1) break;
-            }
+                lines[i].Remove(lines[i].Length - 1);
+                if (!String.IsNullOrEmpty(lines[i])) Console.WriteLine(lines[i]); else numLines++;
+            } return numLines;
         }
 
-        public int[] Spend(string[] text, string[] names, int[] currentItems, int[] newItems, int[] cost, int currency,
-            int arrowPosition, int[] value = null)
+        public int[] Spend(string[] text, string[] names, int[] items, int[] newItems, int[] cost, int currency, int[] value = null)
         {
-            Console.Clear();
-            var menuSelected = 1;
-            SpendGraphics(text, names, currency, currentItems, arrowPosition);
-            Console.SetCursorPosition(arrowPosition, 2); //TODO: Change 2 to var later (after word wrap)
-            Console.Write('>');
-            while (true)
-            {
-                var totalItems = new int[currentItems.Length];
-                var input = Console.ReadKey().Key;
-                Console.SetCursorPosition(arrowPosition, menuSelected + 1); //change here too
-                Console.Write(' ');
-
-                switch (input)
-                {
-                    case ConsoleKey.UpArrow:
-                        menuSelected--;
-                        break;
-                    case ConsoleKey.DownArrow:
-                        menuSelected++;
-                        break;
-                    case ConsoleKey.LeftArrow:
-                        if (newItems[menuSelected - 1] > 0)
-                        {
-                            newItems[menuSelected - 1]--;
-                            currency += cost[menuSelected - 1];
-                        }
-                        else if (value != null && currentItems[menuSelected - 1] + newItems[menuSelected - 1] > 0)
-                        {
-                            newItems[menuSelected - 1]--;
-                            currency += value[menuSelected - 1];
-                        }
-                        break;
-                    case ConsoleKey.RightArrow:
-                        if (currency > 0)
-                        {
-                            newItems[menuSelected - 1]++;
-                            currency -= cost[menuSelected - 1];
-                        }
-                        else if (value != null && newItems[menuSelected - 1] < 0)
-                        {
-                            newItems[menuSelected - 1]++;
-                            currency -= value[menuSelected - 1];
-                        }
-                        break;
-                    case ConsoleKey.Enter:
-                        for (var i = 0; i < currentItems.Length; i++) currentItems[i] += newItems[i];
-                        return currentItems;
-                }
-                if (input == ConsoleKey.RightArrow || input == ConsoleKey.LeftArrow)
-                {
-                    for (var i = 0; i < currentItems.Length; i++) totalItems[i] = currentItems[i] + newItems[i];
-                    SpendGraphics(text, names, currency, totalItems, arrowPosition);
-                }
-
-                if (menuSelected < 1) menuSelected = currentItems.Length;
-                else if (menuSelected > currentItems.Length) menuSelected = 1;
-                Console.SetCursorPosition(arrowPosition, menuSelected + 1); //and here
-                Console.Write('>');
-            }
-        }
-
-        //TODO: possibly optimise by putting it in spend()
-        private void SpendGraphics(string[] text, string[] names, int currency, int[] items, int arrowPosition)
-        {
-            Console.Clear(); //TODO: see if this needs to be removed when shops are implemented
-            WordWrap(text[0]);
+            var arrowPosition = Console.CursorLeft; Console.Clear();
+            var option = 0; var numLines = WordWrap(text[0]);
             for (var i = 0; i < items.Length; i++)
             {
                 Console.SetCursorPosition(0, Console.CursorTop + 1);
@@ -276,20 +173,66 @@ namespace GuardsOfAetheria
             }
             Console.SetCursorPosition(0, Console.CursorTop + 1);
             Console.WriteLine("{0} {1} {2}", text[1], currency, text[2]);
+            var left = numLines + 2;
+            Console.SetCursorPosition(arrowPosition, numLines + 2);
+            Console.Write('>');
+            while (true)
+            {
+                var totalItems = new int[items.Length];
+                var input = Console.ReadKey().Key;
+                Console.SetCursorPosition(arrowPosition, left);
+                Console.Write(' ');
+                switch (input)
+                {
+                    case ConsoleKey.UpArrow: option--; break;
+                    case ConsoleKey.DownArrow: option++; break;
+                    case ConsoleKey.LeftArrow:
+                        if (newItems[option] > 0)
+                        {
+                            newItems[option]--;
+                            currency += cost[option];
+                        }
+                        else if (value != null && items[option] + newItems[option] > 0)
+                        {
+                            newItems[option]--;
+                            currency += value[option];
+                        } break;
+                    case ConsoleKey.RightArrow:
+                        if (currency > 0)
+                        {
+                            newItems[option]++;
+                            currency -= cost[option];
+                        }
+                        else if (value != null && newItems[option] < 0)
+                        {
+                            newItems[option]++;
+                            currency -= value[option];
+                        } break;
+                    case ConsoleKey.Enter: return totalItems;
+                }
+                left = option + numLines + 2;
+                if (input == ConsoleKey.RightArrow || input == ConsoleKey.LeftArrow)
+                {
+                    for (var i = 0; i < items.Length; i++) totalItems[i] = items[i] + newItems[i];
+                    Console.SetCursorPosition(arrowPosition + 2, left);
+                    Console.Write(totalItems[option]);
+                }
+                if (option < 0) option = items.Length - 1;
+                else if (option > items.Length - 1) option = 0;
+                Console.SetCursorPosition(arrowPosition, left);
+                Console.Write('>');
+            }
         }
     }
-
-    internal class Quicksort //From http://www.softwareandfinance.com/CSharp/QuickSort_Recursive.html
-    {
+    internal class Quicksort
+    { //From http://www.softwareandfinance.com/CSharp/QuickSort_Recursive.html
         public static int Partition(int[] numbers, int left, int right)
         {
             var pivot = numbers[left];
             while (true)
             {
                 while (numbers[left] < pivot) left++;
-
                 while (numbers[right] > pivot) right--;
-
                 if (left < right)
                 {
                     var temp = numbers[right];
@@ -299,23 +242,14 @@ namespace GuardsOfAetheria
                 else return right;
             }
         }
-
-        public static void QuickSortRecursive(int[] arr, int left, int right)
+        public static void Qsort(int[] arr, int left, int right)
         {
             while (true)
             {
-                // For Recursion
                 if (left >= right) return;
                 var pivot = Partition(arr, left, right);
-
-                if (pivot > 1) QuickSortRecursive(arr, left, pivot - 1);
-
-                if (pivot + 1 < right)
-                {
-                    left = pivot + 1;
-                    continue;
-                }
-                break;
+                if (pivot > 1) Qsort(arr, left, pivot - 1);
+                if (pivot + 1 < right) { left = pivot + 1; continue; } break;
             }
         }
     }

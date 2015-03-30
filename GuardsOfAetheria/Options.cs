@@ -47,9 +47,8 @@ namespace GuardsOfAetheria
             };
             var appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             var doc = new XmlDocument();
-            var xmlDeclaration = doc.CreateXmlDeclaration("1.0", "utf-8", null);
             var root = doc.CreateElement("settings");
-            doc.InsertBefore(xmlDeclaration, doc.DocumentElement);
+            doc.InsertBefore(doc.CreateXmlDeclaration("1.0", "utf-8", null), doc.DocumentElement);
             doc.AppendChild(root);
             for (var i = 0; i < Instance.CurrentSettings.Length; i++)
             {

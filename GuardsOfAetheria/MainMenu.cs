@@ -13,16 +13,8 @@ namespace GuardsOfAetheria
         {
             var utility = new Utility();
             Console.Clear();
-            //utility.WordWrap("qdasui afhai fhi ffib if bef eiuhe bei vewvuiw vev ewvbewiv ewwe vebvievbu weviweu vbweuiew vwe ve vw ev ewfbewbeuivw eve i vwev uiewvbwiuvew ewivubewviwev weveivuwebewivbuvwie vwebwiuv");
-            //Console.ReadKey(); //for wordwrap testing
-            if (!Directory.Exists(appdata + @"\Guards of Aetheria"))
-            {
-                Directory.CreateDirectory(appdata + @"\Guards of Aetheria");
-            }
-            if (!File.Exists(appdata + @"\Guards of Aetheria\Options.options"))
-            {
-                Options.Instance.InitialiseOptions();
-            }
+            if (!Directory.Exists(appdata + @"\Guards of Aetheria")) Directory.CreateDirectory(appdata + @"\Guards of Aetheria");
+            if (!File.Exists(appdata + @"\Guards of Aetheria\Options.options")) Options.Instance.InitialiseOptions();
             else
             {
                 Options.Instance.CurrentSettings = new Options.Settings[Options.Instance.SettingsList.Length];
@@ -77,7 +69,7 @@ namespace GuardsOfAetheria
             }
         }
 
-        private void DisplayOptions() //TODO: make general method for options?
+        private void DisplayOptions()
         {
             Console.Clear();
             Console.WriteLine("Options\n");
@@ -119,7 +111,8 @@ namespace GuardsOfAetheria
                         var doc = new XmlDocument();
                         for (var i = 0; i < Options.Instance.SettingNames.Length; i++)
                         {
-                            doc.AppendChild(doc.CreateElement(Convert.ToString(optionNumber),
+                            doc.AppendChild(doc.CreateElement(
+                                Convert.ToString(optionNumber),
                                 Convert.ToString(optionChoice)));
                         }
                         doc.Save(appdata + @"\Guards of Aetheria\Options.option");
@@ -127,22 +120,10 @@ namespace GuardsOfAetheria
                         return;
                 }
 
-                if (optionNumber < 0)
-                {
-                    optionNumber = Options.Instance.SettingNames.Length - 1;
-                }
-                if (optionNumber > Options.Instance.SettingNames.Length - 1)
-                {
-                    optionNumber = 0;
-                }
-                if (optionChoice < 0)
-                {
-                    optionChoice = Options.Instance.SettingsList[optionNumber].Length - 1;
-                }
-                if (optionChoice > Options.Instance.SettingsList[optionNumber].Length - 1)
-                {
-                    optionChoice = 0;
-                }
+                if (optionNumber < 0) optionNumber = Options.Instance.SettingNames.Length - 1;
+                if (optionNumber > Options.Instance.SettingNames.Length - 1) optionNumber = 0;
+                if (optionChoice < 0) optionChoice = Options.Instance.SettingsList[optionNumber].Length - 1;
+                if (optionChoice > Options.Instance.SettingsList[optionNumber].Length - 1) optionChoice = 0;
 
                 Options.Instance.CurrentSettings[optionNumber] =
                     Options.Instance.SettingsList[optionNumber][optionChoice];
@@ -155,7 +136,7 @@ namespace GuardsOfAetheria
         private void DisplayCredits()
         {
             Console.Clear();
-            Console.WriteLine("Coders:\nAhsome\naytimothy\nsomebody1234\n\nWriter/Designer:\nLafamas");
+            Console.WriteLine("Coders:\nAhkam \"Ahsome\" Nihardeen\nTimothy \"aytimothy\" Chew\nE-Hern \"somebody1234\" Lee\n\nWriter/Designer:\nPerry \"Lafamas\" Luo\nJonathan");
             DisplayMainMenu();
         }
     }

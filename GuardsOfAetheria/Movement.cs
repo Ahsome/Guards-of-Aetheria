@@ -24,6 +24,7 @@ namespace GuardsOfAetheria
 
             Console.Clear();
             var locationXmlData = xmlData as XElement[] ?? xmlData.ToArray();
+            //TODO: null coalesce?!
             DisplayLocation(locationXmlData);
 
             var options = DisplayOption(locationXmlData);
@@ -40,17 +41,13 @@ namespace GuardsOfAetheria
 
             var tempVariable = ((string) xElements.Elements("textVariables").FirstOrDefault()).Split(',');
 
-            var variableDictionary = LocationDictionary();
+            var variableDictionary = new Dictionary<string, object> {{"Player.Instance.Name", Player.Instance.Name}};
 
             var textVariable = new object[tempVariable.Length];
 
             for (var i = 0; i < tempVariable.Length; i++)
-            {
                 if (variableDictionary.ContainsKey(tempVariable[i]))
-                {
                     textVariable[i] = variableDictionary[tempVariable[i]];
-                }
-            }
             Console.WriteLine(textToDisplay.Replace(@"\n", Environment.NewLine), textVariable);
         }
 
@@ -59,12 +56,6 @@ namespace GuardsOfAetheria
             var possibleOptions = locationXmlData.Elements("options");
             var options = ((string) possibleOptions.FirstOrDefault()).Split(',');
             return options;
-        }
-
-        private static Dictionary<string, object> LocationDictionary()
-        {
-            var variableDictionary = new Dictionary<string, object> {{"Player.Instance.Name", Player.Instance.Name}};
-            return variableDictionary;
         }
 
         private static void SetLocation(int option, IEnumerable<XElement> xmlData)

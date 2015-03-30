@@ -6,10 +6,7 @@ namespace GuardsOfAetheria
     {
         private static void Main()
         {
-            /* Think about these:
-             * Damage = MainAtt * random.Next(-lvl,lvl+1) + DamageModifier;
-             * Fake Class: Spaghetti Monster ;)
-             */
+            // Fake Class: Spaghetti Monster ;)
 
             Console.CursorVisible = false;
             Player.Instance.LocationRegion = "TestRegion";
@@ -20,15 +17,15 @@ namespace GuardsOfAetheria
             var mainMenu = new MainMenu();
             mainMenu.DisplayMainMenu();
 
+            var movement = new Movement();
+
             while (true)
             {
-                var movement = new Movement();
                 movement.ShowLocation();
                 Console.SetCursorPosition(0, 0);
                 Console.Clear();
             }
             //Took way too long to make this ;)
-            //TODO: environemnt.exit in inventory options?
         }
     }
 }

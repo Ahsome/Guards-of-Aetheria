@@ -71,32 +71,18 @@ namespace GuardsOfAetheria
         public void UpdateInventoryNameAll()
         {
             for (var i = 0; i < 4; i++)
-            {
                 for (var j = 0; j < 50; j++)
-                {
                     InventoryNameAll[50*i + j + 1] = InventoryName[i][j];
-                }
-            }
         }
 
         public void UpdateInventoryName()
         {
             for (var i = 0; i < 4; i++)
-            {
                 for (var j = 0; j < InventoryName[i].Length; j++)
-                {
                     InventoryName[i][j] = InventoryNameAll[50*i + j + 1];
-                }
-            }
         }
 
-        public void InitialiseAtts()
-        {
-            Instance.PrimaryAtt = 13;
-            Instance.SecondaryAtt = 10;
-            Instance.TertiaryAtt = 7;
-            UpdateAtts();
-        }
+        public void InitialiseAtts() { Instance.PrimaryAtt = 13; Instance.SecondaryAtt = 10; Instance.TertiaryAtt = 7; UpdateAtts(); }
 
         public void UpdateAtts()
         {
