@@ -7,10 +7,9 @@ namespace GuardsOfAetheria
 {
     internal class Movement
     {
-        private readonly Utility utility = new Utility();
-
         public void ShowLocation()
         {
+            Console.SetCursorPosition(0, 0); Console.Clear();
             var xelement = XElement.Load("..\\..\\LocationDatabase.xml");
             var xmlData = xelement.Elements("world")
                 .Elements("region")
@@ -29,7 +28,7 @@ namespace GuardsOfAetheria
 
             var options = DisplayOption(locationXmlData);
             Console.SetCursorPosition(0, 5);
-            var optionSelected = utility.SelectOption(options);
+            var optionSelected = options.SelectOption();
 
             SetLocation(optionSelected, locationXmlData);
         }
@@ -41,7 +40,7 @@ namespace GuardsOfAetheria
 
             var tempVariable = ((string) xElements.Elements("textVariables").FirstOrDefault()).Split(',');
 
-            var variableDictionary = new Dictionary<string, object> {{"Player.Instance.Name", Player.Instance.Name}};
+            var variableDictionary = new Dictionary<string, object> {{"Name", Player.Instance.Name}};
 
             var textVariable = new object[tempVariable.Length];
 

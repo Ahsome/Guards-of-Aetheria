@@ -50,37 +50,22 @@ namespace GuardsOfAetheria
         public string LocationBuilding { get; set; }
         public string LocationRoom { get; set; }
         public int InventorySpace { get; set; }
+        // weapon = 0, arm = 1, con = 2, mat = 3
+        //TODO: set 0 as weaponIndex etc
         //Compartments -> weapons/armours/consumables/materials -> details
         //details for weps: prefix, name, (suffix, avg damage, damage%, gem1 location, gem2 location, gem3 location
         //same for armours
-        //TODO: make compartments less accessible depending on stuff e.g. being in combat/leaving them behind
-        public int[][][] Inventory { get; set; }
-        public string[][] InventoryName { get; set; }
-        public string[] InventoryNameAll { get; set; }
-        public int[][][] InventoryOld { get; set; }
-        public int[][][] Equipped { get; set; }
+        //TODO: make compartments less accessible depending on stuff e.g. being in combat/leaving them behind (at home)
+        public int[][] Inventory { get; set; }
+        public string[] InventoryName { get; set; }
+        public int[][] InventoryOld { get; set; }
+        //Weapon, Offhand, Head, Chest, Arms, Gauntlets, Legs, Shoes
+        public int[][] Equipped { get; set; }
 
-        public static Player Instance
-        {
-            get { return OrigInstance; }
-        }
+        public static Player Instance { get { return OrigInstance; } }
 
         // Melee = 1, Ranged = 2, Magic = 3
         // [] = {(Class, Class, Type, Material), (Weapon, Armour, Item), (Prefix, sortNumber), (Suffix), (Tier), (Rarity), (ortNumber)}
-
-        public void UpdateInventoryNameAll()
-        {
-            for (var i = 0; i < 4; i++)
-                for (var j = 0; j < 50; j++)
-                    InventoryNameAll[50*i + j + 1] = InventoryName[i][j];
-        }
-
-        public void UpdateInventoryName()
-        {
-            for (var i = 0; i < 4; i++)
-                for (var j = 0; j < InventoryName[i].Length; j++)
-                    InventoryName[i][j] = InventoryNameAll[50*i + j + 1];
-        }
 
         public void InitialiseAtts() { Instance.PrimaryAtt = 13; Instance.SecondaryAtt = 10; Instance.TertiaryAtt = 7; UpdateAtts(); }
 

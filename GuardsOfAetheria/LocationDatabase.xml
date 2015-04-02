@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <world>
     <region name="TestRegion">
@@ -13,9 +13,9 @@
             <optionBuilding>Outside,Outside,Outside,Outside</optionBuilding>
             <optionRoom>AB,TutorialRoom,TutorialRoom,TutorialRoom</optionRoom>
           </room>
-         <room name="AB">
+          <room name="AB">
             <textToDisplay>Welcome to the game again, {0}.\nYou sucessfully tested the movement, {0}.\nGood luck with the next one\nYour given options are located below\nUse your arrow keys to move, press ENTER to select</textToDisplay>
-            <textVariables>Player.Instance.Name, Player.Instance.Name</textVariables>
+            <textVariables>Name, Name</textVariables>
             <options>PL,PL,PL,PL</options>
             <optionRegion>
               TestRegion,TestRegion,TestRegion,TestRegion

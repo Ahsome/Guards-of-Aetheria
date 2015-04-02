@@ -218,7 +218,6 @@ namespace GuardsOfAetheria
         public void WeaponGen(General.Material mat)
         {
             var general = new General();
-            var utility = new Utility();
             var rand = new Random();
             var weaponClass = rand.Next(0, 3);
             var weaponType = rand.Next(0, Weapons[weaponClass].Length);
@@ -230,18 +229,18 @@ namespace GuardsOfAetheria
             var prefix = general.Prefixes[prefixRarity][prefixFinal];
             Console.WriteLine("You found a {0} {1}.", prefix, weaponName);
             var firstEmptySlot = -1;
-            var spaceLeft = utility.SpaceLeft();
-            for (var i = 0; i < 50 && firstEmptySlot == -1; i++) if (Player.Instance.Inventory[1][i][1] == 0) firstEmptySlot = i;
+            var spaceLeft = Utility.SpaceLeft();
+            for (var i = 0; i < 50 && firstEmptySlot == -1; i++) if (Player.Instance.Inventory[i][1] == 0 && Player.Instance.Inventory[i][0] == 1) firstEmptySlot = i;
             //TODO: select where to put it
             if (spaceLeft < 1)
             {
                 Console.WriteLine("Your inventory is full. You:");
                 string[] options = {"replace another item with this one", "discard this item"};
-                var menuSelected = utility.SelectOption(options);
-                switch (menuSelected)
+                var option = options.SelectOption();
+                switch (option)
                 {
                     case 1: //Console.Clear();?
-                        utility.SelectOption(Player.Instance.InventoryNameAll);
+                        Player.Instance.InventoryName.SelectOption();
                         break;
                     case 2: //Do nothing
                         break;
@@ -249,10 +248,8 @@ namespace GuardsOfAetheria
             }
             else
             {
-                Player.Instance.Inventory[1][firstEmptySlot] = new[] { weaponClass, weaponType, weapon, prefixRarity, prefixFinal, 0, 0 };
-                Player.Instance.InventoryName[1][firstEmptySlot] =
-                    general.Prefixes[prefixRarity][prefixFinal] +
-                    Weapons[weaponClass][weaponType][weapon];
+                Player.Instance.Inventory[firstEmptySlot] = new[] { 1, weaponClass, weaponType, weapon, prefixRarity, prefixFinal, 0, 0 };
+                Player.Instance.InventoryName[firstEmptySlot] = general.Prefixes[prefixRarity][prefixFinal] + Weapons[weaponClass][weaponType][weapon];
             }
         }
     }
@@ -279,7 +276,6 @@ namespace GuardsOfAetheria
         public void ArmourGen(General.Material mat)
         {
             var general = new General();
-            var utility = new Utility();
             var rand = new Random();
             //var armourClass = rand.Next(0, 3);
             //var armour = rand.Next(0, armours[armourClass].Length);
@@ -295,17 +291,17 @@ namespace GuardsOfAetheria
             var prefix = general.Prefixes[prefixRarity][prefixFinal];
             Console.WriteLine("You found a {0} {1} {2}.", prefix, armourTypeName, armourPartName);
             var firstEmptySlot = -1;
-            var spaceLeft = utility.SpaceLeft();
-            for (var i = 0; i < 50 && firstEmptySlot == -1; i++) if (Player.Instance.Inventory[2][i][1] == 0) firstEmptySlot = i;
+            var spaceLeft = Utility.SpaceLeft();
+            for (var i = 0; i < 50 && firstEmptySlot == -1; i++) if (Player.Instance.Inventory[i][1] == 0 && Player.Instance.Inventory[i][0] == 2) firstEmptySlot = i;
             if (spaceLeft < armourSpace)
             {
                 Console.WriteLine("Your inventory is full. You:");
                 string[] options = {"replace another item with this one", "discard this item"};
-                var menuSelected = utility.SelectOption(options);
-                switch (menuSelected)
+                var option = options.SelectOption();
+                switch (option)
                 {
                     case 1: //Console.Clear(); ?
-                        utility.SelectOption(Player.Instance.InventoryNameAll);
+                        Player.Instance.InventoryName.SelectOption();
                         break;
                     case 2: //Do nothing - the item is discarded, the inventory is unchanged :)
                         break;
@@ -313,7 +309,7 @@ namespace GuardsOfAetheria
             }
             else
             {
-                Player.Instance.Inventory[2][firstEmptySlot] = new[] { armourType, armourPart, prefixRarity, prefixFinal, 0, 0, armourSpace };
+                Player.Instance.Inventory[firstEmptySlot] = new[] { 2, armourType, armourPart, prefixRarity, prefixFinal, 0, 0, armourSpace };
             }
         }
     }
