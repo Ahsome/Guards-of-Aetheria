@@ -58,17 +58,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CharacterCreation.cs" />
+    <Compile Include="CharacterCreation.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Combat.cs" />
-    <Compile Include="Equipment.cs" />
+    <Compile Include="DatabaseReader.cs" />
     <Compile Include="MainMenu.cs" />
-    <Compile Include="Movement.cs" />
     <Compile Include="Options.cs" />
-    <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Skills.cs" />
-    <Compile Include="Utility.cs" />
+    <Compile Include="StateLoader.cs" />
+    <Compile Include="UI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
