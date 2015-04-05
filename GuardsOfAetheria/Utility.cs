@@ -155,11 +155,11 @@ namespace GuardsOfAetheria
         public static int[] Spend(string[] text, string[] names, int[] items, int[] newItems, int[] cost, int currency, int[] value = null)
         {
             var arrowPosition = Console.CursorLeft; Console.Clear();
-            var option = 0; var numLines = WordWrap(text[0]); var maxDigits = (int) Math.Log10(items.Max() + currency) + 1; var maxCurrencyLength = (int) Math.Log10(currency + text[1].Length + Math.Max(text[2].Length, text[3].Length) + 1);
+            var option = 0; var numLines = WordWrap(text[0]); var maxDigits = (int) Math.Log10(items.Max() + currency) + 1; var maxCurrencyLength = (int) Math.Log10(currency) + text[1].Length + Math.Max(text[2].Length, text[3].Length) + 1;
             if (text.Length > 4) maxCurrencyLength = Math.Max(maxCurrencyLength, text[4].Length);
             for (var i = 0; i < items.Length; i++)
             {
-                Console.SetCursorPosition(0, Console.CursorTop++);
+                Console.SetCursorPosition(0, ++Console.CursorTop);
                 Console.Write(names[i]);
                 Console.CursorLeft = arrowPosition + 2;
                 Console.Write(items[i]);

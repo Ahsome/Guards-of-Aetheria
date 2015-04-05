@@ -26,8 +26,7 @@ namespace GuardsOfAetheria
             Console.WriteLine(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
             Console.WriteLine("                      © Black-Strike Studios, 2014 - {0}                      ", DateTime.Now.Year);
             Console.CursorTop = 8;
-            var option = new[] {"New Game", "Load Game", "Options", "Credits", "Quit Game"}.SelectOption();
-            option.Activate();
+            new[] {"New Game", "Load Game", "Options", "Credits", "Quit Game"}.SelectOption().Activate();
         }
 
         public static void ShowOptions()
@@ -66,8 +65,10 @@ namespace GuardsOfAetheria
                                 newOption.Attributes[1].Value = choice.ToString();
                         }
                         doc.Save(location);
-                        DisplayMainMenu(); break;
-               }
+                        DisplayMainMenu();
+                        return;
+                        //TODO: break to calling method or something
+                }
                 if (number < 0) number = Options.Instance.Names.Length - 1;
                 if (number > Options.Instance.Names.Length - 1) number = 0;
                 if (choice < 0) choice = Options.Instance.List[number].Length - 1;
@@ -81,6 +82,7 @@ namespace GuardsOfAetheria
         public static void ShowCredits()
         {
             Console.Clear(); Console.WriteLine("Credits:\n\nCoders:\nAhkam \"Ahsome\" Nihardeen\nTimothy \"aytimothy\" Chew\nE-Hern \"somebody1234\" Lee\n\nWriter/Designer:\nPerry \"Lafamas\" Luo\nJohnathan");
+            Console.ReadKey();
             DisplayMainMenu();
         }
     }
