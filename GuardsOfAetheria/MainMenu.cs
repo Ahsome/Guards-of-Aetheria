@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -66,7 +67,7 @@ namespace GuardsOfAetheria
                         }
                         doc.Save(location);
                         DisplayMainMenu(); break;
-                }
+               }
                 if (number < 0) number = Options.Instance.Names.Length - 1;
                 if (number > Options.Instance.Names.Length - 1) number = 0;
                 if (choice < 0) choice = Options.Instance.List[number].Length - 1;

@@ -8,6 +8,7 @@ namespace GuardsOfAetheria
     internal class MainProgram
     {
         //TODO: improve readability
+        //TODO: create character + save, Console.Title for location etc
         private static readonly string AppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Guards of Aetheria");
         private static void Main()
         {
