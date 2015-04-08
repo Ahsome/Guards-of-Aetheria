@@ -201,7 +201,7 @@ namespace GuardsOfAetheria
                         case 1: Console.WriteLine("{0}{1}{2}", text[1], currency, text[3]); break;
                         case 0:
                             if (text.Length > 4) Console.WriteLine(text[4]);
-                            else Console.WriteLine("{0}no{1}", text[1], text[3]); break;
+                            else Console.WriteLine("{0}no{1}", text[1], text[2]); break;
                         default: Console.WriteLine("{0}{1}{2}", text[1], currency, text[2]); break;
                     }
                     //TODO: optimise - less repetition
