@@ -173,21 +173,20 @@ namespace GuardsOfAetheria
             {
                 var totalItems = new int[items.Length];
                 var input = Console.ReadKey().Key;
-                Console.SetCursorPosition(arrowPosition, line);
-                Console.Write(' ');
+                var amountIsChanged = false;
                 switch (input)
                 {
                     case ConsoleKey.UpArrow: option--; break;
                     case ConsoleKey.DownArrow: option++; break;
                     case ConsoleKey.LeftArrow:
-                        if (newItems[option] > 0) { newItems[option]--; currency += cost[option]; }
-                        else if (value != null && items[option] + newItems[option] > 0) { newItems[option]--; currency += value[option]; } break;
+                        if (newItems[option] > 0) { newItems[option]--; currency += cost[option]; amountIsChanged = true; }
+                        else if (value != null && items[option] + newItems[option] > 0) { newItems[option]--; currency += value[option]; amountIsChanged = true; } break;
                     case ConsoleKey.RightArrow:
-                        if (currency > 0) { newItems[option]++; currency -= cost[option]; }
-                        else if (value != null && newItems[option] < 0) { newItems[option]++; currency -= value[option]; } break;
+                        if (currency > 0) { newItems[option]++; currency -= cost[option]; amountIsChanged = true; }
+                        else if (value != null && newItems[option] < 0) { newItems[option]++; currency -= value[option]; amountIsChanged = true; } break;
                     case ConsoleKey.Enter: return totalItems;
                 }
-                if (input == ConsoleKey.RightArrow || input == ConsoleKey.LeftArrow)
+                if (amountIsChanged)
                 {
                     for (var i = 0; i < items.Length; i++) totalItems[i] = items[i] + newItems[i];
                     Console.SetCursorPosition(arrowPosition + 2, line);
@@ -209,9 +208,10 @@ namespace GuardsOfAetheria
                 }
                 if (option < 0) option = items.Length - 1;
                 else if (option > items.Length - 1) option = 0;
+                if (input != ConsoleKey.UpArrow && input != ConsoleKey.DownArrow) continue;
+                Console.SetCursorPosition(arrowPosition, line); Console.Write(' ');
                 line = option + numLines + 1;
-                Console.SetCursorPosition(arrowPosition, line);
-                Console.Write('>');
+                Console.SetCursorPosition(arrowPosition, line); Console.Write('>');
             }
         }
     }
