@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GuardsOfAetheria
 {
@@ -224,8 +225,8 @@ namespace GuardsOfAetheria
             var weapon = rand.Next(0, Weapons[weaponClass][weaponType].Length);
             var weaponName = Weapons[weaponClass][weaponType][weapon];
             var prefixRarity = Convert.ToInt16(Math.Round(Math.Log10(rand.Next(0, 10001))));
-            var prefixNumber = rand.Next(0, general.Prefixes[prefixRarity].Length/2);
-            var prefixFinal = prefixNumber*2 + rand.Next(0, 2);
+            var prefixNumber = rand.Next(0, general.Prefixes[prefixRarity].Length / 2);
+            var prefixFinal = prefixNumber * 2 + rand.Next(0, 2);
             var prefix = general.Prefixes[prefixRarity][prefixFinal];
             Console.WriteLine("You found a {0} {1}.", prefix, weaponName);
             var firstEmptySlot = -1;
@@ -235,9 +236,7 @@ namespace GuardsOfAetheria
             if (spaceLeft < 1)
             {
                 Console.WriteLine("Your inventory is full. You:");
-                string[] options = {"replace another item with this one", "discard this item"};
-                var option = options.SelectOption();
-                switch (option)
+                switch (new List<string> { "replace another item with this one", "discard this item" }.SelectOption())
                 {
                     case 1: //Console.Clear();?
                         Player.Instance.InventoryName.SelectOption();
@@ -286,8 +285,8 @@ namespace GuardsOfAetheria
             var armourPartName = parts[armourPart];
             var armourSpace = partSpaces[armourPart];
             var prefixRarity = Convert.ToInt16(Math.Round(Math.Log10(rand.Next(0, 10001))));
-            var prefixNumber = rand.Next(0, general.Prefixes[prefixRarity].Length/2);
-            var prefixFinal = prefixNumber*2 + rand.Next(0, 2);
+            var prefixNumber = rand.Next(0, general.Prefixes[prefixRarity].Length / 2);
+            var prefixFinal = prefixNumber * 2 + rand.Next(0, 2);
             var prefix = general.Prefixes[prefixRarity][prefixFinal];
             Console.WriteLine("You found a {0} {1} {2}.", prefix, armourTypeName, armourPartName);
             var firstEmptySlot = -1;
@@ -296,9 +295,7 @@ namespace GuardsOfAetheria
             if (spaceLeft < armourSpace)
             {
                 Console.WriteLine("Your inventory is full. You:");
-                string[] options = {"replace another item with this one", "discard this item"};
-                var option = options.SelectOption();
-                switch (option)
+                switch (new List<string> { "replace another item with this one", "discard this item" }.SelectOption())
                 {
                     case 1: //Console.Clear(); ?
                         Player.Instance.InventoryName.SelectOption();

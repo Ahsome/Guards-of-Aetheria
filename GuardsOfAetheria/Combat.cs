@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GuardsOfAetheria
 {
@@ -129,8 +130,7 @@ namespace GuardsOfAetheria
             decimal damageNumber = rand.Next(0, 10001);
             decimal penetrationNumber = rand.Next(0, 10001);
             decimal armourNumber = rand.Next(0, 10001);
-            string[] options = {WepNames[attacker][0], WepNames[attacker][1]}; //TODO: change
-            var weaponNumber = options.SelectOption();
+            var weaponNumber = new List<string> {WepNames[attacker][0], WepNames[attacker][1]}.SelectOption();
             var totalPenetration =
                 Convert.ToInt32(
                     Math.Round(ArmourPenetrationRange[attacker][0][weaponNumber] +

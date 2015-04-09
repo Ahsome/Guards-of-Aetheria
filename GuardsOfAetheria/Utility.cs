@@ -1,25 +1,20 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GuardsOfAetheria
 {
     public static class Utility
     {
-        public static int SelectOption(this string[] options, bool menuIsVisible = false)
+        public static int SelectOption(this List<string> options, bool menuIsVisible = false)
         {
-            var menuSelected = 1; bool scrollingIsContinuous; var startLine = Console.CursorTop; var pageNumber = 1;
+            var menuSelected = 1; var startLine = Console.CursorTop; var pageNumber = 1;
             //TODO: option to jump to start for continuous scrolling?
             var numLines = 22 - startLine;
-            var pages = options.Length / numLines;
-            var scrollIsEnabled = options.Length > numLines;
-            var possibleOptions = options.Length - (numLines * (pageNumber - 1));
-            switch (Options.Instance.Current[0])
-            {
-                case Options.Settings.Pages: scrollingIsContinuous = false; break;
-                case Options.Settings.Scroll: scrollingIsContinuous = true; break;
-                default: throw new Exception("Someone tampered with the settings >:(");
-                //TODO: is exception necessary? FixStuff project - options, game?
-            }
+            var pages = options.Count / numLines;
+            var scrollIsEnabled = options.Count > numLines;
+            var possibleOptions = options.Count - (numLines * (pageNumber - 1));
+            var scrollingIsContinuous = (bool)Options.Instance.Current[0];
             //TODO: detect cheatengine
             if (numLines < possibleOptions) possibleOptions = numLines;
             for (var i = 0; i < possibleOptions; i++)
@@ -65,7 +60,7 @@ namespace GuardsOfAetheria
                     {
                         if (!scrollingIsContinuous)
                         {
-                            possibleOptions = options.Length - (numLines * (pageNumber - 1));
+                            possibleOptions = options.Count - (numLines * (pageNumber - 1));
                             if (numLines < possibleOptions) possibleOptions = numLines;
                             switch (pageIncrement)
                             {
@@ -82,8 +77,8 @@ namespace GuardsOfAetheria
                         }
                         else
                         {
-                            if (pageNumber < 1) pageNumber = options.Length;
-                            else if (pageNumber > options.Length) pageNumber = 1;
+                            if (pageNumber < 1) pageNumber = options.Count;
+                            else if (pageNumber > options.Count) pageNumber = 1;
                             switch (pageIncrement)
                             {
                                 case -1: menuSelected = 1; pageNumber--; break;
@@ -95,7 +90,7 @@ namespace GuardsOfAetheria
                         {
                             Console.SetCursorPosition(2, startLine + i + 1); Console.Write(new string(' ', Console.WindowWidth));
                             Console.SetCursorPosition(2, startLine + i + 1);
-                            Console.Write(!scrollingIsContinuous ? options[i + (numLines*(pageNumber - 1))] : options[(pageNumber + i)%options.Length]);
+                            Console.Write(!scrollingIsContinuous ? options[i + (numLines*(pageNumber - 1))] : options[(pageNumber + i)%options.Count]);
                         }
                     }
                     Console.SetCursorPosition(0, menuSelected + startLine); Console.Write('>');
@@ -130,7 +125,7 @@ namespace GuardsOfAetheria
             return spaceLeft;
         }
 
-        public static int IntParseFast(string value) { return value.Aggregate(0, (current, t) => 10 * current + (t - 48)); } //from http://www.dotnetperls.com/int-parse
+        public static int IntParseFast(string value) { return value.Aggregate(0, (current, t) => 10 * current + (t - 48)); }
 
         public static int WordWrap(string paragraph)
         { //int maxchars = 79?
@@ -216,7 +211,7 @@ namespace GuardsOfAetheria
         }
     }
     internal class Quicksort
-    { //From http://www.softwareandfinance.com/CSharp/QuickSort_Recursive.html
+    {
         public static int Partition(int[] numbers, int left, int right)
         { //TODO: adapt to mmultidimensional arrays
             var pivot = numbers[left];

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Xml;
+﻿using GuardsOfAetheria.Properties;
 
 namespace GuardsOfAetheria
 {
     public class Options
     {
-        public enum Settings { Pages, Scroll }
-
         private static readonly Options OrigInstance = new Options();
 
         public string[] Names =
@@ -16,46 +13,32 @@ namespace GuardsOfAetheria
 
         public string[][] Strings =
         {
-            new[]
-            {
-                "Pages",
-                "Scroll"
-            }
+            new[] { "Pages", "Scroll" }
         };
 
-        public Settings[][] List =
+        public object[][] List =
         {
-            new[]
-            {
-                Settings.Pages,
-                Settings.Scroll
-            }
+            new object[] { false, true }
         };
 
-        private Options() {}
+        public object[] InitialValues =
+        {
+            true
+        };
+
+        public object[] Types = {typeof(int)};
+        internal Options() {}
         static Options() {}
 
-        public Settings[] Current { get; set; }
+        public object[] Current { get; set; }
 
         public static Options Instance { get { return OrigInstance; } }
 
-        public void InitialiseOptions()
+        public void LoadOptions()
         {
-            var appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            var doc = new XmlDocument();
-            var root = doc.CreateElement("settings");
-            doc.InsertBefore(doc.CreateXmlDeclaration("1.0", "utf-8", null), doc.DocumentElement);
-            doc.AppendChild(root);
-            Instance.Current = new Settings[List.Length];
-            for (var i = 0; i < List.Length; i++)
-            {
-                var setting = (XmlElement) root.AppendChild(doc.CreateElement("setting"));
-                setting.SetAttribute("number", i.ToString());
-                setting.SetAttribute("value", "0");
-                Instance.Current[i] = Instance.List[i][0];
-                //TODO: rename
-            }
-            doc.Save(appdata + @"\Guards of Aetheria\Options.option");
+            Instance.Current = new object[Names.Length];
+            for (var i = 0; i < Names.Length; i++) Instance.Current[i] = Settings.Default[Names[i].Replace(" ","_")];
+            Settings.Default.Save();
         }
     }
 }

@@ -14,24 +14,12 @@ namespace GuardsOfAetheria
         {
             // Fake Class: Spaghetti Monster ;)
             Console.CursorVisible = false;
-            Player.Instance.LocationRegion = "TestRegion";
-            Player.Instance.LocationArea = "TestArea";
-            Player.Instance.LocationBuilding = "Outside";
-            Player.Instance.LocationRoom = "TutorialRoom";
-            //TODO: change when locations are finalised
+            //TODO: 
+            Player.Instance.RoomId = 1;
+            //TODO: change when locations are finalised, 
             if (!Directory.Exists(AppData)) Directory.CreateDirectory(AppData);
-            if (!File.Exists(Path.Combine(AppData, "Options.options"))) Options.Instance.InitialiseOptions();
-            else
-            {
-                Options.Instance.Current = new Options.Settings[Options.Instance.List.Length];
-                var doc = new XmlDocument();
-                doc.Load(Path.Combine(AppData, "Options.options"));
-                var values = doc.SelectNodes("settings/setting/@value");
-                var i = 0;
-                foreach (var value in (from XmlNode node in values select Utility.IntParseFast(node.ToString())))
-                { Options.Instance.Current[i] = Options.Instance.List[i][value]; i++; }
-            }
-
+            var options = new Options();
+            options.LoadOptions();
             MainMenu.DisplayMainMenu();
             var movement = new Movement();
             while (true) movement.ShowLocation();

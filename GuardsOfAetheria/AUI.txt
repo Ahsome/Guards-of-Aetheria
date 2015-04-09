@@ -1,0 +1,23 @@
+               |
+               |
+               |
+               |
+               |
+_______________|
+               |
+Strength: 000  |
+Accuracy: 000  |
+Concentration: 000|
+               |
+Vitality:  0000|
+Endurance: 0000|
+Stamina:   0000|
+               |
+Level: 00      |
+Experience: 00000|
+               |
+               |
+               |
+               |
+               |
+_______________|

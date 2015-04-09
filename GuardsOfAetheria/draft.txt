@@ -1,0 +1,47 @@
+Draft
+
+You have been marching through difficult terrain for days on end. Your friend <name> complains, “How are we, a (?) of 100 (?), going to make a difference to King <name>’s hundreds of thousands of troops? What’s the point? Every other platoon is sure to have at least a few thousand soldiers.”
+Marching through the forest in anti-ambush formation, the vanguard is suddenly met with explosions (?). You immediately recognise this is an ambush. You look behind you and realise that the rear guard has been ambushed as well. You see a faint shine of metal to your left, like the sun reflecting off a helmet; burning bales of hay rolling down onto the formation, a volley of arrows, which miraculously only damage your armour.
+
+Several of the platoon fall as the sounds of battle ring across the battlefield from the front and back, which means that you and your platoon are trapped.
+
+Your commander signals. Immediately, the party can be seen moving around. The warriors form a shield wall while the archers and mages fire a few volleys of projectiles. Several platoons go after the ambushers, and several others secure a retreat path downhill. Your platoon is chosen to go after the ambushers on the hill.
+
+(Add place for text after each move)
+You:
+Note: update text after eah option, look up how to word wrap
+Note: save to story.txt? (same filename as save)
+go left up the hill and:
+	get from cover to cover, taking the advance slowly					1
+	rush up the hill quickly								2
+	get into formation then steadily advance						3
+go right down a steep hill and:
+	flee down the hill									4
+	actually try to find a path down the hill because you feel confident			5
+	
+(1)
+You see a boulder ahead and:
+go about 15 metres uphill and to the left to a slight dip in the hill.				1.1
+go about 22 metres uphill and slightly to your right to another boulder.			1.2
+
+(1.1)
+You:
+go to a small dried-up river bank slightly to your right that leads up the to the tree line.	1.1.1
+charge straight uphill to the tree line.							1.1.2
+Wait for another platoon to pass your position follow them.					1.1.3
+
+(1.2)
+You:
+charge uphill about 16 metres straight to the tree line.					1.2.1
+strafe to your right while advancing.								1.2.2
+
+
+(3a, 2d)
+
+(1d)
+
+(2a)
+
+(1c)
+
+(3c)

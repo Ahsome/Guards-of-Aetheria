@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.OleDb;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -7,71 +10,46 @@ namespace GuardsOfAetheria
 {
     internal class Movement
     {
+        private static OleDbDataAdapter databaseAdapter;
+        private static DataRowCollection databaseRows;
+        private static readonly databaseDataSet DatabaseResults = new databaseDataSet();
+
         public void ShowLocation()
         {
             Console.SetCursorPosition(0, 0); Console.Clear();
-            var xelement = XElement.Load("..\\..\\LocationDatabase.xml");
-            var xmlData = xelement.Elements("world")
-                .Elements("region")
-                .Where(r => (string) r.Attribute("name") == Player.Instance.LocationRegion)
-                .Elements("area")
-                .Where(a => (string) a.Attribute("name") == Player.Instance.LocationArea)
-                .Elements("building")
-                .Where(b => (string) b.Attribute("name") == Player.Instance.LocationBuilding)
-                .Elements("room")
-                .Where(ro => (string) ro.Attribute("name") == Player.Instance.LocationRoom);
-
-            Console.Clear();
-            var locationXmlData = xmlData as XElement[] ?? xmlData.ToArray();
-            //TODO: null coalesce?!
-            DisplayLocation(locationXmlData);
-
-            var options = DisplayOption(locationXmlData);
+            var databaseConnection = new OleDbConnection(Properties.Settings.Default.databaseConnectionString);
+            //TODO: hope that ms access does binary search
+            var command = new OleDbCommand(String.Format("SELECT * FROM Rooms WHERE ID = {0}", Player.Instance.RoomId),
+                databaseConnection);
+            databaseAdapter = new OleDbDataAdapter(new OleDbCommand(String.Format("SELECT * FROM Rooms WHERE ID = {0}", Player.Instance.RoomId), databaseConnection));
+            //TODO: tell users to get http://www.microsoft.com/en-us/download/details.aspx?id=13255
+            databaseConnection.Open();
+            var locations = new List<string>();
+            var variables = new List<string>();
+            var ids = new List<string>();
+            var text = "";
+            //TODO: console colour option, font colour, 
+            databaseAdapter.Fill(DatabaseResults, "Rooms");
+            
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader != null && reader.Read())
+                {
+                    locations = (reader["Option Text"].ToString().Split(',').ToList());
+                    text = (reader["Text to Display"].ToString());
+                    ids = (reader["Room IDs"].ToString().Split(',').ToList());
+                    variables = (reader["Variables"].ToString().Split(',').ToList());
+                }
+            }
+            databaseConnection.Close();
+            var variableDictionary = new Dictionary<string, object> { { "Name", Player.Instance.Name } };
+            var textVariable = new object[variables.Count];
+            for (var i = 0; i < variables.Count; i++)
+                if (variableDictionary.ContainsKey(variables[i]))
+                    textVariable[i] = variableDictionary[variables[i]];
+            Console.WriteLine(text.Replace(@"\n", Environment.NewLine), textVariable);
             Console.SetCursorPosition(0, 5);
-            var optionSelected = options.SelectOption();
-
-            SetLocation(optionSelected, locationXmlData);
-        }
-
-        private void DisplayLocation(IEnumerable<XElement> locationXmlData)
-        {
-            var xElements = locationXmlData as XElement[] ?? locationXmlData.ToArray();
-            var textToDisplay = (string) xElements.Elements("textToDisplay").FirstOrDefault();
-
-            var tempVariable = ((string) xElements.Elements("textVariables").FirstOrDefault()).Split(',');
-
-            var variableDictionary = new Dictionary<string, object> {{"Name", Player.Instance.Name}};
-
-            var textVariable = new object[tempVariable.Length];
-
-            for (var i = 0; i < tempVariable.Length; i++)
-                if (variableDictionary.ContainsKey(tempVariable[i]))
-                    textVariable[i] = variableDictionary[tempVariable[i]];
-            Console.WriteLine(textToDisplay.Replace(@"\n", Environment.NewLine), textVariable);
-        }
-
-        private static string[] DisplayOption(IEnumerable<XElement> locationXmlData)
-        {
-            var possibleOptions = locationXmlData.Elements("options");
-            var options = ((string) possibleOptions.FirstOrDefault()).Split(',');
-            return options;
-        }
-
-        private static void SetLocation(int option, IEnumerable<XElement> xmlData)
-        {
-            var xElements = xmlData as XElement[] ?? xmlData.ToArray();
-            var newRegion = ((string) xElements.Elements("optionRegion").FirstOrDefault()).Split(',');
-
-            var newArea = ((string) xElements.Elements("optionArea").FirstOrDefault()).Split(',');
-
-            var newBuilding = ((string) xElements.Elements("optionBuilding").FirstOrDefault()).Split(',');
-
-            var newRoom = ((string) xElements.Elements("optionRoom").FirstOrDefault()).Split(',');
-
-            Player.Instance.LocationRegion = newRegion[option - 1];
-            Player.Instance.LocationArea = newArea[option - 1];
-            Player.Instance.LocationBuilding = newBuilding[option - 1];
-            Player.Instance.LocationRoom = newRoom[option - 1];
+            Player.Instance.RoomId = Utility.IntParseFast(ids[locations.SelectOption()]);
         }
     }
 }

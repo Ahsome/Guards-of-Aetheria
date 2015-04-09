@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace GuardsOfAetheria
 {
@@ -45,10 +46,12 @@ namespace GuardsOfAetheria
         public int PerceptionAtt { get; set; }
         public string[] InventoryItems { get; set; }
         public int[] InventoryCount { get; set; }
-        public string LocationRegion { get; set; }
-        public string LocationArea { get; set; }
-        public string LocationBuilding { get; set; }
-        public string LocationRoom { get; set; }
+        public string Region { get; set; }
+        public string Area { get; set; }
+        public string Building { get; set; }
+        public string Room { get; set; }
+        //TODO replace stuff with roomid, above only for names
+        public int RoomId { get; set; }
         public int InventorySpace { get; set; }
         // weapon = 0, arm = 1, con = 2, mat = 3
         //TODO: set 0 as weaponIndex etc
@@ -57,7 +60,7 @@ namespace GuardsOfAetheria
         //same for armours
         //TODO: make compartments less accessible depending on stuff e.g. being in combat/leaving them behind (at home)
         public int[][] Inventory { get; set; }
-        public string[] InventoryName { get; set; }
+        public List<string> InventoryName { get; set; }
         public int[][] InventoryOld { get; set; }
         //Weapon, Offhand, Head, Chest, Arms, Gauntlets, Legs, Shoes
         public int[][] Equipped { get; set; }
