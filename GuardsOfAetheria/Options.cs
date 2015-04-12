@@ -1,4 +1,5 @@
-﻿using GuardsOfAetheria.Properties;
+﻿using System.Collections.Generic;
+using GuardsOfAetheria.Properties;
 
 namespace GuardsOfAetheria
 {
@@ -6,38 +7,37 @@ namespace GuardsOfAetheria
     {
         private static readonly Options OrigInstance = new Options();
 
-        public string[] Names =
+        public List<string> Names = new List<string>
         {
             "Menu scrolling"
         };
 
-        public string[][] Strings =
+        public List<List<string>> Strings = new List<List<string>>
         {
-            new[] { "Pages", "Scroll" }
+            new List<string> { "Pages", "Scroll" }
         };
 
-        public object[][] List =
+        public List<List<object>> List = new List<List<object>>
         {
-            new object[] { false, true }
+            new List<object> { false, true },
         };
 
-        public object[] InitialValues =
+        public List<object> InitialValues = new List<object>
         {
-            true
+            true,
         };
 
-        public object[] Types = {typeof(int)};
         internal Options() {}
         static Options() {}
 
-        public object[] Current { get; set; }
+        public List<object> Current { get; set; }
 
         public static Options Instance { get { return OrigInstance; } }
 
         public void LoadOptions()
         {
-            Instance.Current = new object[Names.Length];
-            for (var i = 0; i < Names.Length; i++) Instance.Current[i] = Settings.Default[Names[i].Replace(" ","_")];
+            Instance.Current = new List<object>();
+            foreach (var name in Names) Instance.Current.Add(Settings.Default[name.Replace(" ","_")]);
             Settings.Default.Save();
         }
     }

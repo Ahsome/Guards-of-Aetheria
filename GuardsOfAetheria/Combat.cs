@@ -7,27 +7,26 @@ namespace GuardsOfAetheria
     {
         private static readonly Combat OrigInstance = new Combat();
 
-        private Combat() {}
-        static Combat() {}
+        private Combat() { }
+        static Combat() { }
 
-        public int[] CurrentVitality { get; set; }
-        public int[] CurrentMana { get; set; }
-        public int[] CurrentEndurance { get; set; }
-        public int[] CurrentStamina { get; set; }
-        public string[] Name { get; set; }
-        public string[][] WepNames { get; set; }
+        public List<int> CurrentVitality { get; set; }
+        public List<int> CurrentMana { get; set; }
+        public List<int> CurrentEndurance { get; set; }
+        public List<int> CurrentStamina { get; set; }
+        public List<string> NameOf { get; set; }
+        public List<List<string>> WepNames { get; set; }
         //[n] entity; [0] #1 [1] #2
-        public int[][] Attack { get; set; }
-        public int[] Defence { get; set; }
+        public List<List<int>> Attack { get; set; }
+        public List<int> Defence { get; set; }
         //[n] entity; [0] min [1] max; [0] #1 [1] #2
-        public int[][][] AtkPercent { get; set; } //TODO: calculate every time to prevent file edits
+        public List<List<List<int>>> AtkPercent { get; set; } //TODO: calculate every time to prevent file edits
         //[n] entity;[0] min [1] max; [0] #1 [1] #2
-        public int[][][] ArmourPenetrationRange { get; set; }
+        public List<List<List<int>>> ArmourPenetrationRange { get; set; }
         //[n] entity;[0] min [1] max
-        public int[][] ArmourToughnessRange { get; set; }
+        public List<List<int>> ArmourToughnessRange { get; set; }
 
         public static Combat Instance { get { return OrigInstance; } }
-        //private string[] CombatHistory { get; set; }
 
         //AtkMaxPercent[0] = 1.1 * stuff;
 
@@ -36,77 +35,15 @@ namespace GuardsOfAetheria
         // Slot 1-6 = Player's Party (up to 6)
         // Slot 7-12 = Enemies (up to 6 as well)
         // Party's stats stored here
-        /*
-        private static int selectedOption = 0;
-        private static int MaxOption = 1;
-        private static int screenId = 0;
-        
-        
-        private static int CurrentHistoryLine = 1; //For page up/down
-        private static int MaxHistoryLine = 1; // For the limits; this increases every time something is logged.
-        
-        public void Main()
-        {
-            while (true)
-            {
-                var keyPressed = Console.ReadKey().Key;
-                if (keyPressed == ConsoleKey.UpArrow)
-                {
-                    selectedOption++;
-                    if (selectedOption > MaxOption)
-                    {
-                        selectedOption = 1;
-                    }
-                    else
-                    {
-                        
-                    }
-                }
-                if (keyPressed == ConsoleKey.DownArrow)
-                {
-                    selectedOption--;
-                    if (selectedOption < 1)
-                    {
-                        selectedOption = MaxOption;
-                    }
-                    else
-                    {
-                        
-                    }
-                }
-                if (keyPressed == ConsoleKey.Enter)
-                {
-                    // Do something!!!
-                }
-                if (keyPressed == ConsoleKey.PageUp)
-                {
-                    
-                }
-                else
-                {
-                    
-                }
-                
-                Redraw();
-            }
-        }
-        
-        public void Redraw()
-        {
-            if (screenId == 0)
-            {
-                Console.WriteLine(TextHistory[]);
-            }
-        }*/
-        
+
         public void LoadEntities()
         {
             // TODO: Review XML code, see how to use it. - Tim
             //Location db -> scenario db -> enemy db
-            Instance.CurrentVitality[0] = Player.Instance.CurrentVitality;
-            Instance.CurrentMana[0] = Player.Instance.CurrentMana;
-            Instance.CurrentEndurance[0] = Player.Instance.CurrentEndurance;
-            Instance.Name[0] = "You";
+            Instance.CurrentVitality[0] = Players.You.CurrentVitality;
+            Instance.CurrentMana[0] = Players.You.CurrentMana;
+            Instance.CurrentEndurance[0] = Players.You.CurrentEndurance;
+            Instance.NameOf[0] = Players.You.Name; //TODO: or "You"
 
             //TODO: Calculate wep stats, check cheating
 
@@ -130,36 +67,36 @@ namespace GuardsOfAetheria
             decimal damageNumber = rand.Next(0, 10001);
             decimal penetrationNumber = rand.Next(0, 10001);
             decimal armourNumber = rand.Next(0, 10001);
-            var weaponNumber = new List<string> {WepNames[attacker][0], WepNames[attacker][1]}.SelectOption();
+            var weaponNumber = new List<string> { WepNames[attacker][0], WepNames[attacker][1] }.SelectOption();
             var totalPenetration =
                 Convert.ToInt32(
                     Math.Round(ArmourPenetrationRange[attacker][0][weaponNumber] +
-                               penetrationNumber*
+                               penetrationNumber *
                                (ArmourPenetrationRange[attacker][1][weaponNumber] -
-                                ArmourPenetrationRange[attacker][0][weaponNumber])/10000));
+                                ArmourPenetrationRange[attacker][0][weaponNumber]) / 10000));
             var totalArmour =
                 Convert.ToInt32(
                     Math.Round(ArmourToughnessRange[defender][0] +
-                               armourNumber*
+                               armourNumber *
                                (ArmourToughnessRange[defender][1] -
-                                ArmourToughnessRange[defender][0])/10000));
+                                ArmourToughnessRange[defender][0]) / 10000));
             var penetrationDamage = totalPenetration - totalArmour;
             var totalDamage =
                 Convert.ToInt32(
                     Math.Round(AtkPercent[attacker][0][weaponNumber] +
-                               damageNumber*
-                               (AtkPercent[attacker][1][weaponNumber] - AtkPercent[attacker][0][weaponNumber])/
+                               damageNumber *
+                               (AtkPercent[attacker][1][weaponNumber] - AtkPercent[attacker][0][weaponNumber]) /
                                10000));
             var damageDealt = Math.Max(1,
-                (Attack[attacker][weaponNumber] + penetrationDamage)*totalDamage - Defence[defender]);
+                (Attack[attacker][weaponNumber] + penetrationDamage) * totalDamage - Defence[defender]);
             if (penetrationDamage < 0)
             {
                 damageDealt = 1;
-                Console.WriteLine(Name[attacker] + "struck a glancing blow!");
+                Console.WriteLine(NameOf[attacker] + "struck a glancing blow!");
             }
             else
             {
-                Console.WriteLine(Name[attacker] + "used a basic attack!");
+                Console.WriteLine(NameOf[attacker] + "used a basic attack!");
             }
             //TODO: for hp: you have several minor cuts and bruises, you have a fatal wound
 
@@ -173,8 +110,8 @@ namespace GuardsOfAetheria
             // See how to handle from script - Tim
             // GUI - select enemy to attack - do the same for party? or party autoattack?
             // selectOption(options); to hide player menu where options = string[]
-            var enemyToAttack= new string[6];
-            for (var i = 6; i < 13; i++) if (!String.IsNullOrEmpty(Name[i])) enemyToAttack[i] = Name[i];
+            var enemyToAttack = new string[6];
+            for (var i = 6; i < 13; i++) if (!String.IsNullOrEmpty(NameOf[i])) enemyToAttack[i] = NameOf[i];
             // var partySelected = utility.SelectOption(enemyToAttack);
             // Fight();
             //TODO: loop until player/enemy dies
@@ -182,13 +119,12 @@ namespace GuardsOfAetheria
 
         public void EndFight()
         {
-            Player.Instance.CurrentMana = Instance.CurrentMana[0];
-            Player.Instance.CurrentVitality = Instance.CurrentVitality[0];
-            Player.Instance.CurrentEndurance = Instance.CurrentEndurance[0];
-            Player.Instance.Experience += 1; //TODO: read data from xml
-            var expNeeded = Convert.ToInt32(Math.Pow(1.05, Player.Instance.Level) * 1000);
-            if (Player.Instance.Experience >= expNeeded)
-                Player.Instance.Level++; Player.Instance.Experience -= expNeeded;
+            Players.You.CurrentMana = Instance.CurrentMana[0];
+            Players.You.CurrentVitality = Instance.CurrentVitality[0];
+            Players.You.CurrentEndurance = Instance.CurrentEndurance[0];
+            Players.You.Experience += 1; //TODO: read data from xml
+            var expNeeded = Convert.ToInt32(Math.Pow(1.05, Players.You.Level) * 1000);
+            if (Players.You.Experience >= expNeeded) Players.You.Level++; Players.You.Experience -= expNeeded;
             // TODO: regen while out of fight?
         }
     }

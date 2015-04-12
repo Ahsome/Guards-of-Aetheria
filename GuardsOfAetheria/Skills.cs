@@ -4,13 +4,13 @@
     {
         public void GetSkills() //TODO: how to unlock other class skills? amount of a certain att?
         {
-            switch (Player.Instance.PlayerClass) //TODO: skill list, change skill name every level up
+            switch (Players.You.Class) //TODO: skill list, change skill name every level up
             {
-                case Player.Class.Melee:
+                case Player.Classes.Melee:
                     break;
-                case Player.Class.Ranged:
+                case Player.Classes.Ranged:
                     break;
-                case Player.Class.Magic:
+                case Player.Classes.Magic:
                     break;
             }
         }
