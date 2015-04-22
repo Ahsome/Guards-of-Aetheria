@@ -60,12 +60,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Combat.cs" />
-    <Compile Include="databaseDataSet.Designer.cs">
+    <Compile Include="assets\databaseDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>databaseDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Equipment.cs" />
+    <Compile Include="Item.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="Movement.cs" />
     <Compile Include="Options.cs" />
@@ -82,15 +83,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="databaseDataSet.xsc">
+    <None Include="assets\databaseDataSet.xsc">
       <DependentUpon>databaseDataSet.xsd</DependentUpon>
     </None>
-    <None Include="databaseDataSet.xsd">
+    <None Include="assets\databaseDataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>databaseDataSet.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
-    <None Include="databaseDataSet.xss">
+    <None Include="assets\databaseDataSet.xss">
       <DependentUpon>databaseDataSet.xsd</DependentUpon>
     </None>
     <None Include="Properties\Settings.settings">
@@ -116,7 +117,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="database.accdb">
+    <Content Include="assets\database.accdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

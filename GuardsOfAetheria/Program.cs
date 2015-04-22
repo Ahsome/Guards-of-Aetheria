@@ -8,19 +8,21 @@ namespace GuardsOfAetheria
         //TODO: improve readability
         //TODO: create character + save, Console.Title for location etc
         private static readonly string AppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Guards of Aetheria");
-        public static readonly Movement Movement = new Movement();
         private static void Main()
         {
             // Fake Class: Spaghetti Monster ;)
+            Console.BufferHeight = Console.WindowHeight;
+            //TODO: optimise, comment where cheating may occur
+            //TODO: for fullscreen option? Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
+            //TODO: screen size options, allow/disallow autoresize option
+            Console.Title = "Guards of Aetheria";
             Console.CursorVisible = false;
-            //TODO: 
-            Players.You.RoomId = 1;
-            //TODO: change when locations are finalised, 
+            //TODO: change when locations are finalised
             if (!Directory.Exists(AppData)) Directory.CreateDirectory(AppData);
-            var options = new Options();
-            options.LoadOptions();
+            Options.Load();
             MainMenu.DisplayMainMenu();
-            while (true) Movement.ShowLocation();
+            var movement = new Movement();
+            while (true) movement.ShowLocation();
             //Took way too long to make this ;)
         }
     }

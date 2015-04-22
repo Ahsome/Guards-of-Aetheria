@@ -5,11 +5,7 @@ namespace GuardsOfAetheria
 {
     internal class Combat
     {
-        private static readonly Combat OrigInstance = new Combat();
-
-        private Combat() { }
-        static Combat() { }
-
+        //CHEAT: everything
         public List<int> CurrentVitality { get; set; }
         public List<int> CurrentMana { get; set; }
         public List<int> CurrentEndurance { get; set; }
@@ -20,14 +16,11 @@ namespace GuardsOfAetheria
         public List<List<int>> Attack { get; set; }
         public List<int> Defence { get; set; }
         //[n] entity; [0] min [1] max; [0] #1 [1] #2
-        public List<List<List<int>>> AtkPercent { get; set; } //TODO: calculate every time to prevent file edits
+        public List<List<List<int>>> AtkPercent { get; set; }
         //[n] entity;[0] min [1] max; [0] #1 [1] #2
         public List<List<List<int>>> ArmourPenetrationRange { get; set; }
         //[n] entity;[0] min [1] max
         public List<List<int>> ArmourToughnessRange { get; set; }
-
-        public static Combat Instance { get { return OrigInstance; } }
-
         //AtkMaxPercent[0] = 1.1 * stuff;
 
         // ^- slots
@@ -40,10 +33,10 @@ namespace GuardsOfAetheria
         {
             // TODO: Review XML code, see how to use it. - Tim
             //Location db -> scenario db -> enemy db
-            Instance.CurrentVitality[0] = Players.You.CurrentVitality;
-            Instance.CurrentMana[0] = Players.You.CurrentMana;
-            Instance.CurrentEndurance[0] = Players.You.CurrentEndurance;
-            Instance.NameOf[0] = Players.You.Name; //TODO: or "You"
+            CurrentVitality[0] = Player.Instance.CurrentVitality;
+            CurrentMana[0] = Player.Instance.CurrentMana;
+            CurrentEndurance[0] = Player.Instance.CurrentEndurance;
+            NameOf[0] = Player.Instance.Name; //TODO: or "You"
 
             //TODO: Calculate wep stats, check cheating
 
@@ -67,7 +60,7 @@ namespace GuardsOfAetheria
             decimal damageNumber = rand.Next(0, 10001);
             decimal penetrationNumber = rand.Next(0, 10001);
             decimal armourNumber = rand.Next(0, 10001);
-            var weaponNumber = new List<string> { WepNames[attacker][0], WepNames[attacker][1] }.SelectOption();
+            var weaponNumber = new List<string> { WepNames[attacker][0], WepNames[attacker][1] }.Select();
             var totalPenetration =
                 Convert.ToInt32(
                     Math.Round(ArmourPenetrationRange[attacker][0][weaponNumber] +
@@ -119,12 +112,12 @@ namespace GuardsOfAetheria
 
         public void EndFight()
         {
-            Players.You.CurrentMana = Instance.CurrentMana[0];
-            Players.You.CurrentVitality = Instance.CurrentVitality[0];
-            Players.You.CurrentEndurance = Instance.CurrentEndurance[0];
-            Players.You.Experience += 1; //TODO: read data from xml
-            var expNeeded = Convert.ToInt32(Math.Pow(1.05, Players.You.Level) * 1000);
-            if (Players.You.Experience >= expNeeded) Players.You.Level++; Players.You.Experience -= expNeeded;
+            Player.Instance.CurrentMana = CurrentMana[0];
+            Player.Instance.CurrentVitality = CurrentVitality[0];
+            Player.Instance.CurrentEndurance = CurrentEndurance[0];
+            Player.Instance.Experience += 1; //TODO: read data from xml
+            var expNeeded = Convert.ToInt32(Math.Pow(1.05, Player.Instance.Level) * 1000);
+            if (Player.Instance.Experience >= expNeeded) Player.Instance.Level++; Player.Instance.Experience -= expNeeded;
             // TODO: regen while out of fight?
         }
     }

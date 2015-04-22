@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace GuardsOfAetheria
 {
@@ -10,6 +11,11 @@ namespace GuardsOfAetheria
     }
     internal class Player : Entity
     {
+        //TODO: attributes class?
+        private static readonly Lazy<Player> Lazy = new Lazy<Player>(() => new Player());
+        public static Player Instance { get { return Lazy.Value; } }
+        private Player(){}
+        
         public enum Classes : byte { Melee, Magic, Ranged }
         public enum Origins : byte { Nation, Treaty, Refugee }
         public string Name { get; set; }
@@ -35,38 +41,38 @@ namespace GuardsOfAetheria
         public int Defence { get; set; }
         public int Attack { get; set; }
         public int Shield { get; set; } // Magic Resist
-        public int AccuracyAtt { get; set; }
-        public int EvasionAtt { get; set; }
-        public int LuckAtt { get; set; }
-        public int PrimaryAtt { get; set; }
-        public int SecondaryAtt { get; set; }
-        public int TertiaryAtt { get; set; }
-        public int PerceptionAtt { get; set; }
-        public string Region { get; set; }
+        public int Accuracy { get; set; }
+        public int Evasion { get; set; }
+        public int Luck { get; set; }
+        public int PrimaryAttribute { get; set; }
+        public int SecondaryAttribute { get; set; }
+        public int TertiaryAttribute { get; set; }
+        public int Perception { get; set; }
+        /*public string Region { get; set; }
         public string Area { get; set; }
         public string Building { get; set; }
-        public string Room { get; set; }
-        //TODO replace stuff with roomid, above only for names
+        public string Room { get; set; }*/
+        //TODO replace stuff with roomid, above only for names/maps
         public int RoomId { get; set; }
         public int InventorySpace { get; set; }
         // weapon = 0, arm = 1, con = 2, mat = 3
         //TODO: set 0 as weaponIndex etc
         //Compartments -> weapons/armours/consumables/materials -> details
-        //details for weps: prefix, name, (suffix, avg damage, damage%, gem1 location, gem2 location, gem3 location
+        //details for weps: prefix, name, (suffix, avg damage, damage%, gem1 id, gem2 id, gem3 id, dictionary?
         //same for armours
         //TODO: make compartments less accessible depending on stuff e.g. being in combat/leaving them behind (at home)
         public List<List<int>> Inventory { get; set; }
         public List<string> InventoryName { get; set; }
         public List<List<int>> InventoryOld { get; set; }
         //Weapon, Offhand, Head, Chest, Arms, Gauntlets, Legs, Shoes
-        public List<List<int>> Equipped { get; set; }
+        public List<List<int>> Equipment { get; set; }
 
         // Melee = 1, Ranged = 2, Magic = 3
-        // [] = {(Class, Class, Type, Material), (Weapon, Armour, Item), (Prefix, sortNumber), (Suffix), (Tier), (Rarity), (ortNumber)}
+        // [] = {(Class, Class, Type, Material), (Weapon, Armour, Item), (Prefix, sortNumber), (Suffix), (Tier), (Rarity), (sortNumber)}
 
-        public void InitialiseAtts() { PrimaryAtt = 13; SecondaryAtt = 10; TertiaryAtt = 7; UpdateAtts(); }
+        public void InitialiseAttributes() { PrimaryAttribute = 13; SecondaryAttribute = 10; TertiaryAttribute = 7; UpdateAttributes(); }
 
-        public void UpdateAtts()
+        public void UpdateAttributes()
         {
             BaseEndurance = 50 + Strength * 5 + Level * 5;
             CurrentEndurance = BaseVitality + 0;
@@ -77,31 +83,19 @@ namespace GuardsOfAetheria
             BaseVitality = Convert.ToInt32(Math.Round(9.5 + BaseEndurance * 0.01));
             switch (Class)
             {
-                case Classes.Melee: Strength = PrimaryAtt; Wisdom = SecondaryAtt; Dexterity = TertiaryAtt; break;
-                case Classes.Magic: Strength = TertiaryAtt; Wisdom = PrimaryAtt; Dexterity = SecondaryAtt; break;
-                case Classes.Ranged: Strength = SecondaryAtt; Wisdom = TertiaryAtt; Dexterity = PrimaryAtt; break;
+                case Classes.Melee: Strength = PrimaryAttribute; Wisdom = SecondaryAttribute; Dexterity = TertiaryAttribute; break;
+                case Classes.Magic: Strength = TertiaryAttribute; Wisdom = PrimaryAttribute; Dexterity = SecondaryAttribute; break;
+                case Classes.Ranged: Strength = SecondaryAttribute; Wisdom = TertiaryAttribute; Dexterity = PrimaryAttribute; break;
             }
         }
 
-        public void AssignAtts()
+        public void AssignAttributes()
         {
             switch (Class)
             {
-                case Classes.Melee:
-                    PrimaryAtt = Strength;
-                    SecondaryAtt = Wisdom;
-                    TertiaryAtt = Dexterity;
-                    break;
-                case Classes.Magic:
-                    TertiaryAtt = Strength;
-                    PrimaryAtt = Wisdom;
-                    SecondaryAtt = Dexterity;
-                    break;
-                case Classes.Ranged:
-                    SecondaryAtt = Strength;
-                    TertiaryAtt = Wisdom;
-                    PrimaryAtt = Dexterity;
-                    break;
+                case Classes.Melee: PrimaryAttribute = Strength; SecondaryAttribute = Wisdom; TertiaryAttribute = Dexterity; break;
+                case Classes.Magic: TertiaryAttribute = Strength; PrimaryAttribute = Wisdom; SecondaryAttribute = Dexterity; break;
+                case Classes.Ranged: SecondaryAttribute = Strength; TertiaryAttribute = Wisdom; PrimaryAttribute = Dexterity; break;
             }
         }
 
@@ -112,7 +106,6 @@ namespace GuardsOfAetheria
     }
     internal class Players
     {
-        public static Player You = new Player();
         public static void Create()
         {
             while (true)
@@ -121,7 +114,7 @@ namespace GuardsOfAetheria
                 //TODO: more extensive character creation
                 Console.SetCursorPosition(13, 0); var name = Console.ReadLine();
                 if (name == null) continue;
-                const string nonletters = @" -'";
+                const string nonletters = @"-'";
                 var nonlettersAreSpammed = false;
                 var names = name.Split(' ');
                 for (var i = 1; i < names.Length && !nonlettersAreSpammed; i++)
@@ -129,14 +122,15 @@ namespace GuardsOfAetheria
                         nonletters.Any(t => t == name.First() || t == name.Last());
                 if (nonlettersAreSpammed) continue;
                 //TODO: error message?
-
+                name = new Regex(@" {2,}").Replace(name.Trim(), @" ");
                 Console.Clear();
+
                 Console.Write("Your name is {0}", name);
                 if (Console.ReadKey(true).Key != ConsoleKey.Enter ||
                     (String.IsNullOrEmpty(name) ||
                     !name.Any(Char.IsLetter) ||
                     (name.Any(t => !Char.IsLetter(t) && nonletters.All(u => u != t))))) continue;
-                You.Name = name;
+                Player.Instance.Name = name;
                 break;
             }
 
@@ -146,17 +140,17 @@ namespace GuardsOfAetheria
             switch (new List<string> {
                 "an average house in the safe provinces, loyal to the king",
                 "an average house in a war-torn province, loyal to your lord", //TODO: find correct title
-                "a refugee tent in a war-torn province, loyal to nobody" }.SelectOption())
+                "a refugee tent in a war-torn province, loyal to nobody" }.Select())
             {
-                case 1: You.Origin = Player.Origins.Nation; break;
-                case 2: You.Origin = Player.Origins.Treaty; break;
-                case 3: You.Origin = Player.Origins.Refugee; break;
+                case 1: Player.Instance.Origin = Player.Origins.Nation; break;
+                case 2: Player.Instance.Origin = Player.Origins.Treaty; break;
+                case 3: Player.Instance.Origin = Player.Origins.Refugee; break;
             }
 
             Console.Clear();
             Console.WriteLine("You are:");
             var options = new List<string>();
-            switch (You.Origin)
+            switch (Player.Instance.Origin)
             {
                 case Player.Origins.Nation:
                     options = new List<string> {
@@ -177,27 +171,21 @@ namespace GuardsOfAetheria
                         "a born mage, able to burn a tree in 10 seconds flat" };
                     break;
             }
-            switch (options.SelectOption())
+            switch (options.Select())
             {
-                case 1: You.Class = Player.Classes.Melee; break;
-                case 2: You.Class = Player.Classes.Ranged; break;
-                case 3: You.Class = Player.Classes.Magic; break;
+                case 1: Player.Instance.Class = Player.Classes.Melee; break;
+                case 2: Player.Instance.Class = Player.Classes.Ranged; break;
+                case 3: Player.Instance.Class = Player.Classes.Magic; break;
             }
             // TODO: AssignStartingEquipment();
-            You.InitialiseAtts();
-            Console.CursorLeft = 14;
-            var permPoints = Utility.Spend(new List<string>
-                {
-                    "Set your attributes manually. Points left are indicated below.",
-                    "You have ", " point", " left to use"
-                },
-                new List<string> { "Strength:", "Dexterity:", "Wisdom:" },
-                new List<int> { You.Strength, You.Dexterity, You.Wisdom },
-                new List<int> { 0, 0, 0 }, new List<int> { 1, 1, 1 }, 16);
-            You.Strength = permPoints[0];
-            You.Dexterity = permPoints[1];
-            You.Wisdom = permPoints[2];
-            //TODO: array?
+            Player.Instance.InitialiseAttributes();
+            var permanentPoints = Utility.Spend("Set your attributes manually. Points left are indicated below.",
+                new List<string> { "You have ", " points", " left to use" },
+                new List<string> { "Strength:", "Dexterity:", "Wisdom:","0","0","0","0","0","0","0","3","0","0","0","","","","","","","","2","","" ,"","","1"},
+                new List<int> { Player.Instance.Strength, Player.Instance.Dexterity, Player.Instance.Wisdom ,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, new List<int> { 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0 }, 16, arrowPosition: 14);
+            Player.Instance.Strength = permanentPoints[0]; Player.Instance.Dexterity = permanentPoints[1]; Player.Instance.Wisdom = permanentPoints[2];
+            //TODO: stats -> array?
+            Player.Instance.RoomId = 1;
         }
     }
 }

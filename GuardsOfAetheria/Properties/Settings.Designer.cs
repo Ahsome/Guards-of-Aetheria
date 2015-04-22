@@ -26,8 +26,8 @@ namespace GuardsOfAetheria.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=./assets/database.accdb;Persist Sec" +
-            "urity Info=False;")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|/assets/database.acc" +
+            "db;Persist Security Info=False;")]
         public string databaseConnectionString {
             get {
                 return ((string)(this["databaseConnectionString"]));
@@ -36,13 +36,25 @@ namespace GuardsOfAetheria.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool Menu_scrolling {
             get {
                 return ((bool)(this["Menu_scrolling"]));
             }
             set {
                 this["Menu_scrolling"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Page_numbers {
+            get {
+                return ((bool)(this["Page_numbers"]));
+            }
+            set {
+                this["Page_numbers"] = value;
             }
         }
     }

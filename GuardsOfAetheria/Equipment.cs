@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace GuardsOfAetheria
 {
+    //TODO: move to item.cs?
+    //TODO: db-ify alloys, general info?
     internal class General
     {
         public enum Alloys : byte
@@ -231,15 +233,15 @@ namespace GuardsOfAetheria
             Console.WriteLine("You found a {0} {1}.", prefix, weaponName);
             var firstEmptySlot = -1;
             var spaceLeft = Utility.SpaceLeft();
-            for (var i = 0; i < 50 && firstEmptySlot == -1; i++) if (Players.You.Inventory[i][1] == 0 && Players.You.Inventory[i][0] == 1) firstEmptySlot = i;
+            for (var i = 0; i < 50 && firstEmptySlot == -1; i++) if (Player.Instance.Inventory[i][1] == 0 && Player.Instance.Inventory[i][0] == 1) firstEmptySlot = i;
             //TODO: select where to put it
             if (spaceLeft < 1)
             {
                 Console.WriteLine("Your inventory is full. You:");
-                switch (new List<string> { "replace another item with this one", "discard this item" }.SelectOption())
+                switch (new List<string> { "replace another item with this one", "discard this item" }.Select())
                 {
                     case 1: //Console.Clear();?
-                        Players.You.InventoryName.SelectOption();
+                        Player.Instance.InventoryName.Select();
                         break;
                     case 2: //Do nothing
                         break;
@@ -247,8 +249,8 @@ namespace GuardsOfAetheria
             }
             else
             {
-                Players.You.Inventory[firstEmptySlot] = new List<int> { 1, weaponClass, weaponType, weapon, prefixRarity, prefixFinal, 0, 0 };
-                Players.You.InventoryName[firstEmptySlot] = general.Prefixes[prefixRarity][prefixFinal] + Weapons[weaponClass][weaponType][weapon];
+                Player.Instance.Inventory[firstEmptySlot] = new List<int> { 1, weaponClass, weaponType, weapon, prefixRarity, prefixFinal, 0, 0 };
+                Player.Instance.InventoryName[firstEmptySlot] = general.Prefixes[prefixRarity][prefixFinal] + Weapons[weaponClass][weaponType][weapon];
             }
         }
     }
@@ -291,20 +293,20 @@ namespace GuardsOfAetheria
             Console.WriteLine("You found a {0} {1} {2}.", prefix, armourTypeName, armourPartName);
             var firstEmptySlot = -1;
             var spaceLeft = Utility.SpaceLeft();
-            for (var i = 0; i < 50 && firstEmptySlot == -1; i++) if (Players.You.Inventory[i][1] == 0 && Players.You.Inventory[i][0] == 2) firstEmptySlot = i;
+            for (var i = 0; i < 50 && firstEmptySlot == -1; i++) if (Player.Instance.Inventory[i][1] == 0 && Player.Instance.Inventory[i][0] == 2) firstEmptySlot = i;
             if (spaceLeft < armourSpace)
             {
                 Console.WriteLine("Your inventory is full. You:");
-                switch (new List<string> { "replace another item with this one", "discard this item" }.SelectOption())
+                switch (new List<string> { "replace another item with this one", "discard this item" }.Select())
                 {
                     case 1: //Console.Clear(); ?
-                        Players.You.InventoryName.SelectOption();
+                        Player.Instance.InventoryName.Select();
                         break;
                     case 2: //Do nothing - the item is discarded, the inventory is unchanged :)
                         break;
                 }
             }
-            else Players.You.Inventory[firstEmptySlot] = new List<int> { 2, armourType, armourPart, prefixRarity, prefixFinal, 0, 0, armourSpace };
+            else Player.Instance.Inventory[firstEmptySlot] = new List<int> { 2, armourType, armourPart, prefixRarity, prefixFinal, 0, 0, armourSpace };
         }
     }
 }
