@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Improved;
 
 namespace GuardsOfAetheria
 {
@@ -11,20 +12,26 @@ namespace GuardsOfAetheria
         {
             while (!CharacterIsSelected)
             {
+                //var f = new Frame(0, 0, Console.WindowHeight, Console.WindowWidth);
+                //f.ShowBorder(Frame.Style.Normal);
+                //Console.ReadKey();
                 Console.Clear();
-                Console.WriteLine("                                                                               ");
-                Console.WriteLine("               ╔═╗┬ ┬┌─┐┬─┐┌┬┐┌─┐  ┌─┐┌─┐  ╔═╗┌─┐┌┬┐┬ ┬┌─┐┬─┐┬┌─┐              ");
-                Console.WriteLine("               ║ ╦│ │├─┤├┬┘ ││└─┐  │ │├┤   ╠═╣├┤  │ ├─┤├┤ ├┬┘│├─┤              ");
-                Console.WriteLine("               ╚═╝└─┘┴ ┴┴└──┴┘└─┘  └─┘└    ╩ ╩└─┘ ┴ ┴ ┴└─┘┴└─┴┴ ┴              ");
-                Console.WriteLine("                                                                               ");
-                Console.WriteLine("Welcome to the Guards of Atheria");
-                Console.WriteLine("A simple game, set in the land of Aesrin");
-                Console.WriteLine("What would you like to do?\n");
-                Console.CursorTop = 22;
-                Console.WriteLine(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
-                Console.WriteLine("                      © Black-Strike Studios, 2014 - {0}                      ", DateTime.Now.Year);
-                Console.CursorTop = 8;
-                new List<string> { "New", "Load", "Options", "Credits", "Quit", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}.Select().Activate();
+                Console.WriteLine(@"
+
+              ╔═╗┬ ┬┌─┐┬─┐┌┬┐┌─┐  ┌─┐┌─┐  ╔═╗┌─┐┌┬┐┬ ┬┌─┐┬─┐┬┌─┐              
+              ║ ╦│ │├─┤├┬┘ ││└─┐  │ │├┤   ╠═╣├┤  │ ├─┤├┤ ├┬┘│├─┤              
+              ╚═╝└─┘┴ ┴┴└──┴┘└─┘  └─┘└    ╩ ╩└─┘ ┴ ┴ ┴└─┘┴└─┴┴ ┴              
+
+Welcome to the Guards of Atheria
+A simple game, set in the land of Aesrin
+What would you like to do?");
+                Console.CursorTop = Console.WindowHeight - 2;
+                Console.WriteLine();
+                "- ".WriteBorder();
+                Console.WriteLine(@"
+                      © Black-Strike Studios, 2014 - {0}                      ", DateTime.Now.Year);
+                Console.CursorTop = 9;
+                new List<string> { "New", "Load", "Options", "Credits", "Quit" }.Select().Activate();
             }
         }
 
@@ -41,8 +48,9 @@ namespace GuardsOfAetheria
         {
             switch (option)
             {
-                case 0: Players.Create(); MainMenu.CharacterIsSelected = true; break;
-                case 1: // MainMenu.CharacterIsSelected = true; TODO: LoadGame();, (SaveGame(); in location 'home'/'base' ) - inventory, location, plot location, enemies defeated/locations progress
+                case 0: CharacterCreation.Create(); MainMenu.CharacterIsSelected = true; break;
+                case 1: // MainMenu.CharacterIsSelected = true; break;
+                //TODO: LoadGame();, (SaveGame(); at home) - player.cs, progress, enemies defeated/locations unlocked
                     break;
                 case 2: Options.Change(); break;
                 case 3: MainMenu.ShowCredits(); break;

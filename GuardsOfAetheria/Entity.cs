@@ -2,85 +2,93 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Improved;
 
 namespace GuardsOfAetheria
 {
+    internal class Bar : ProgressBar
+    {
+        public int Unbuffed;
+
+        private Bar(int unbuffed)
+        {
+            Unbuffed = unbuffed;
+            Current = unbuffed;
+            Maximum = unbuffed;
+        }
+
+        private Bar(int unbuffed, int current, int maximum)
+        {
+            Unbuffed = unbuffed;
+            Current = current;
+            Maximum = maximum;
+        }
+    }
+    
     internal class Entity
     {
-        //TODO: move stuff from player
+        public string Name;
+
+        public Bar Vitality = (Bar)new ProgressBar{ InitialColour = ConsoleColor.DarkRed, NewColour = ConsoleColor.Red };
+        public Bar Endurance = (Bar)new ProgressBar { InitialColour = ConsoleColor.DarkYellow, NewColour = ConsoleColor.Yellow };
+        public Bar Mana = (Bar)new ProgressBar { InitialColour = ConsoleColor.DarkBlue, NewColour = ConsoleColor.Blue };
+        public Bar Stamina = (Bar)new ProgressBar { InitialColour = ConsoleColor.DarkGreen, NewColour = ConsoleColor.DarkGreen };
+
+        //restrict to 2? or will there be octopus enemies?
+        public List<Weapon> Weapons;
+        public List<Armour> Armour;
     }
     internal class Player : Entity
     {
-        //TODO: attributes class?
+        //attributes class? db stuff apart from tables?
         private static readonly Lazy<Player> Lazy = new Lazy<Player>(() => new Player());
         public static Player Instance { get { return Lazy.Value; } }
         private Player(){}
         
         public enum Classes : byte { Melee, Magic, Ranged }
         public enum Origins : byte { Nation, Treaty, Refugee }
-        public string Name { get; set; }
+        public enum Types : byte { Weapon, Armour, Comsumable, Material }
         public Classes Class { get; set; }
         public Origins Origin { get; set; }
+
         public int Experience { get; set; }
         public int Level { get; set; }
+
         public int Strength { get; set; }
         public int Dexterity { get; set; }
         public int Wisdom { get; set; }
-        public int BaseVitality { get; set; }
-        public int CurrentVitality { get; set; }
-        public int MaxVitality { get; set; }
-        public int BaseMana { get; set; }
-        public int CurrentMana { get; set; }
-        public int MaxMana { get; set; }
-        public int BaseEndurance { get; set; }
-        public int CurrentEndurance { get; set; }
-        public int MaxEndurance { get; set; }
-        public int BaseStamina { get; set; }
-        public int CurrentStamina { get; set; }
-        public int MaxStamina { get; set; }
-        public int Defence { get; set; }
+
         public int Attack { get; set; }
+        public int Defence { get; set; }
         public int Shield { get; set; } // Magic Resist
         public int Accuracy { get; set; }
         public int Evasion { get; set; }
         public int Luck { get; set; }
+        public int Perception { get; set; }
+
         public int PrimaryAttribute { get; set; }
         public int SecondaryAttribute { get; set; }
         public int TertiaryAttribute { get; set; }
-        public int Perception { get; set; }
-        /*public string Region { get; set; }
-        public string Area { get; set; }
-        public string Building { get; set; }
-        public string Room { get; set; }*/
-        //TODO replace stuff with roomid, above only for names/maps
+
+        public int AttributePoints { get; set; }
         public int RoomId { get; set; }
         public int InventorySpace { get; set; }
-        // weapon = 0, arm = 1, con = 2, mat = 3
-        //TODO: set 0 as weaponIndex etc
-        //Compartments -> weapons/armours/consumables/materials -> details
-        //details for weps: prefix, name, (suffix, avg damage, damage%, gem1 id, gem2 id, gem3 id, dictionary?
-        //same for armours
-        //TODO: make compartments less accessible depending on stuff e.g. being in combat/leaving them behind (at home)
-        public List<List<int>> Inventory { get; set; }
-        public List<string> InventoryName { get; set; }
-        public List<List<int>> InventoryOld { get; set; }
+        //TODO BLOCK: Inventory stuff
+        //Compartments
+        //make compartments less accessible depending on stuff e.g. being in combat/leaving them behind (at home)
+        //public List<Material> Materials { get; set; }
+        //public List<Consumable> Consumables { get; set; }
         //Weapon, Offhand, Head, Chest, Arms, Gauntlets, Legs, Shoes
-        public List<List<int>> Equipment { get; set; }
-
-        // Melee = 1, Ranged = 2, Magic = 3
-        // [] = {(Class, Class, Type, Material), (Weapon, Armour, Item), (Prefix, sortNumber), (Suffix), (Tier), (Rarity), (sortNumber)}
+        //public List<Equipment> Equipped { get; set; }
 
         public void InitialiseAttributes() { PrimaryAttribute = 13; SecondaryAttribute = 10; TertiaryAttribute = 7; UpdateAttributes(); }
 
         public void UpdateAttributes()
         {
-            BaseEndurance = 50 + Strength * 5 + Level * 5;
-            CurrentEndurance = BaseVitality + 0;
-            BaseMana = 50 + Wisdom * 5 + Level * 5;
-            CurrentMana = BaseMana + 0;
-            BaseStamina = 50 + Dexterity * 5 + Level * 5;
-            CurrentStamina = BaseEndurance + 0;
-            BaseVitality = Convert.ToInt32(Math.Round(9.5 + BaseEndurance * 0.01));
+            Endurance.Unbuffed = 50 + Strength * 5 + Level * 5;
+            Mana.Unbuffed = 50 + Wisdom * 5 + Level * 5;
+            Stamina.Unbuffed = 50 + Dexterity * 5 + Level * 5;
+            Vitality.Unbuffed = (int) (10 + Endurance.Unbuffed * 0.01); //TODO: buffed stats
             switch (Class)
             {
                 case Classes.Melee: Strength = PrimaryAttribute; Wisdom = SecondaryAttribute; Dexterity = TertiaryAttribute; break;
@@ -101,10 +109,42 @@ namespace GuardsOfAetheria
 
         public void Equip(int position)
         {
+            //TODO:
+        }
 
+        public static void PrioritiseInventoryItems()
+        {
+            //TODO: label by importance, .Aggregate() by importance, Quicksort;
+        }
+
+        public static void SpaceLeft()
+        {
+            /*var spaceLeft = InventorySpace;
+            //TODO: more compartments, large compartments, List<Equipment>
+            for (var i = 0; i < 50; i++)
+            {
+                if (Inventory[i][1] == 0) continue;
+                if (Inventory[i][0] == 2) spaceLeft -= Inventory[i][7];
+                else spaceLeft--;
+            }
+            return spaceLeft;*/
+        }
+        
+        public void TryLevelUp()
+        {
+            var expNeeded = (int) Math.Pow(1.05, Level) * 1000;
+            if (Experience >= expNeeded) Level++; Experience -= expNeeded;
+        }
+
+        public void ShowMenu()
+        {
+            Console.Clear(); Console.WriteLine("Inventory");
+            //SelectOption(InventoryName);
+            //TODO: Add more options, centre text, SelectContinue
         }
     }
-    internal class Players
+
+    internal class CharacterCreation
     {
         public static void Create()
         {
@@ -136,7 +176,6 @@ namespace GuardsOfAetheria
 
             Console.Clear();
             Console.WriteLine("You come from:");
-            //TODO: special plot selectoption that shows 1 at a time right after from?
             switch (new List<string> {
                 "an average house in the safe provinces, loyal to the king",
                 "an average house in a war-torn province, loyal to your lord", //TODO: find correct title
@@ -179,12 +218,16 @@ namespace GuardsOfAetheria
             }
             // TODO: AssignStartingEquipment();
             Player.Instance.InitialiseAttributes();
-            var permanentPoints = Utility.Spend("Set your attributes manually. Points left are indicated below.",
+            int attPoints;
+            int numberOfLines;
+            Consoles.WordWrap("Set your attributes manually. Points left are indicated below.", out numberOfLines);
+            var permanentPoints = Consoles.Spend(
                 new List<string> { "You have ", " points", " left to use" },
-                new List<string> { "Strength:", "Dexterity:", "Wisdom:","0","0","0","0","0","0","0","3","0","0","0","","","","","","","","2","","" ,"","","1"},
-                new List<int> { Player.Instance.Strength, Player.Instance.Dexterity, Player.Instance.Wisdom ,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, new List<int> { 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0 }, 16, arrowPosition: 14);
+                new List<string> { "Strength:", "Dexterity:", "Wisdom:" },
+                new List<int> { Player.Instance.Strength, Player.Instance.Dexterity, Player.Instance.Wisdom },
+                new List<int> { 1, 1, 1 }, 16, out attPoints, arrowPosition: 14);
             Player.Instance.Strength = permanentPoints[0]; Player.Instance.Dexterity = permanentPoints[1]; Player.Instance.Wisdom = permanentPoints[2];
-            //TODO: stats -> array?
+            Player.Instance.AttributePoints = attPoints;
             Player.Instance.RoomId = 1;
         }
     }

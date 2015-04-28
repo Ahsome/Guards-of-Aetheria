@@ -5,24 +5,24 @@ namespace GuardsOfAetheria
 {
     internal class MainProgram
     {
-        //TODO: improve readability
-        //TODO: create character + save, Console.Title for location etc
-        private static readonly string AppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Guards of Aetheria");
-        private static void Main()
+        //private static readonly string AppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Guards of Aetheria");
+        private static void Main() { MainAsync(); }
+
+        private static async void MainAsync()
         {
             // Fake Class: Spaghetti Monster ;)
+            var task = Database.DatabaseConnection.OpenAsync();
             Console.BufferHeight = Console.WindowHeight;
-            //TODO: optimise, comment where cheating may occur
-            //TODO: for fullscreen option? Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
-            //TODO: screen size options, allow/disallow autoresize option
+            Console.BufferWidth = Console.WindowWidth;
+            //TODO: for fullscreen option? Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight); screen size options, allow/disallow autoresize option, gentyricise, improve readability
             Console.Title = "Guards of Aetheria";
             Console.CursorVisible = false;
-            //TODO: change when locations are finalised
-            if (!Directory.Exists(AppData)) Directory.CreateDirectory(AppData);
+            //if (!Directory.Exists(AppData)) Directory.CreateDirectory(AppData);
             Options.Load();
             MainMenu.DisplayMainMenu();
-            var movement = new Movement();
-            while (true) movement.ShowLocation();
+            await task;
+            Database.DatabaseConnection.Close();
+            while (true) Movement.ShowLocation();
             //Took way too long to make this ;)
         }
     }

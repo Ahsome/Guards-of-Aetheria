@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuardsOfAetheria", "GuardsOfAetheria\GuardsOfAetheria.csproj", "{E2341B4A-9687-4151-A57C-A8A6AAC01226}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Improved", "Improved\Improved.csproj", "{1414C36C-A950-4F78-8F64-D1BE0D9B44FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{E2341B4A-9687-4151-A57C-A8A6AAC01226}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2341B4A-9687-4151-A57C-A8A6AAC01226}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2341B4A-9687-4151-A57C-A8A6AAC01226}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1414C36C-A950-4F78-8F64-D1BE0D9B44FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1414C36C-A950-4F78-8F64-D1BE0D9B44FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1414C36C-A950-4F78-8F64-D1BE0D9B44FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1414C36C-A950-4F78-8F64-D1BE0D9B44FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

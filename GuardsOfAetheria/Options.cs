@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GuardsOfAetheria.Properties;
+using Improved;
 
 namespace GuardsOfAetheria
 {
@@ -24,22 +25,17 @@ namespace GuardsOfAetheria
             new List<object> { false, true }
         };
 
-        public List<object> InitialValues = new List<object>
-        {
-            true
-        };
-
         public static void Load()
         {
-            Utility.ScrollingIsContinuous = Settings.Default.Menu_scrolling;
-            Utility.PageNumIsVisible = Settings.Default.Page_numbers;
+            Consoles.ScrollingIsContinuous = Settings.Default.Menu_scrolling;
+            Consoles.PageNumIsVisible = Settings.Default.Page_numbers;
         }
 
         public static void Change()
         {
             Console.Clear();
             Console.WriteLine("Options\n");
-            var top = Console.CursorTop; const int left = 38; const int spacing = 12; var number = 0; var choice = 0; var oldNumber = 0;
+            var top = Console.CursorTop; const int left = 38; const int spacing = 12; var number = 0; var oldNumber = 0;
             for (var i = 0; i < Names.Count; i++)
             {
                 Console.SetCursorPosition(0, top + i);
@@ -47,7 +43,7 @@ namespace GuardsOfAetheria
                 for (var j = 0; j < List[i].Count; j++)
                 { Console.SetCursorPosition(left + 2 + spacing * j, top + i); Console.Write(Strings[i][j]); }
             }
-            choice = List[number].IndexOf(Settings.Default[Names[number].Replace(" ", "_")]);
+            var choice = List[number].IndexOf(Settings.Default[Names[number].Replace(" ", "_")]);
             '>'.WriteAt(left + spacing * choice, top + number);
             while (true)
             {
@@ -64,15 +60,14 @@ namespace GuardsOfAetheria
                         Settings.Default.Save();
                         Load();
                         return;
-                    //TODO: break to calling method or something
                 }
                 if (input == ConsoleKey.UpArrow || input == ConsoleKey.DownArrow)
                 {
                     Settings.Default[Names[oldNumber].Replace(" ", "_")] = List[oldNumber][choice];
-                    Utility.Mod(ref number, Names.Count);
+                    Maths.Mod(ref number, Names.Count);
                     choice = List[number].IndexOf(Settings.Default[Names[number].Replace(" ", "_")]);
                 }
-                else Utility.Mod(ref choice, List[number].Count);
+                else Maths.Mod(ref choice, List[number].Count);
                 '>'.WriteAt(left + spacing * choice, top + number);
                 oldNumber = number;
             }
