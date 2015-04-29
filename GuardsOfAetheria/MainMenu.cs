@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Improved;
 
 namespace GuardsOfAetheria
@@ -29,7 +28,7 @@ What would you like to do?");
                 "- ".WriteBorder();
                 Console.Write(@"                      © Black-Strike Studios, 2014 - {0}                      ", DateTime.Now.Year);
                 Console.CursorTop = 9;
-                new List<string> { "New", "Load", "Options", "Credits", "Quit" }.Select().Activate();
+                new[] { "New", "Load", "Options", "Credits", "Quit" }.Select().Activate();
             }
         }
 

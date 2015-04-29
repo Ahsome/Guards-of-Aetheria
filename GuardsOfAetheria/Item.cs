@@ -30,16 +30,16 @@ namespace GuardsOfAetheria
         {
             Console.Clear();
             //TODO: info screen
-            var lists = new Dictionary<string, List<string>>
+            var arrays = new Dictionary<string, string[]>
             {
-                {"Materials", new List<string>()}
+                {"Materials", new[]{""}}
             };
             var strings = new Dictionary<string, object>
             {
                 {"Material Name", ""}
             };
-            Database.GetData("SELECT [Material Name] FROM Materials", strings, lists);
-            Database.GetData(String.Format("SELECT * FROM Materials WHERE [Material Name] = {0}", Player.Instance.RoomId), strings, lists);
+            Database.GetData("SELECT [Material Name] FROM Materials", strings, arrays);
+            Database.GetData(String.Format("SELECT * FROM Materials WHERE [Material Name] = {0}", Player.Instance.RoomId), strings, arrays);
             //TODO: max gems = material id - 1? or material id/2?
         } //In weaponrack/armourrack - (cart)
         //CreateWeapon() (custom) for starting?
