@@ -7,12 +7,13 @@ namespace GuardsOfAetheria
     internal class Combat
     {
         //CHEAT: everything
-        public List<Entity> Entities;
+        public List<Entity> Party;
+        public List<Entity> Enemies; 
 
         public void LoadEntities()
         {
             //TODO: Location db [Scenario List] -> scenario db -> enemy db
-            Entities.Add(Player.Instance);
+            Party.Add(Player.Instance);
             for (var i = 1; i < 7; i++)
             {
                 //party
@@ -28,9 +29,9 @@ namespace GuardsOfAetheria
         public void Fight(Entity attacker, Entity defender)
         {
             //TODO BLOCK: melee/magic/ranged effects, armour chance to hit - based on size?
-            var armour = new Random().Next(0,8);
-            var weapon = new List<string> { attacker.Weapons[0].Name, attacker.Weapons[1].Name }.Select();
-            var totalPenetration = (attacker.Weapons[weapon].ArmourPenetration.Random());
+            var armour = new Random().Next(0,8); //select - chance to hit
+            var weapon = new[] { attacker.Weapons[0].Name, attacker.Weapons[1].Name }.Select();
+            var totalPenetration = attacker.Weapons[weapon].ArmourPenetration.Random();
             var totalArmour = defender.Armour[armour].ArmourToughness.Random();
             var totalDamage = attacker.Weapons[weapon].Attack.Random();
             var penetrationDamage = totalPenetration - totalArmour;
@@ -46,11 +47,11 @@ namespace GuardsOfAetheria
         public void StartFight()
         {
             //TODO BLOCK: select enemy to attack - do the same for party? or party autoattack?
-            var enemyToAttack = new List<string>();
-            for (var i = 6; i < 13 && Entities[i] != null; i++) enemyToAttack.Add(Entities[i].Name);
-            // .where?
-            var partySelected = enemyToAttack.Select(); //wait, partyselected?
-            //Fight();
+            //test
+            var enemyToAttack = Enemies[Enemies.ConvertAll(T => T.Name).ToArray().Select()];
+            Fight(Player.Instance, enemyToAttack);
+            //party + enemy AI - consider strengths, hp left etc
+            //do the reverse
             //loop until player/enemy dies
         }
 

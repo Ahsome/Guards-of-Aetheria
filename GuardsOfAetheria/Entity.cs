@@ -10,14 +10,16 @@ namespace GuardsOfAetheria
     {
         public int Unbuffed;
 
-        private Bar(int unbuffed)
+        public Bar(){}
+
+        public Bar(int unbuffed)
         {
             Unbuffed = unbuffed;
             Current = unbuffed;
             Maximum = unbuffed;
         }
 
-        private Bar(int unbuffed, int current, int maximum)
+        public Bar(int unbuffed, int current, int maximum)
         {
             Unbuffed = unbuffed;
             Current = current;
@@ -29,10 +31,10 @@ namespace GuardsOfAetheria
     {
         public string Name;
 
-        public Bar Vitality = (Bar)new ProgressBar{ InitialColour = ConsoleColor.DarkRed, NewColour = ConsoleColor.Red };
-        public Bar Endurance = (Bar)new ProgressBar { InitialColour = ConsoleColor.DarkYellow, NewColour = ConsoleColor.Yellow };
-        public Bar Mana = (Bar)new ProgressBar { InitialColour = ConsoleColor.DarkBlue, NewColour = ConsoleColor.Blue };
-        public Bar Stamina = (Bar)new ProgressBar { InitialColour = ConsoleColor.DarkGreen, NewColour = ConsoleColor.DarkGreen };
+        public Bar Vitality = new Bar { InitialColour = ConsoleColor.DarkRed, NewColour = ConsoleColor.Red };
+        public Bar Endurance = new Bar { InitialColour = ConsoleColor.DarkYellow, NewColour = ConsoleColor.Yellow };
+        public Bar Mana = new Bar { InitialColour = ConsoleColor.DarkBlue, NewColour = ConsoleColor.Blue };
+        public Bar Stamina = new Bar { InitialColour = ConsoleColor.DarkGreen, NewColour = ConsoleColor.DarkGreen };
 
         //restrict to 2? or will there be octopus enemies?
         public List<Weapon> Weapons;
@@ -45,11 +47,11 @@ namespace GuardsOfAetheria
         public static Player Instance { get { return Lazy.Value; } }
         private Player(){}
         
-        public enum Classes : byte { Melee, Magic, Ranged }
-        public enum Origins : byte { Nation, Treaty, Refugee }
-        public enum Types : byte { Weapon, Armour, Comsumable, Material }
-        public Classes Class { get; set; }
-        public Origins Origin { get; set; }
+        public enum Class : byte { Melee, Magic, Ranged }
+        public enum Origin : byte { Nation, Treaty, Refugee }
+        public enum Type : byte { Weapon, Armour, Comsumable, Material }
+        public Class PlayerClass { get; set; }
+        public Origin PlayerOrigin { get; set; }
 
         public int Experience { get; set; }
         public int Level { get; set; }
@@ -57,6 +59,10 @@ namespace GuardsOfAetheria
         public int Strength { get; set; }
         public int Dexterity { get; set; }
         public int Wisdom { get; set; }
+
+        public int AttributePoints { get; set; }
+        public int RoomId { get; set; }
+        public int InventorySpace { get; set; }
 
         public int Attack { get; set; }
         public int Defence { get; set; }
@@ -70,65 +76,50 @@ namespace GuardsOfAetheria
         public int SecondaryAttribute { get; set; }
         public int TertiaryAttribute { get; set; }
 
-        public int AttributePoints { get; set; }
-        public int RoomId { get; set; }
-        public int InventorySpace { get; set; }
         //TODO BLOCK: Inventory stuff
         //Compartments
         //make compartments less accessible depending on stuff e.g. being in combat/leaving them behind (at home)
-        //public List<Material> Materials { get; set; }
-        //public List<Consumable> Consumables { get; set; }
+        public List<Item> Inventory { get; set; }
+        public List<Equipment> Equipped { get; set; } 
         //Weapon, Offhand, Head, Chest, Arms, Gauntlets, Legs, Shoes
-        //public List<Equipment> Equipped { get; set; }
 
         public void InitialiseAttributes() { PrimaryAttribute = 13; SecondaryAttribute = 10; TertiaryAttribute = 7; UpdateAttributes(); }
 
         public void UpdateAttributes()
         {
+            ((int) Class.Melee).WriteAt(0, 0);
+            Console.ReadKey();
+            switch (PlayerClass)
+            {
+                case Class.Melee: Strength = PrimaryAttribute; Wisdom = SecondaryAttribute; Dexterity = TertiaryAttribute; break;
+                case Class.Magic: Strength = TertiaryAttribute; Wisdom = PrimaryAttribute; Dexterity = SecondaryAttribute; break;
+                case Class.Ranged: Strength = SecondaryAttribute; Wisdom = TertiaryAttribute; Dexterity = PrimaryAttribute; break;
+            }
             Endurance.Unbuffed = 50 + Strength * 5 + Level * 5;
             Mana.Unbuffed = 50 + Wisdom * 5 + Level * 5;
             Stamina.Unbuffed = 50 + Dexterity * 5 + Level * 5;
             Vitality.Unbuffed = (int) (10 + Endurance.Unbuffed * 0.01); //TODO: buffed stats
-            switch (Class)
-            {
-                case Classes.Melee: Strength = PrimaryAttribute; Wisdom = SecondaryAttribute; Dexterity = TertiaryAttribute; break;
-                case Classes.Magic: Strength = TertiaryAttribute; Wisdom = PrimaryAttribute; Dexterity = SecondaryAttribute; break;
-                case Classes.Ranged: Strength = SecondaryAttribute; Wisdom = TertiaryAttribute; Dexterity = PrimaryAttribute; break;
-            }
         }
 
         public void AssignAttributes()
-        {
-            switch (Class)
-            {
-                case Classes.Melee: PrimaryAttribute = Strength; SecondaryAttribute = Wisdom; TertiaryAttribute = Dexterity; break;
-                case Classes.Magic: TertiaryAttribute = Strength; PrimaryAttribute = Wisdom; SecondaryAttribute = Dexterity; break;
-                case Classes.Ranged: SecondaryAttribute = Strength; TertiaryAttribute = Wisdom; PrimaryAttribute = Dexterity; break;
-            }
-        }
+        { switch (PlayerClass) {
+                case Class.Melee: PrimaryAttribute = Strength; SecondaryAttribute = Wisdom; TertiaryAttribute = Dexterity; break;
+                case Class.Magic: TertiaryAttribute = Strength; PrimaryAttribute = Wisdom; SecondaryAttribute = Dexterity; break;
+                case Class.Ranged: SecondaryAttribute = Strength; TertiaryAttribute = Wisdom; PrimaryAttribute = Dexterity; break;
+        } }
 
-        public void Equip(int position)
+        public void Equip(int inventoryIndex)
         {
             //TODO:
         }
 
         public static void PrioritiseInventoryItems()
         {
-            //TODO: label by importance, .Aggregate() by importance, Quicksort;
+            //label by importance, .Aggregate() by importance, Quicksort;
         }
 
-        public static void SpaceLeft()
-        {
-            /*var spaceLeft = InventorySpace;
-            //TODO: more compartments, large compartments, List<Equipment>
-            for (var i = 0; i < 50; i++)
-            {
-                if (Inventory[i][1] == 0) continue;
-                if (Inventory[i][0] == 2) spaceLeft -= Inventory[i][7];
-                else spaceLeft--;
-            }
-            return spaceLeft;*/
-        }
+        //more compartments, large compartments, List<Equipment>
+        //subtract inventoryspace once item is bought/sold
         
         public void TryLevelUp()
         {
@@ -139,84 +130,76 @@ namespace GuardsOfAetheria
         public void ShowMenu()
         {
             Console.Clear(); Console.WriteLine("Inventory");
-            //SelectOption(InventoryName);
-            //TODO: Add more options, centre text, SelectContinue
+            //select
+            //Add more options, centre text, SelectContinue
         }
     }
 
     internal class CharacterCreation
     {
+        public const string Nonletters = @"-'";
         public static void Create()
         {
             while (true)
             {
                 Console.Clear(); Console.Write("Your name is ");
                 //TODO: more extensive character creation
-                Console.SetCursorPosition(13, 0); var name = Console.ReadLine();
+                var name = Console.ReadLine();
                 if (name == null) continue;
-                const string nonletters = @"-'";
                 var nonlettersAreSpammed = false;
                 var names = name.Split(' ');
-                for (var i = 1; i < names.Length && !nonlettersAreSpammed; i++)
-                    nonlettersAreSpammed = names[i].Where(t => nonletters.Any(u => t == u)).ToArray().Length > 1 ||
-                        nonletters.Any(t => t == name.First() || t == name.Last());
-                if (nonlettersAreSpammed) continue;
-                //TODO: error message?
-                name = new Regex(@" {2,}").Replace(name.Trim(), @" ");
-                Console.Clear();
-
-                Console.Write("Your name is {0}", name);
+                foreach (var s in names)
+                {
+                    nonlettersAreSpammed = s.Where(letter => Nonletters.Any(nonletter => letter == nonletter)).ToList().Count > 1;
+                    if (nonlettersAreSpammed) break;
+                }
+                //TODO: shorten, notify player
+                name = new Regex(" {2,}").Replace(name.Trim(' ', '-', '\''), " ");
+                Console.Clear(); Console.Write("Your name is {0}.", name);
                 if (Console.ReadKey(true).Key != ConsoleKey.Enter ||
-                    (String.IsNullOrEmpty(name) ||
+                    String.IsNullOrWhiteSpace(name) ||
                     !name.Any(Char.IsLetter) ||
-                    (name.Any(t => !Char.IsLetter(t) && nonletters.All(u => u != t))))) continue;
+                    nonlettersAreSpammed ||
+                    name.Any(letter => !Char.IsLetter(letter) && Nonletters.All(nonletter => nonletter != letter))) continue;
                 Player.Instance.Name = name;
                 break;
             }
-
-            Console.Clear();
-            Console.WriteLine("You come from:");
-            switch (new List<string> {
+            #region Choose Origin
+            Console.Clear(); Console.WriteLine("You come from");
+            Player.Instance.PlayerOrigin = (Player.Origin) new[]
+            {
                 "an average house in the safe provinces, loyal to the king",
                 "an average house in a war-torn province, loyal to your lord", //TODO: find correct title
-                "a refugee tent in a war-torn province, loyal to nobody" }.Select())
+                "a refugee tent in a war-torn province, loyal to nobody"
+            }.Select();
+            #endregion
+            #region Choose Class
+            Console.Clear(); Console.WriteLine("You are");
+            var options = new string[3];
+            switch (Player.Instance.PlayerOrigin)
             {
-                case 1: Player.Instance.Origin = Player.Origins.Nation; break;
-                case 2: Player.Instance.Origin = Player.Origins.Treaty; break;
-                case 3: Player.Instance.Origin = Player.Origins.Refugee; break;
-            }
-
-            Console.Clear();
-            Console.WriteLine("You are:");
-            var options = new List<string>();
-            switch (Player.Instance.Origin)
-            {
-                case Player.Origins.Nation:
-                    options = new List<string> {
+                case Player.Origin.Nation:
+                    options = new[] {
                         "a skilled warrior, able to knock back a training dummy 10 metres with one blow",
                         "a skilled archer, able to hit a training dummy's heart from 100 metres away",
                         "a skilled mage, able to burn training dummies to a crisp in 10 seconds flat" };
                     break;
-                case Player.Origins.Treaty:
-                    options = new List<string> {
+                case Player.Origin.Treaty:
+                    options = new[] {
                         "a warrior, able to knock back an invader 10 metres with one blow",
                         "an archer, able to hit an invader's heart from 100 metres away",
                         "a mage, able to burn invaders to a crisp in 10 seconds flat" }; //TODO: rename invaders, and king maybe
                     break;
-                case Player.Origins.Refugee:
-                    options = new List<string> {
-                        "a born warrior, able to knock back a sack of potatoes 10 metres with one blow",
+                case Player.Origin.Refugee:
+                    options = new[] {
+                        "a born warrior, able to knock a sack of potatoes 10 metres back with one blow",
                         "a born archer, able to hit a bullseye from 100 metres away",
                         "a born mage, able to burn a tree in 10 seconds flat" };
                     break;
             }
-            switch (options.Select())
-            {
-                case 1: Player.Instance.Class = Player.Classes.Melee; break;
-                case 2: Player.Instance.Class = Player.Classes.Ranged; break;
-                case 3: Player.Instance.Class = Player.Classes.Magic; break;
-            }
-            // TODO: AssignStartingEquipment();
+            Player.Instance.PlayerClass = (Player.Class) options.Select();
+            #endregion
+            //TODO: AssignStartingEquipment();
             Player.Instance.InitialiseAttributes();
             int attPoints;
             int numberOfLines;
@@ -231,4 +214,4 @@ namespace GuardsOfAetheria
             Player.Instance.RoomId = 1;
         }
     }
-}
+}                                                                                                                                                 

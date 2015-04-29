@@ -203,6 +203,7 @@ namespace GuardsOfAetheria
         public void WeaponGen(General.Material mat)
         {
             var general = new General();
+            //TODO: not material, rarity number
             var rand = new Random();
             var weaponClass = rand.Next(0, 3);
             var weaponType = rand.Next(0, Weapons[weaponClass].Count);

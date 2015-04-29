@@ -33,16 +33,14 @@ namespace GuardsOfAetheria
 
         public static void Change()
         {
+            //TODO: scrolling
             Console.Clear();
             Console.WriteLine("Options\n");
             var top = Console.CursorTop; const int left = 38; const int spacing = 12; var number = 0; var oldNumber = 0;
-            for (var i = 0; i < Names.Count; i++)
-            {
-                Console.SetCursorPosition(0, top + i);
-                Console.Write(Names[i]);
-                for (var j = 0; j < List[i].Count; j++)
-                { Console.SetCursorPosition(left + 2 + spacing * j, top + i); Console.Write(Strings[i][j]); }
-            }
+            Console.CursorLeft = 0;
+            foreach (var name in Names) Console.WriteLine(name);
+            for (var i = 0; i < Names.Count; i++) for (var j = 0; j < List[i].Count; j++)
+            { Strings[i][j].WriteAt(left + 2 + spacing * j, top + i); }
             var choice = List[number].IndexOf(Settings.Default[Names[number].Replace(" ", "_")]);
             '>'.WriteAt(left + spacing * choice, top + number);
             while (true)
@@ -61,7 +59,7 @@ namespace GuardsOfAetheria
                         Load();
                         return;
                 }
-                if (input == ConsoleKey.UpArrow || input == ConsoleKey.DownArrow)
+                if (input == ConsoleKey.DownArrow || input == ConsoleKey.UpArrow)
                 {
                     Settings.Default[Names[oldNumber].Replace(" ", "_")] = List[oldNumber][choice];
                     Maths.Mod(ref number, Names.Count);

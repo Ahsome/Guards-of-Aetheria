@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.OleDb;
 
 namespace GuardsOfAetheria
 {
@@ -39,8 +38,8 @@ namespace GuardsOfAetheria
             {
                 {"Material Name", ""}
             };
-            Database.GetData(new OleDbCommand(String.Format("SELECT [Material Name] FROM Materials"), Database.DatabaseConnection), strings, lists);
-            Database.GetData(new OleDbCommand(String.Format("SELECT * FROM Materials WHERE [Material Name] = {0}", Player.Instance.RoomId), Database.DatabaseConnection), strings, lists);
+            Database.GetData("SELECT [Material Name] FROM Materials", strings, lists);
+            Database.GetData(String.Format("SELECT * FROM Materials WHERE [Material Name] = {0}", Player.Instance.RoomId), strings, lists);
             //TODO: max gems = material id - 1? or material id/2?
         } //In weaponrack/armourrack - (cart)
         //CreateWeapon() (custom) for starting?
@@ -54,17 +53,17 @@ namespace GuardsOfAetheria
 
     public class Small : Item //rename
     {
-        
+        public int MaximumStack;
     }
 
     public class Gem : Small
     {
-        //read froom db, like weapons, atts.split, dictionary, in GemPouch
+        //read from db, atts.split, dictionary, in GemPouch
     }
 
     public class Material : Item
     {
-        
+        public int MaximumStack;
     }
 
     public class Variable

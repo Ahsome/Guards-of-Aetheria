@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Data.OleDb;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Improved;
 
@@ -8,6 +8,10 @@ namespace GuardsOfAetheria
 {
     internal static class Movement
     {
+        public static Dictionary<string, object> VariableDictionary = new Dictionary<string, object>
+        {
+            { "Name", Player.Instance.Name }
+        };
         public static void ShowLocation()
         {
             Console.Clear();
@@ -22,18 +26,11 @@ namespace GuardsOfAetheria
                 {"Text to Display", ""},
                 {"Room Name", ""}
             };
-            Database.GetData(new OleDbCommand(String.Format("SELECT * FROM Rooms WHERE ID = {0}", Player.Instance.RoomId), Database.DatabaseConnection), objects, lists);
+            Database.GetData(String.Format("SELECT * FROM Rooms WHERE ID = {0}", Player.Instance.RoomId), objects, lists);
             Console.Title = String.Format("Guards of Aetheria - {0} at {1}", Player.Instance.Name, objects["Room Name"]);
-            var variableDictionary = new Dictionary<string, object>
-            {
-                { "Name", Player.Instance.Name }
-            };
-            var textVariable = new object[lists["Variables"].Count];
-            for (var i = 0; i < lists["Variables"].Count; i++) textVariable[i] = variableDictionary[lists["Variables"][i]];
-            int lines;
-            Consoles.WordWrap(String.Format(Regex.Unescape((string)objects["Text to Display"]), textVariable), out lines);
-            Console.SetCursorPosition(0, 5);
-            Player.Instance.RoomId = lists["Room IDs"][lists["Option Text"].Select()].ToInt();
+            var variables = from o in lists["Variables"] select VariableDictionary[o];
+            Consoles.WordWrap(String.Format(Regex.Unescape((string)objects["Text to Display"]), variables));
+            Console.SetCursorPosition(0, 5); Player.Instance.RoomId = lists["Room IDs"][lists["Option Text"].Select()].ToInt();
         }
     }
 }

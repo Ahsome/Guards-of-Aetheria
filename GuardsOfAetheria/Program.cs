@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 
 namespace GuardsOfAetheria
 {
@@ -12,16 +11,19 @@ namespace GuardsOfAetheria
         {
             // Fake Class: Spaghetti Monster ;)
             var task = Database.DatabaseConnection.OpenAsync();
-            Console.BufferHeight = Console.WindowHeight;
-            Console.BufferWidth = Console.WindowWidth;
-            //TODO: for fullscreen option? Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight); screen size options, allow/disallow autoresize option, gentyricise, improve readability
+            #region Initiate Display
+            Console.BufferHeight = Console.WindowHeight = Console.LargestWindowHeight - 5;
+            Console.BufferWidth = Console.WindowWidth = Console.LargestWindowWidth - 5;
             Console.Title = "Guards of Aetheria";
             Console.CursorVisible = false;
+            //TODO: for fullscreen option? screen size options, allow/disallow autoresize option (how?), genericise, improve readability, shorten
+            #endregion
             //if (!Directory.Exists(AppData)) Directory.CreateDirectory(AppData);
             Options.Load();
-            MainMenu.DisplayMainMenu();
+            MainMenu.Display();
             await task;
             Database.DatabaseConnection.Close();
+            //TODO: infinite timeout
             while (true) Movement.ShowLocation();
             //Took way too long to make this ;)
         }
