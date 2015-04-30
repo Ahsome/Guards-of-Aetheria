@@ -1,11 +1,13 @@
 using System;
-using Improved;
+using Improved.Consoles;
 
 namespace GuardsOfAetheria
 {
     internal class MainMenu
     {
         //TODO: autosave plot story selected to .txt
+        private MainMenu(){}
+
         public static bool CharacterIsSelected;
         public static void Display()
         {
@@ -27,8 +29,8 @@ What would you like to do?");
                 Console.CursorTop = Console.WindowHeight - 2;
                 "- ".WriteBorder();
                 Console.Write(@"                      © Black-Strike Studios, 2014 - {0}                      ", DateTime.Now.Year);
-                Console.CursorTop = 9;
-                new[] { "New", "Load", "Options", "Credits", "Quit" }.Select().Activate();
+                Console.SetCursorPosition(0, 9);
+                new[] { "New", "Load", "Options", "Credits", "Quit" }.Choose().Activate();
             }
         }
 

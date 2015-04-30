@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Improved;
+using Improved.Consoles;
 
 namespace GuardsOfAetheria
 {
@@ -17,20 +17,20 @@ namespace GuardsOfAetheria
             for (var i = 1; i < 7; i++)
             {
                 //party
-                Console.Write("Prevent Resharper from deleting");
+                Console.WriteLine();
             }
             for (var i = 7; i < 13; i++)
             {
                 //enemies
-                Console.Write("Prevent Resharper from deleting");
+                Console.WriteLine();
             }
         }
 
         public void Fight(Entity attacker, Entity defender)
         {
             //TODO BLOCK: melee/magic/ranged effects, armour chance to hit - based on size?
-            var armour = new Random().Next(0,8); //select - chance to hit
-            var weapon = new[] { attacker.Weapons[0].Name, attacker.Weapons[1].Name }.Select();
+            var armour = new Random().Next(8); //select - chance to hit
+            var weapon = new[] { attacker.Weapons[0].Name, attacker.Weapons[1].Name }.Choose();
             var totalPenetration = attacker.Weapons[weapon].ArmourPenetration.Random();
             var totalArmour = defender.Armour[armour].ArmourToughness.Random();
             var totalDamage = attacker.Weapons[weapon].Attack.Random();
@@ -48,7 +48,7 @@ namespace GuardsOfAetheria
         {
             //TODO BLOCK: select enemy to attack - do the same for party? or party autoattack?
             //test
-            var enemyToAttack = Enemies[Enemies.ConvertAll(T => T.Name).ToArray().Select()];
+            var enemyToAttack = Enemies[Enemies.ConvertAll(T => T.Name).ToArray().Choose()];
             Fight(Player.Instance, enemyToAttack);
             //party + enemy AI - consider strengths, hp left etc
             //do the reverse

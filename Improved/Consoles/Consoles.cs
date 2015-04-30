@@ -3,195 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Improved
+namespace Improved.Consoles
 {
-    public class ProgressBar
-    {
-        public int Initial;
-        public int Current;
-        public int Maximum;
-        public int Width;
-        public int Left;
-        public int Top;
-        public ConsoleColor InitialColour;
-        public ConsoleColor NewColour;
-        public string Enclosure;
-
-        public ProgressBar(){}
-
-        public ProgressBar(int initial, int current, int maximum, int width, int left = -1, int top = -1, ConsoleColor initialColour = default(ConsoleColor), ConsoleColor newColour = default(ConsoleColor), string enclosure = null)
-        {
-            Initial = initial;
-            Current = current;
-            Maximum = maximum;
-            Width = width;
-            Left = (left < 0 || left >= Console.WindowWidth) ? Console.CursorLeft : left;
-            Top = (top < 0 || left >= Console.WindowHeight) ? Console.CursorTop : top;
-            InitialColour = (initialColour == default(ConsoleColor)) ? initialColour : ConsoleColor.DarkGray;
-            NewColour = (newColour == default(ConsoleColor)) ? newColour : ConsoleColor.Gray;
-            Enclosure = enclosure ?? "[]";
-        }
-
-        //TODO: multi-row, event trigger, use in spend()
-
-        public void Draw()
-        {
-            Enclosure[0].WriteAt(Left, Top);
-            Enclosure[1].WriteAt(Left + Width + 2, Top, -1);
-            Console.BackgroundColor = InitialColour;
-            new string(' ', Initial / Maximum * Width).WriteAt(Left + 1, Top, Width);
-            Console.BackgroundColor = NewColour;
-            new string(' ', (Current - Initial) / Maximum * Width).WriteAt(Left + 1, Top);
-        }
-
-        public void Finish()
-        {
-            Initial = Current;
-        }
-    }
-    
-    public static class Resizing
-    {
-        public static void Maximise()
-        {
-            Console.WindowHeight = Console.BufferHeight = Console.LargestWindowHeight;
-            Console.WindowWidth = Console.BufferWidth = Console.LargestWindowWidth;
-            //TODO: pinvoke window position
-        }
-
-        public static void SetFont()
-        {
-            
-        }
-    }
-    
-    public static class Parsing
-    {
-        /*public enum Base : byte
-        {
-            Binary = 2,
-            Octal = 8,
-            Decimal = 10,
-            Hexadecimal = 16
-        }*/
-        
-        /// <summary>
-        /// Converts a string guaranteed to be an integer to an integer.
-        /// </summary>
-        /// <param name="value">The string to be parsed</param>
-        /// <returns>The parsed integer</returns>
-        public static int ToInt(this string value) { return value.Aggregate(0, (current, t) => 10 * current + (t - 48)); }
-
-       /* public static int IntParse(this string value, Base @base = Base.Decimal)
-        {
-            int sign = 1;
-            if (value[0] == '-') { sign = -1; value = value.Remove(0, 1); }
-            return sign * value.Aggregate(0, (current, t) => (int) @base * current + (Char.IsLetter(t) ? (t - 55) : (Char.IsNumber(t) ? (t - 48) : 0)));
-        }*/
-    }
-
-    public static class Maths
-    {
-        /// <summary>
-        /// Returns the positive modulus of two numbers.
-        /// </summary>
-        /// <param name="a">The number</param>
-        /// <param name="b">The base</param>
-        /// <returns>The modulus</returns>
-        public static int Mod(int a, int b) { return (a %= b) < 0 ? a + b : a; }
-        /// <summary>
-        /// Returns the positive modulus of two numbers, modifying the first number.
-        /// </summary>
-        /// <param name="a">The number</param>
-        /// <param name="b">The base</param>
-        public static void Mod(ref int a, int b) { a = (a %= b) < 0 ? a + b : a; }
-    }
-
-    public class Frame
-    {
-        public int TopLeftX;
-        public int TopLeftY;
-        public int Height;
-        public int Width;
-        public int Priority;
-        public List<string> Buffer;
-
-        public Frame(int topLeftCornerY, int topLeftCornerX, int height, int width)
-        {
-            TopLeftX = topLeftCornerX;
-            TopLeftY = topLeftCornerY;
-            Height = height;
-            Width = width;
-        }
-        //TODO: frame order, add to frameList
-
-        public enum Style : byte { Normal, Bold, Double, Curved }
-
-        public List<List<char>> StyleParts = new List<List<char>>
-        {
-            new List<char> {'─', '│', '┌', '┐', '└', '┘'},
-            new List<char> {'━', '┃', '┏', '┓', '┗', '┛'},
-            new List<char> {'═', '║', '╔', '╗', '╚', '╝'},
-            new List<char> {'─', '│', '╭', '╮', '╯', '╰'}
-        };
-
-        //TODO: equipment to enum, Overlap(style1, side1, style2, side2), Console.Beep for alerts, sound option
-
-        public void ShowBorder(Style s)
-        {
-            var num = (int)s;
-            var str1 = new string(StyleParts[num][0], Width - 2);
-            var str2 = new string(StyleParts[num][1], Height - 2);
-            str1.WriteAt(TopLeftX + 1, TopLeftY, Width - 2);
-            str1.WriteAt(TopLeftX + 1, TopLeftY + Height - 1, Width - 2);
-            str2.WriteVertical(TopLeftX, TopLeftY);
-            str2.WriteVertical(TopLeftX + Width - 1, TopLeftY);
-            //TODO: fix, pinvoke so cursor doesnt move
-            for (var i = 0; i < 4; i++) StyleParts[num][2 + i].WriteAt(TopLeftX - 1 + i % 2 * Width, TopLeftY - 1 + i / 2 * Height);
-        }
-        //TODO: mixed styles - bottom, top, left, right, 
-
-        /// <summary>
-        /// Writes a string to a frame
-        /// </summary>
-        /// <param name="input">The string to write</param>
-        /// <param name="wordWrap">Whether to wrap words instead of letters</param>
-        public void Write(string input, bool wordWrap = false)
-        {
-            int numLines;
-            Buffer.AddRange(Consoles.WordWrap(input, out numLines, Width, wordWrap));
-            Buffer.RemoveRange(0, numLines);
-        }
-
-        public void WriteBorder(string s, int top)
-        {
-            var line = new char[Width];
-            for (var i = 0; i < line.Length; i += 1) line[i] = s[i % s.Length];
-            Console.WriteLine(new string(line));
-        }
-
-        public void WriteAt(object o, int left, int top, int limit = -1) { o.WriteAt(left, top, limit.EnsureBetween(0, Width)); }
-        //TODO: copy from, dev mode, devtools.cs? for errors and stuff
-    }
-
-    public static class Frames
-    {
-        public static List<Frame> FrameList;
-
-        public static void ShowFrameNumbers() { var i = 0; foreach (var f in FrameList) { i.WriteAt(f.TopLeftX, f.TopLeftY); i++; } }
-    }
-
-    interface IScrollable
-    {
-        void RecalculateIndex();
-        List<int> CalculateIndices();
-    }
-
-    interface IAlignable
-    {
-        void Write(string s, object[] o);
-    }
-
     public class KeyMenu
     {
         public string Text;
@@ -207,12 +20,24 @@ namespace Improved
             Key = key;
         }
     }
+    
+    public interface IScrollable
+    {
+        void RecalculateIndex();
+        List<int> CalculateIndices();
+    }
 
+    public interface IAlignable
+    {
+        void Write(string s, object[] o);
+    }
+    
     public static class Consoles
     {
         public static bool ScrollingIsContinuous, ScrollIsEnabled, PageNumIsVisible, Continue;
         public static int Left, Top, Option, Index, Page, MaxLines, PagePlus, TotalOptions, PossibleOptions, Pages;
         public static ConsoleKey Input;
+        public static IScrollable Scroll;
 
         public enum Alignment { Left, Centre, Right, Justified }
 
@@ -220,7 +45,7 @@ namespace Improved
 
         public class Continuous : IScrollable
         {
-            public void RecalculateIndex() { EnsureBetween(ref Index, 0, PossibleOptions - 1); }
+            public void RecalculateIndex() { REnsureBetween(ref Index, 0, PossibleOptions - 1); }
             public List<int> CalculateIndices() { var indices = new List<int>(); for (var i = 0; i < PossibleOptions; i++) indices.Add((Page + i) % TotalOptions); return indices; }
         }
 
@@ -238,7 +63,8 @@ namespace Improved
         {
             public void Write(string s, object[] o)
             {
-                Console.Write(s, o);
+                String.Format(s, o).WriteAt(0, Console.CursorTop);
+                //TODO: left (for frames)
             }
         }
 
@@ -247,18 +73,23 @@ namespace Improved
 
         public static void Initiate(int arrayLength, int lastLine)
         {
+            if (ScrollingIsContinuous) Scroll = new Continuous(); else Scroll = new PageByPage();
             Option = 1; Page = -1; PagePlus = 1; Index = 1; Input = ConsoleKey.UpArrow;
             Left = Console.CursorLeft; Top = Console.CursorTop + 1;
             MaxLines = lastLine - Top;
             TotalOptions = arrayLength;
-            PossibleOptions = Math.Min(MaxLines, ScrollingIsContinuous ? arrayLength : TotalOptions - MaxLines*Page);
-            Pages = ScrollingIsContinuous ? TotalOptions : 1 + arrayLength/MaxLines;
-            ScrollIsEnabled = arrayLength > MaxLines;
+            PossibleOptions = Math.Min(MaxLines, TotalOptions);
+            Pages = ScrollingIsContinuous ? TotalOptions : 1 + TotalOptions/MaxLines;
+            ScrollIsEnabled = TotalOptions > MaxLines;
         }
 
         //TODO: text position - left, centre, right, justified
 
-        public static void ShowPageNum(int left = 50, int top = -1) { if (top < 0 || top > Console.WindowHeight) top = Top; if (Pages > 0 && PageNumIsVisible && ScrollIsEnabled && !ScrollingIsContinuous) (Page + 1).WriteAt(left, top); ("/" + (Pages + 1)).WriteAt(left + 2, top); }
+        public static void ShowPageNum(int left = 50, int top = -1) { if (top < 0 || top > Console.WindowHeight) top = Top;
+            if (Pages <= 0 || !PageNumIsVisible || !ScrollIsEnabled || ScrollingIsContinuous) return;
+            ((Page + 1) + "/" + (Pages + 1)).WriteAt(left + 2, top);
+            //TODO: page + 1 > 10
+        }
         /// <summary>
         /// Removes the last character in a string.
         /// </summary>
@@ -305,22 +136,20 @@ namespace Improved
             Console.SetCursorPosition(left, top); Console.Write(o.ToString().PadRight(limit));
         }
 
-        public static void EnsureBetween(ref int n, int min, int max) { n =  Math.Max(min, Math.Min(max, n)); }
+        public static void REnsureBetween(ref int n, int min, int max) { n =  n.EnsureBetween(min, max); }
 
         public static int EnsureBetween(this int n, int min, int max) { return Math.Max(min, Math.Min(max, n)); }
 
         public static void WriteBorder(this string s, int width = int.MaxValue)
         {
-            width = width.EnsureBetween(1, Console.WindowWidth - 1);
+            REnsureBetween(ref width, 1, Console.WindowWidth - 1);
             for (var i = 0; i <= width; i += 1) Console.Write(s[i % s.Length]);
         }
 
         //TODO BLOCK: bools: spaceIsEdge, spaceIsCorner, borderIsVisible, ascii fonts
-        public static int Select(this string[] options, KeyMenu[] keyMenus = null)
+        public static int Choose(this string[] options, KeyMenu[] keyMenus = null)
         {
             //option to jump to start for continuous scrolling? key list etc
-            IScrollable scroll;
-            if (ScrollingIsContinuous) scroll = new Continuous(); else scroll = new PageByPage();
             if (!Continue) Initiate(options.Length);
             else Continue = false;
             //Continue =!;, =; <- is this possible in c#
@@ -349,16 +178,16 @@ namespace Improved
                             //TODO: is default value -1?
                             break;
                     }
-                    Maths.Mod(ref Option, TotalOptions);
+                    Maths.RMod(ref Option, TotalOptions);
                     if (ScrollIsEnabled) { if (Index < 0) PagePlus = -1; else if (Index >= PossibleOptions) PagePlus = 1; }
                     else Index = Option;
                     if (PagePlus != 0)
                     {
                         Page += PagePlus;
-                        Maths.Mod(ref Page, Pages);
+                        Maths.RMod(ref Page, Pages);
                         ShowPageNum();
-                        scroll.RecalculateIndex();
-                        var indices = scroll.CalculateIndices();
+                        Scroll.RecalculateIndex();
+                        var indices = Scroll.CalculateIndices();
                         Console.SetCursorPosition(40, 15);
                         var i = 0;
                         for (; i < PossibleOptions; i++) options[indices[i]].WriteAt(Left + 2, Top + i, maxLength);
@@ -371,7 +200,7 @@ namespace Improved
             }
         }
 
-        public static List<string> WordWrap(string paragraph, int width = -1, bool wordWrap = true)
+        public static List<string> WordWrap(string paragraph, int width = Int32.MaxValue, bool wordWrap = true)
         { int numberOfLines; return WordWrap(paragraph, out numberOfLines, width, wordWrap); }
 
         /// <summary>
@@ -427,7 +256,6 @@ namespace Improved
         {
             Console.Clear();
             if (options.Count != items.Count || items.Count != cost.Count || (sellValue != null && cost.Count != sellValue.Count)) throw new Exception("List length mismatch"); //replace with list<item>
-            IScrollable scroll; if (ScrollingIsContinuous) scroll = new Continuous(); else scroll = new PageByPage();
             //TODO: un-error-ify - how will the other lists be stored, organise, make more readable, continue from spend(), extract common methods, add ISelectable
             var newItems = NewList(TotalOptions, 0);
             Initiate(options.Count);
@@ -470,26 +298,27 @@ namespace Improved
                     }
                     if (currency != 0 || textzero == null) (text[0] + s + text[2]).WriteAt(0, Top + MaxLines + 2, maximumCurrencyLength);
                 }
-                Maths.Mod(ref Option, TotalOptions);
-                if (ScrollIsEnabled)
+                Maths.RMod(ref Option, TotalOptions);
+                if (ScrollIsEnabled) //TODO: draw thing on first run
                 {
                     if (Index < 0) PagePlus = -1;
                     else if (Index >= PossibleOptions) PagePlus = 1;
                     if (PagePlus != 0)
                     {
                         Page += PagePlus;
-                        Maths.Mod(ref Page, Pages);
+                        Maths.RMod(ref Page, Pages);
                         ShowPageNum();
-                        scroll.RecalculateIndex();
+                        Scroll.RecalculateIndex();
                         var maximumItemNumberLength = totalItems.Max().ToString().Length;
-                        var indices = scroll.CalculateIndices();
+                        var indices = Scroll.CalculateIndices();
                         var i = 0;
+                        var top = Top;
                         for (; i < PossibleOptions; i++)
                         {
-                            options[indices[i]].WriteAt(2, Top + i + 1, maximumNameLength);
-                            totalItems[indices[i]].WriteAt(maximumNameLength + 3, Top + i + 1, maximumItemNumberLength);
+                            options[indices[i]].WriteAt(2, ++top, maximumNameLength);
+                            totalItems[indices[i]].WriteAt(maximumNameLength + 3, top, maximumItemNumberLength);
                         }
-                        for (; i < MaxLines; i++) "".WriteAt(2, Top + i + 1, 1 + maximumNameLength + maximumItemNumberLength);
+                        for (; i < MaxLines; i++) "".WriteAt(2, ++top, 1 + maximumNameLength + maximumItemNumberLength);
                     }
                 }
                 if (Input == ConsoleKey.UpArrow || Input == ConsoleKey.DownArrow)
@@ -497,35 +326,6 @@ namespace Improved
                 Input = Console.ReadKey(true).Key;
                 amountIsChanged = false;
                 PagePlus = 0;
-            }
-        }
-    }
-
-    internal class Quicksort
-    {
-        public static int Partition<T>(List<T> numbers, List<int> indices, int left, int right)
-        {//TODO: test
-            var pivot = indices[left];
-            while (true)
-            {
-                while (indices[left] < pivot) left++;
-                while (indices[right] > pivot) right--;
-                if (left < right)
-                {
-                    var temp = numbers[right]; numbers[right] = numbers[left]; numbers[left] = temp;
-                    var temp2 = indices[right]; indices[right] = indices[left]; indices[left] = temp2;
-                }
-                else return right;
-            }
-        }
-        public static void Qsort<T>(List<T> arr, List<int> indices, int left, int right)
-        {
-            while (true)
-            {
-                if (left >= right) return;
-                var pivot = Partition(arr, indices, left, right);
-                if (pivot > 1) Qsort(arr, indices, left, pivot - 1);
-                if (pivot + 1 < right) { left = pivot + 1; continue; } break;
             }
         }
     }

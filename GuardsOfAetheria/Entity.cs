@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Improved;
+using Improved.Consoles;
 
 namespace GuardsOfAetheria
 {
@@ -87,8 +87,6 @@ namespace GuardsOfAetheria
 
         public void UpdateAttributes()
         {
-            ((int) Class.Melee).WriteAt(0, 0);
-            Console.ReadKey();
             switch (PlayerClass)
             {
                 case Class.Melee: Strength = PrimaryAttribute; Wisdom = SecondaryAttribute; Dexterity = TertiaryAttribute; break;
@@ -130,7 +128,7 @@ namespace GuardsOfAetheria
         public void ShowMenu()
         {
             Console.Clear(); Console.WriteLine("Inventory");
-            //select
+            (from i in Inventory select i.Name).ToArray().Choose();
             //Add more options, centre text, SelectContinue
         }
     }
@@ -171,7 +169,7 @@ namespace GuardsOfAetheria
                 "an average house in the safe provinces, loyal to the king",
                 "an average house in a war-torn province, loyal to your lord", //TODO: find correct title
                 "a refugee tent in a war-torn province, loyal to nobody"
-            }.Select();
+            }.Choose();
             #endregion
             #region Choose Class
             Console.Clear(); Console.WriteLine("You are");
@@ -197,13 +195,12 @@ namespace GuardsOfAetheria
                         "a born mage, able to burn a tree in 10 seconds flat" };
                     break;
             }
-            Player.Instance.PlayerClass = (Player.Class) options.Select();
+            Player.Instance.PlayerClass = (Player.Class) options.Choose();
             #endregion
             //TODO: AssignStartingEquipment();
             Player.Instance.InitialiseAttributes();
             int attPoints;
-            int numberOfLines;
-            Consoles.WordWrap("Set your attributes manually. Points left are indicated below.", out numberOfLines);
+            Consoles.WordWrap("Set your attributes manually. Points left are indicated below.");
             var permanentPoints = Consoles.Spend(
                 new List<string> { "You have ", " points", " left to use" },
                 new List<string> { "Strength:", "Dexterity:", "Wisdom:" },

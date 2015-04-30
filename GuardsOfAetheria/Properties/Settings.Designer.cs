@@ -26,8 +26,8 @@ namespace GuardsOfAetheria.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|/assets/database.acc" +
-            "db;Persist Security Info=False;")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\\Assets\\database.acc" +
+            "db;Persist Security Info=False")]
         public string databaseConnectionString {
             get {
                 return ((string)(this["databaseConnectionString"]));

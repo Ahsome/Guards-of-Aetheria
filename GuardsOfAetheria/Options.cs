@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using GuardsOfAetheria.Properties;
 using Improved;
+using Improved.Consoles;
 
 namespace GuardsOfAetheria
 {
@@ -62,10 +63,10 @@ namespace GuardsOfAetheria
                 if (input == ConsoleKey.DownArrow || input == ConsoleKey.UpArrow)
                 {
                     Settings.Default[Names[oldNumber].Replace(" ", "_")] = List[oldNumber][choice];
-                    Maths.Mod(ref number, Names.Count);
+                    Maths.RMod(ref number, Names.Count);
                     choice = List[number].IndexOf(Settings.Default[Names[number].Replace(" ", "_")]);
                 }
-                else Maths.Mod(ref choice, List[number].Count);
+                else Maths.RMod(ref choice, List[number].Count);
                 '>'.WriteAt(left + spacing * choice, top + number);
                 oldNumber = number;
             }

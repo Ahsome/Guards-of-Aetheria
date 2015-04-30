@@ -2,7 +2,7 @@ using System;
 
 namespace GuardsOfAetheria
 {
-    internal class MainProgram
+    internal class Program
     {
         //private static readonly string AppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Guards of Aetheria");
         private static void Main() { MainAsync(); }
@@ -10,7 +10,7 @@ namespace GuardsOfAetheria
         private static async void MainAsync()
         {
             // Fake Class: Spaghetti Monster ;)
-            var task = Database.DatabaseConnection.OpenAsync();
+            var task = Database.Connection.OpenAsync();
             #region Initiate Display
             Console.BufferHeight = Console.WindowHeight = Console.LargestWindowHeight - 5;
             Console.BufferWidth = Console.WindowWidth = Console.LargestWindowWidth - 5;
@@ -19,13 +19,14 @@ namespace GuardsOfAetheria
             //TODO: for fullscreen option? screen size options, allow/disallow autoresize option (how?), genericise, improve readability, shorten
             #endregion
             //if (!Directory.Exists(AppData)) Directory.CreateDirectory(AppData);
-            Options.Load();
+            Options.Load(); 
             MainMenu.Display();
             await task;
-            Database.DatabaseConnection.Close();
+            Database.Connection.Close();
             //TODO: infinite timeout
             while (true) Movement.ShowLocation();
             //Took way too long to make this ;)
+            // ReSharper disable once FunctionNeverReturns
         }
     }
 }
