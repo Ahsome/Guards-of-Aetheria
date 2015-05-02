@@ -16,6 +16,8 @@ namespace GuardsOfAetheria
                 //var f = new Frame(0, 0, Console.WindowHeight, Console.WindowWidth);
                 //f.ShowBorder(Frame.Style.Normal);
                 //Console.ReadKey();
+                //Console.WriteLine(Consoles.ReadlineSpecial(" -'"));
+                Console.ReadKey();
                 Console.Clear();
                 Console.WriteLine(@"
 
@@ -27,8 +29,8 @@ Welcome to the Guards of Atheria
 A simple game, set in the land of Aesrin
 What would you like to do?");
                 Console.CursorTop = Console.WindowHeight - 2;
-                "- ".WriteBorder();
-                Console.Write(@"                      © Black-Strike Studios, 2014 - {0}                      ", DateTime.Now.Year);
+                " -".WriteBorder();
+                Console.Write($"                      © Black-Strike Studios, 2014 - {DateTime.Now.Year}");
                 Console.SetCursorPosition(0, 9);
                 new[] { "New", "Load", "Options", "Credits", "Quit" }.Choose().Activate();
             }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using static System.Console;
 
 namespace Improved.Consoles
 {
@@ -6,8 +6,8 @@ namespace Improved.Consoles
     {
         public static void Maximise()
         {
-            Console.WindowHeight = Console.BufferHeight = Console.LargestWindowHeight;
-            Console.WindowWidth = Console.BufferWidth = Console.LargestWindowWidth;
+            WindowHeight = BufferHeight = LargestWindowHeight;
+            WindowWidth = BufferWidth = LargestWindowWidth;
             //TODO: pinvoke window position
         }
 

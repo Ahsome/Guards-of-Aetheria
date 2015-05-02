@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using static System.Console;
 
 namespace GuardsOfAetheria
 {
-    public class Item
+    public abstract class Item
     {
         public string Name;
         public int Index;
@@ -28,7 +29,7 @@ namespace GuardsOfAetheria
         
         public void GetWeaponData()
         {
-            Console.Clear();
+            Clear();
             //TODO: info screen
             var arrays = new Dictionary<string, string[]>
             {
@@ -39,8 +40,8 @@ namespace GuardsOfAetheria
                 {"Material Name", ""}
             };
             Database.GetData("SELECT [Material Name] FROM Materials", strings, arrays);
-            Database.GetData(String.Format("SELECT * FROM Materials WHERE [Material Name] = {0}", Player.Instance.RoomId), strings, arrays);
-            //TODO: max gems = material id - 1? or material id/2?
+            Database.GetData($"SELECT * FROM Materials WHERE [Material Name] = {Player.Instance.RoomId}", strings, arrays);
+            //TODO: max gems = rarity id - 1? or rarity id/2?
         } //In weaponrack/armourrack - (cart)
         //CreateWeapon() (custom) for starting?
     }

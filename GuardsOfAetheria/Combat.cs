@@ -40,7 +40,7 @@ namespace GuardsOfAetheria
             if (penetrationDamage < 0) Console.WriteLine(attacker.Name + "struck a glancing blow!");
             else Console.WriteLine(attacker.Name + "used a basic attack!");
             //instead of hp: you have several minor cuts and bruises, you have a fatal wound
-            defender.Vitality.Current -= damageDealt;
+            defender.Bars.Vitality.Current -= damageDealt;
             //change attack/defence mechanics, change text, implement misses (accuracy stat)/dodge (evasion stat)
         }
 

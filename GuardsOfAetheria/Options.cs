@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using GuardsOfAetheria.Properties;
 using Improved;
 using Improved.Consoles;
+using static System.Console;
 
 namespace GuardsOfAetheria
 {
@@ -35,18 +36,18 @@ namespace GuardsOfAetheria
         public static void Change()
         {
             //TODO: scrolling
-            Console.Clear();
-            Console.WriteLine("Options\n");
-            var top = Console.CursorTop; const int left = 38; const int spacing = 12; var number = 0; var oldNumber = 0;
-            Console.CursorLeft = 0;
-            foreach (var name in Names) Console.WriteLine(name);
+            Clear();
+            WriteLine("Options\n");
+            var top = CursorTop; const int left = 38; const int spacing = 12; var number = 0; var oldNumber = 0;
+            CursorLeft = 0;
+            foreach (var name in Names) WriteLine(name);
             for (var i = 0; i < Names.Count; i++) for (var j = 0; j < List[i].Count; j++)
             { Strings[i][j].WriteAt(left + 2 + spacing * j, top + i); }
             var choice = List[number].IndexOf(Settings.Default[Names[number].Replace(" ", "_")]);
             '>'.WriteAt(left + spacing * choice, top + number);
             while (true)
             {
-                var input = Console.ReadKey().Key;
+                var input = ReadKey().Key;
                 ' '.WriteAt(left + spacing * choice, top + number);
                 switch (input)
                 {

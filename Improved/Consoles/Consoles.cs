@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using static System.Console;
 
 namespace Improved.Consoles
 {
@@ -20,7 +21,7 @@ namespace Improved.Consoles
             Key = key;
         }
     }
-    
+
     public interface IScrollable
     {
         void RecalculateIndex();
@@ -31,13 +32,14 @@ namespace Improved.Consoles
     {
         void Write(string s, object[] o);
     }
-    
+
     public static class Consoles
     {
         public static bool ScrollingIsContinuous, ScrollIsEnabled, PageNumIsVisible, Continue;
         public static int Left, Top, Option, Index, Page, MaxLines, PagePlus, TotalOptions, PossibleOptions, Pages;
         public static ConsoleKey Input;
         public static IScrollable Scroll;
+        public static List<int> Indices; 
 
         public enum Alignment { Left, Centre, Right, Justified }
 
@@ -63,29 +65,46 @@ namespace Improved.Consoles
         {
             public void Write(string s, object[] o)
             {
-                String.Format(s, o).WriteAt(0, Console.CursorTop);
+                string.Format(s, o).WriteAt(0, CursorTop);
                 //TODO: left (for frames)
             }
         }
 
+        /*public static string ReadlineSpecial(string notAllowed)
+        {
+            var sb = new StringBuilder();
+            int chOld = default(char);
+            while (true)
+            {
+                var ch = Console.In.Read();
+                if (ch == -1) break;
+                if (ch == '\n') return sb.ToString();
+                if (notAllowed.All(c => c != ch || c != chOld)) sb.Append((char)ch);
+                chOld = ch;
+            }
+            return sb.Length > 0 ? sb.ToString() : null;
+        }*/
+
         //TODO: rearrange methods, readability, replace footerheight with frame, frameify spend and select
-        public static void Initiate(int arrayLength) { Initiate(arrayLength, Console.WindowHeight - 3); }
+        public static void Initiate(int arrayLength) { Initiate(arrayLength, WindowHeight - 3); }
 
         public static void Initiate(int arrayLength, int lastLine)
         {
             if (ScrollingIsContinuous) Scroll = new Continuous(); else Scroll = new PageByPage();
             Option = 1; Page = -1; PagePlus = 1; Index = 1; Input = ConsoleKey.UpArrow;
-            Left = Console.CursorLeft; Top = Console.CursorTop + 1;
+            Left = CursorLeft; Top = CursorTop + 1;
             MaxLines = lastLine - Top;
             TotalOptions = arrayLength;
             PossibleOptions = Math.Min(MaxLines, TotalOptions);
-            Pages = ScrollingIsContinuous ? TotalOptions : 1 + TotalOptions/MaxLines;
+            Pages = ScrollingIsContinuous ? TotalOptions : 1 + TotalOptions / MaxLines;
             ScrollIsEnabled = TotalOptions > MaxLines;
         }
 
         //TODO: text position - left, centre, right, justified
 
-        public static void ShowPageNum(int left = 50, int top = -1) { if (top < 0 || top > Console.WindowHeight) top = Top;
+        public static void ShowPageNum(int left = 50, int top = -1)
+        {
+            if (top < 0 || top > WindowHeight) top = Top;
             if (Pages <= 0 || !PageNumIsVisible || !ScrollIsEnabled || ScrollingIsContinuous) return;
             ((Page + 1) + "/" + (Pages + 1)).WriteAt(left + 2, top);
             //TODO: page + 1 > 10
@@ -108,7 +127,7 @@ namespace Improved.Consoles
         /// Writes a string vertically, one character on each line.
         /// </summary>
         /// <param name="s">The string to write</param>
-        public static void WriteVertical(this string s) { s.WriteVertical(Console.CursorLeft, Console.CursorTop); }
+        public static void WriteVertical(this string s) { s.WriteVertical(CursorLeft, CursorTop); }
         /// <summary>
         /// Writes a string vertically, one character on each line, at a specified position.
         /// </summary>
@@ -122,7 +141,7 @@ namespace Improved.Consoles
         /// <param name="c">The character to write</param>
         /// <param name="left">The column to write the string at</param>
         /// <param name="top">The row to write the string at</param>
-        public static void WriteAt(this char c, int left, int top) { Console.SetCursorPosition(left, top); Console.Write(c); }
+        public static void WriteAt(this char c, int left, int top) { SetCursorPosition(left, top); Write(c); }
         /// <summary>
         /// Writes a character at a specified position, padded to a maximum length.
         /// </summary>
@@ -132,18 +151,18 @@ namespace Improved.Consoles
         /// <param name="limit">The amount of the padding</param>
         public static void WriteAt(this object o, int left, int top, int limit = -1)
         {
-            limit = (limit < 0 || limit >= Console.WindowWidth) ? Console.WindowWidth - left - 1 : limit;
-            Console.SetCursorPosition(left, top); Console.Write(o.ToString().PadRight(limit));
+            limit = (limit < 0 || limit >= WindowWidth) ? WindowWidth - left - 1 : limit;
+            SetCursorPosition(left, top); Write(o.ToString().PadRight(limit));
         }
 
-        public static void REnsureBetween(ref int n, int min, int max) { n =  n.EnsureBetween(min, max); }
+        public static void REnsureBetween(ref int n, int min, int max) { n = n.EnsureBetween(min, max); }
 
         public static int EnsureBetween(this int n, int min, int max) { return Math.Max(min, Math.Min(max, n)); }
 
         public static void WriteBorder(this string s, int width = int.MaxValue)
         {
-            REnsureBetween(ref width, 1, Console.WindowWidth - 1);
-            for (var i = 0; i <= width; i += 1) Console.Write(s[i % s.Length]);
+            REnsureBetween(ref width, 1, WindowWidth - 1);
+            for (var i = 0; i <= width; i += 1) Write(s[i % s.Length]);
         }
 
         //TODO BLOCK: bools: spaceIsEdge, spaceIsCorner, borderIsVisible, ascii fonts
@@ -152,13 +171,13 @@ namespace Improved.Consoles
             //option to jump to start for continuous scrolling? key list etc
             if (!Continue) Initiate(options.Length);
             else Continue = false;
+            //TODO: continue
             //Continue =!;, =; <- is this possible in c#
             var maxLength = options.Max(s => s.Length);
             //adjust padright when GUI created
             //if (menuIsVisible) "[M]enu".WriteAt(10, 23);
             while (true)
             {
-                '>'.WriteAt(Left, Index + Top);
                 //change appearance of arrow? >/-
                 while (true)
                 {
@@ -173,8 +192,9 @@ namespace Improved.Consoles
                         case default(ConsoleKey): break;
                         default:
                             int index;
-                            if (keyMenus == null) { Input = Console.ReadKey(true).Key; continue; }
-                            if ((index = keyMenus.ToList().FindIndex(k => k.Key == Input)) != -1) { Continue = true; return 0-index; }//-index?
+                            if (keyMenus == null) { Input = ReadKey(true).Key; continue; }
+                            //TODO: de-null check
+                            if ((index = keyMenus.ToList().FindIndex(k => k.Key == Input)) != -1) { Continue = true; return 0 - index; }//-index?
                             //TODO: is default value -1?
                             break;
                     }
@@ -183,24 +203,20 @@ namespace Improved.Consoles
                     else Index = Option;
                     if (PagePlus != 0)
                     {
-                        Page += PagePlus;
-                        Maths.RMod(ref Page, Pages);
-                        ShowPageNum();
-                        Scroll.RecalculateIndex();
-                        var indices = Scroll.CalculateIndices();
-                        Console.SetCursorPosition(40, 15);
+                        TurnPage();
+                        SetCursorPosition(40, 15);
                         var i = 0;
-                        for (; i < PossibleOptions; i++) options[indices[i]].WriteAt(Left + 2, Top + i, maxLength);
+                        for (; i < PossibleOptions; i++) options[Indices[i]].WriteAt(Left + 2, Top + i, maxLength);
                         for (; i < MaxLines; i++) "".WriteAt(Left + 2, Top + i, maxLength);
                         PagePlus = 0;
                     }
                     ' '.WriteAt(Left, oldIndex + Top); '>'.WriteAt(Left, Index + Top);
-                    Input = Console.ReadKey(true).Key;
+                    Input = ReadKey(true).Key;
                 }
             }
         }
 
-        public static List<string> WordWrap(string paragraph, int width = Int32.MaxValue, bool wordWrap = true)
+        public static List<string> WordWrap(string paragraph, int width = int.MaxValue, bool wordWrap = true)
         { int numberOfLines; return WordWrap(paragraph, out numberOfLines, width, wordWrap); }
 
         /// <summary>
@@ -211,20 +227,21 @@ namespace Improved.Consoles
         /// <param name="width">The width of the frame</param>
         /// <param name="wordWrap">If false, wraps by letters instead</param>
         /// <returns>The paragraph split into a list of lines</returns>
-        public static List<string> WordWrap(string paragraph, out int numberOfLines, int width = Int32.MaxValue, bool wordWrap = true)
+        public static List<string> WordWrap(string paragraph, out int numberOfLines, int width = int.MaxValue, bool wordWrap = true)
         {
-            var left = Console.CursorLeft; var top = Console.CursorTop; numberOfLines = 0; var lines = new List<string>();
-            width = Math.Min(width, Console.WindowWidth - left);
+            var left = CursorLeft; var top = CursorTop; numberOfLines = 0; var lines = new List<string>();
+            width = Math.Min(width, WindowWidth - left);
             paragraph = new Regex(" {2,}").Replace(paragraph.Trim(), " ");
             for (; paragraph.Length > 0; numberOfLines++)
             {
                 lines.Add(paragraph.Substring(0, Math.Min(width - left, paragraph.Length)));
                 int length;
-                if (wordWrap && paragraph.Length > Console.WindowWidth - left && (length = lines[numberOfLines].LastIndexOf(' ')) > 0)
+                if (wordWrap && paragraph.Length > WindowWidth - left && (length = lines[numberOfLines].LastIndexOf(' ')) > 0)
                     lines[numberOfLines] = lines[numberOfLines].Remove(length);
                 paragraph = paragraph.Substring(Math.Min(lines[numberOfLines].Length + 1, paragraph.Length));
                 lines[numberOfLines].WriteAt(left, top + numberOfLines);
-            } return lines;
+            }
+            return lines;
         }
 
         /// <summary>
@@ -236,12 +253,19 @@ namespace Improved.Consoles
         /// <returns>The new list</returns>
         public static List<T> NewList<T>(int count, T value) { var list = new List<T>(); for (var i = 0; i < count; i++) list.Add(value); return list; }
 
-        //TODO: move spend() to rpg section (out of consolus), same project as item
+        public static void TurnPage()
+        {
+            Page += PagePlus;
+            Maths.RMod(ref Page, Pages);
+            ShowPageNum();
+            Scroll.RecalculateIndex();
+            Indices = Scroll.CalculateIndices();
+        }
 
         /// <summary>
         /// Lets the user spend currency to obtain items.
         /// </summary>
-        /// <param name="text">The text, after the spend screen, that tells the user the amount of currency left, in the format [0] = "You have ", [1] = " currency", [2] = "left"</param>
+        /// <param name="text">The text, after the spend screen, that tells the user the amount of currency left, in the format [0] = "You have ", [1] = " currency", [2] = " left"</param>
         /// <param name="options">The names of the items</param>
         /// <param name="items">The number of items</param>
         /// <param name="cost">The cost of each item</param>
@@ -254,18 +278,23 @@ namespace Improved.Consoles
         /// <returns>The total number of each item</returns>
         public static List<int> Spend(List<string> text, List<string> options, List<int> items, List<int> cost, int currency, out int currencyLeft, List<int> sellValue = null, string singular = null, string textzero = null, int arrowPosition = -1)
         {
-            Console.Clear();
+            Clear();
+            //TODO: (somehow) List<item>
+#if DEBUG
             if (options.Count != items.Count || items.Count != cost.Count || (sellValue != null && cost.Count != sellValue.Count)) throw new Exception("List length mismatch"); //replace with list<item>
-            //TODO: un-error-ify - how will the other lists be stored, organise, make more readable, continue from spend(), extract common methods, add ISelectable
+#endif
+            //TODO: list<item> organise, continue(); extract common methods, add ISelectable
             var newItems = NewList(TotalOptions, 0);
             Initiate(options.Count);
             var maximumNameLength = options.Max(n => n.Length);
             var sellIsEnabled = sellValue != null;
-            if (arrowPosition < 0 || arrowPosition >= Console.WindowWidth) throw new Exception("Arrow position out of bounds");
+#if DEBUG
+            if (arrowPosition < 0 || arrowPosition >= WindowWidth) throw new Exception("Arrow position out of bounds");
+#endif
             var maximumCurrencyLength = currency.ToString().Length + text[0].Length + text[1].Length + text[2].Length;
-            if (singular != null) maximumCurrencyLength += Math.Max(0, singular.Length - text[1].Length);
+            maximumCurrencyLength += Math.Max(0, singular?.Length ?? 0 - text[1].Length);
             singular = singular ?? text[1].RemoveLast();
-            if (textzero != null) maximumCurrencyLength = Math.Max(maximumCurrencyLength, textzero.Length);
+            maximumCurrencyLength = Math.Max(maximumCurrencyLength, textzero?.Length ?? 0);
             var line = Top + 1; var totalItems = items.ToList(); var amountIsChanged = false;
             ShowPageNum();
             while (true)
@@ -280,10 +309,11 @@ namespace Improved.Consoles
                         break;
                     case ConsoleKey.RightArrow:
                         if (currency - cost[Option] >= 0) { newItems[Option]++; currency -= cost[Option]; amountIsChanged = true; }
-                        else if (sellIsEnabled && newItems[Option] < 0) { if (currency - sellValue[Option] < 0) break; newItems[Option]++; currency -= sellValue[Option]; amountIsChanged = true; }
+                        else if (currency - sellValue?[Option] >= 0 && newItems[Option] < 0) { newItems[Option]++; currency -= sellValue[Option]; amountIsChanged = true; }
                         break;
+                        //TODO: test
                     case ConsoleKey.Enter: currencyLeft = currency; return totalItems;
-                    default: Input = Console.ReadKey(true).Key; continue;
+                    default: Input = ReadKey(true).Key; continue;
                 }
                 if (amountIsChanged)
                 {
@@ -293,10 +323,11 @@ namespace Improved.Consoles
                     switch (currency)
                     {
                         case 1: s = currency + singular; break;
-                        case 0: if (textzero != null) s = textzero; else s = "no" + text[1]; break;
+                        case 0: s = textzero ?? ("no" + text[1]); break;
                         default: s = currency + text[1]; break;
                     }
-                    if (currency != 0 || textzero == null) (text[0] + s + text[2]).WriteAt(0, Top + MaxLines + 2, maximumCurrencyLength);
+                    if (currency != 0 || textzero == null) s = text[0] + s + text[2];
+                    s.WriteAt(0, Top + MaxLines + 2, maximumCurrencyLength);
                 }
                 Maths.RMod(ref Option, TotalOptions);
                 if (ScrollIsEnabled) //TODO: draw thing on first run
@@ -305,25 +336,21 @@ namespace Improved.Consoles
                     else if (Index >= PossibleOptions) PagePlus = 1;
                     if (PagePlus != 0)
                     {
-                        Page += PagePlus;
-                        Maths.RMod(ref Page, Pages);
-                        ShowPageNum();
-                        Scroll.RecalculateIndex();
+                        TurnPage();
                         var maximumItemNumberLength = totalItems.Max().ToString().Length;
-                        var indices = Scroll.CalculateIndices();
                         var i = 0;
                         var top = Top;
                         for (; i < PossibleOptions; i++)
                         {
-                            options[indices[i]].WriteAt(2, ++top, maximumNameLength);
-                            totalItems[indices[i]].WriteAt(maximumNameLength + 3, top, maximumItemNumberLength);
+                            options[Indices[i]].WriteAt(2, ++top, maximumNameLength);
+                            totalItems[Indices[i]].WriteAt(maximumNameLength + 3, top, maximumItemNumberLength);
                         }
                         for (; i < MaxLines; i++) "".WriteAt(2, ++top, 1 + maximumNameLength + maximumItemNumberLength);
                     }
                 }
                 if (Input == ConsoleKey.UpArrow || Input == ConsoleKey.DownArrow)
                 { ' '.WriteAt(Left, line); '>'.WriteAt(Left, line = Index + Top + 1); }
-                Input = Console.ReadKey(true).Key;
+                Input = ReadKey(true).Key;
                 amountIsChanged = false;
                 PagePlus = 0;
             }
