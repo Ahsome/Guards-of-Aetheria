@@ -12,18 +12,8 @@ namespace GuardsOfAetheria
 
         public void LoadEntities()
         {
-            //TODO: Location db [Scenario List] -> scenario db -> enemy db
-            Party.Add(Player.Instance);
-            for (var i = 1; i < 7; i++)
-            {
-                //party
-                Console.WriteLine();
-            }
-            for (var i = 7; i < 13; i++)
-            {
-                //enemies
-                Console.WriteLine();
-            }
+            //TODO: Location db [Scenarios] -> scenario db -> enemy db, add enemies/party
+            Party.Add(B.Ag.Player());
         }
 
         public void Fight(Entity attacker, Entity defender)
@@ -46,19 +36,16 @@ namespace GuardsOfAetheria
 
         public void StartFight()
         {
-            //TODO BLOCK: select enemy to attack - do the same for party? or party autoattack?
-            //test
-            var enemyToAttack = Enemies[Enemies.ConvertAll(T => T.Name).ToArray().Choose()];
-            Fight(Player.Instance, enemyToAttack);
-            //party + enemy AI - consider strengths, hp left etc
-            //do the reverse
-            //loop until player/enemy dies
+            //select enemy to attack - do the same for party? or party autoattack? test below
+            var enemyToAttack = Enemies[Enemies.ConvertAll(e => e.Name).ToArray().Choose()];
+            Fight(B.Ag.Player(), enemyToAttack);
+            //party + enemy AI - consider strengths, hp left etc, do the reverse, loop until player/enemy dies
         }
 
         public void EndFight()
         {
-            Player.Instance.Experience += 1; //read data from oledb (after creating enemy db)
-            Player.Instance.TryLevelUp();
+            B.Ag.Player().Experience += 1; //read data from oledb (after creating enemy db)
+            B.Ag.Player().TryLevelUp();
             //regen while out of fight?
         }
     }

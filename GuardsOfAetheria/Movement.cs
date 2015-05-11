@@ -1,24 +1,21 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Improved;
 using Improved.Consoles;
 using static System.Console;
+using static System.Text.RegularExpressions.Regex;
 
-namespace GuardsOfAetheria
-{
-    internal static class Movement
-    {
-        public static Dictionary<string, object> VariableDictionary = new Dictionary<string, object> { ["Name"] = Player.Instance.Name };
-        public static void ShowLocation()
-        {
-            var arrays = new Dictionary<string, string[]> {["Option Text"] = new[]{""}, ["Room IDs"] = new[]{""}, ["Variables"] = new[]{""}};
-            var objects = new Dictionary<string, object> {["Text to Display"] = "", ["Room Name"] = ""};
-            Database.GetData($"SELECT * FROM Rooms WHERE ID = {Player.Instance.RoomId}", objects, arrays);
-            Title = $"Guards of Aetheria - {Player.Instance.Name} at {objects["Room Name"]}";
-            Clear();
-            Consoles.WordWrap(string.Format(Regex.Unescape((string)objects["Text to Display"]), (from o in arrays["Variables"] select VariableDictionary[o]).ToArray()));
-            SetCursorPosition(0, ++CursorTop); Player.Instance.RoomId = arrays["Room IDs"][arrays["Option Text"].Choose()].ToInt();
-        }
+namespace GuardsOfAetheria {
+    internal static class Movement {
+        public static Dictionary<string,object> VarDict = new Dictionary<string,object> {["Name"]=B.Ag.Player().Name };
+        public static void ShowLocation() {
+            var data = $"SELECT * FROM Rooms WHERE ID = {B.Ag.Player().RoomId}".OleDbRead(
+                new[] { "Text to Display","Room Name" },new[] { "Option Text","Room IDs","Variables" });
+            var objects = data.Item1; var arrays = data.Item2;
+            Title=$"Guards of Aetheria - {B.Ag.Player().Name} at {objects["Room Name"]}";
+            Unescape((string)objects["Text to Display"]).CWrite(
+                (from o in arrays["Variables"] select VarDict[o]).ToArray());
+            SetCursorPosition(0,++CursorTop); B.Ag.Player().RoomId=arrays["Room IDs"][arrays["Option Text"].Choose()].ToNum();
+        } //TODO: more complex interface etc, 'Save' room (and prev room id) :)
     }
 }

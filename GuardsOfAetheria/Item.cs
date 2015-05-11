@@ -1,83 +1,80 @@
 ﻿using System;
-using System.Collections.Generic;
-using static System.Console;
+using Improved.Consoles;
 
-namespace GuardsOfAetheria
-{
-    public abstract class Item
-    {
-        public string Name;
-        public int Index;
-        public int Amount;
-        public int Cost;
-        public int Value;
-    }
-
-    public class Equipment : Item
-    {
+namespace GuardsOfAetheria {
+    public class Equipment:Item {
 
     }
 
-    public class Weapon : Equipment
-    {
+    public class Helmet:Equipment {
+
+    }
+
+    public class Chestplate:Equipment {
+
+    }
+
+    public class Gauntlets:Equipment {
+
+    }
+
+    public class Greaves:Equipment {
+
+    }
+
+    public class Gloves:Equipment {
+
+    }
+
+    public class Boots:Equipment {
+
+    }
+
+
+    public class Weapon:Equipment {
         public Variable Attack;
         public string AttackText;
         public Variable ArmourPenetration;
 
         //details for weps: prefix, name, suffix, avg damage, damage%
         //same for armour
-        
-        public void GetWeaponData()
-        {
-            Clear();
+
+        public void GetWeaponData() {
             //TODO: info screen
-            var arrays = new Dictionary<string, string[]>
-            {
-                {"Materials", new[]{""}}
-            };
-            var strings = new Dictionary<string, object>
-            {
-                {"Material Name", ""}
-            };
-            Database.GetData("SELECT [Material Name] FROM Materials", strings, arrays);
-            Database.GetData($"SELECT * FROM Materials WHERE [Material Name] = {Player.Instance.RoomId}", strings, arrays);
+            //var data = "SELECT [Material Name] FROM Materials".GetData(new[] {"Materials"}, new[] {"Material Name"});
+            //var data2 = $"SELECT * FROM Materials WHERE [Material Name] = {Bag.Instance.Player().RoomId}".GetData(new[] { "Materials" }, null);
             //TODO: max gems = rarity id - 1? or rarity id/2?
         } //In weaponrack/armourrack - (cart)
         //CreateWeapon() (custom) for starting?
     }
 
-    public class Armour : Equipment
-    {
+    public class Armour:Equipment {
         public Variable Defense;
         public Variable ArmourToughness;
     }
 
-    public class Small : Item //rename
+    public class Small:Item //rename
     {
         public int MaximumStack;
     }
 
-    public class Gem : Small
-    {
+    public class Gem:Small {
         //read from db, atts.split, dictionary, in GemPouch
     }
 
-    public class Material : Item
-    {
+    public class Material:Item {
         public int MaximumStack;
     }
 
-    public class Variable
-    {
+    public class Variable {
         public int Min;
         public int Max;
 
-        public Variable(int min, int max)
-        {
-            Min = min;
-            Max = max;
+        public Variable(int min,int max) {
+            Min=min;
+            Max=max;
         }
 
-        public int Random() { return new Random().Next(Min, Max + 1); }
+        public int Random() { return new Random().Next(Min,Max+1); }
     }
 }

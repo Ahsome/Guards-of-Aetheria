@@ -1,30 +1,26 @@
-using System;
+using static System.Console;
 
-namespace GuardsOfAetheria
-{
-    internal class Program
-    {
+namespace GuardsOfAetheria {
+    internal class Program {
         //private static readonly string AppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Guards of Aetheria");
+        //TODO: read oledb to class
         private static void Main() { MainAsync(); }
-
-        private static async void MainAsync()
-        {
+        private static async void MainAsync() {
             // Fake Class: Spaghetti Monster ;)
             var task = Database.Connection.OpenAsync();
             #region Initiate Display
-            Console.BufferHeight = Console.WindowHeight = Console.LargestWindowHeight - 5;
-            Console.BufferWidth = Console.WindowWidth = Console.LargestWindowWidth - 5;
-            Console.Title = "Guards of Aetheria";
-            Console.CursorVisible = false;
-            //TODO: for fullscreen option? screen size options, allow/disallow autoresize option (how?), genericise, improve readability, shorten
+            BufferHeight=WindowHeight=LargestWindowHeight-5;
+            BufferWidth=WindowWidth=LargestWindowWidth-5;
+            Title="Guards of Aetheria";
+            CursorVisible=false;
+            //TODO: for fullscreen option? screen size options, allow/disallow autoresize option (how?), genericise, improve readability, shorten, move strings to json (faster than db), Bag.Instance.Player() is so long, toolbox
             #endregion
             //if (!Directory.Exists(AppData)) Directory.CreateDirectory(AppData);
-            Options.Load(); 
+            Options.Load();
             MainMenu.Display();
             await task;
             Database.Connection.Close();
-            //TODO: infinite timeout
-            while (true) Movement.ShowLocation();
+            while(true) Movement.ShowLocation();
             //Took way too long to make this ;)
             // ReSharper disable once FunctionNeverReturns
         }

@@ -4,6 +4,7 @@ namespace Improved.Consoles
 {
     public class ProgressBar
     {
+        //TODO: properties, get; set;
         public int Initial;
         public int Current;
         public int Maximum;
