@@ -1,7 +1,7 @@
 # Guards-of-Aetheria
 A simple text-adventure RPG, set in the land of Aesrin. Built using C#, with Visual Studio 2013
 ## Build Status
-[![Build status](https://ci.appveyor.com/api/projects/status/puf088j14ls35wx1)](https://ci.appveyor.com/project/Ahsome/guards-of-aetheria)
+[![Build status](https://ci.appveyor.com/api/projects/status/ba74kmgn5oj2hbtt?svg=true)](https://ci.appveyor.com/project/somebody1234/guards-of-aetheria)
 
 ## Team Members
 **Current Team Members**
