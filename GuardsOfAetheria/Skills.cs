@@ -1,10 +1,9 @@
-﻿namespace GuardsOfAetheria
-{
-    internal class Skills
-    {
-        public void GetSkills() //TODO: how to unlock other class skills? amount of a certain att?
+﻿using static GuardsOfAetheria.Toolbox;
+namespace GuardsOfAetheria{
+    internal class Skills{
+        public void GetSkills()//TODO: how to unlock other class skills? amount of a certain att?
         {
-            switch (B.Ag.Player().Class) //TODO: skill list, change skill name every level up
+            switch(Bag.Player().Class)//TODO: skill list, change skill name every level up
             {
                 case Class.Melee:
                     break;
@@ -14,9 +13,5 @@
                     break;
             }
         }
-
-        //public void ViewSkills()
-        //{
-        //}
     }
 }

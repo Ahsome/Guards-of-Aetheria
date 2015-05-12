@@ -1,13 +1,12 @@
 using static System.Console;
-
-namespace GuardsOfAetheria {
-    internal class Program {
+namespace GuardsOfAetheria{
+    internal class Program{
         //private static readonly string AppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Guards of Aetheria");
         //TODO: read oledb to class
-        private static void Main() { MainAsync(); }
-        private static async void MainAsync() {
+        private static void Main() {MainAsync();}
+        private static async void MainAsync(){
             // Fake Class: Spaghetti Monster ;)
-            var task = Database.Connection.OpenAsync();
+            var task=Database.Connection.OpenAsync();
             #region Initiate Display
             BufferHeight=WindowHeight=LargestWindowHeight-5;
             BufferWidth=WindowWidth=LargestWindowWidth-5;
