@@ -13,8 +13,10 @@ namespace Improved.Consoles{
         public int Priority;
         //TODO: frame order, add to frameList
         public char[][] StyleParts={
-            new[]{'─','│','┌','┐','└','┘'},new[]{'━','┃','┏','┓','┗','┛'},
-            new[]{'═','║','╔','╗','╚','╝'},new[]{'─','│','╭','╮','╯','╰'}
+            new[]{'─','│','┌','┐','└','┘'},
+            new[]{'━','┃','┏','┓','┗','┛'},
+            new[]{'═','║','╔','╗','╚','╝'},
+            new[]{'─','│','╭','╮','╯','╰'}
         };
         public int TopLeftX;
         public int TopLeftY;
@@ -48,16 +50,16 @@ namespace Improved.Consoles{
             Buffer.AddRange(lines);
             Buffer.RemoveRange(0,lines.Count);
         }
-        public void Write(string s,object[] o,int left=0,int top=0) {Aligned.Write(s,o,TopLeftX,TopLeftY,Width);}
+        public void Write(string s,object[] o,int left=0,int top=0) {s.WriteAt(TopLeftX,TopLeftY,Width,o:o);}
         public void Write(string s,object[] o,bool wordWrap,int left=-1,int top=-1,int width=int.MaxValue){
-            Aligned.Write(s,wordWrap,o,TopLeftX,TopLeftY,Width);
+            s.WriteAt(wordWrap,TopLeftX,TopLeftY,Width,o:o);
         }//TODO: modify buffer instead
         public void WriteBorder(string s,int top){
             var line=new char[Width];
             for(var i=0;i<line.Length;i+=1) line[i]=s[i%s.Length];
             WriteLine(new string(line));
         }
-        public void WriteAt(object o,int left,int top,int limit=-1) {o.WriteAt(left,top,limit.EnsureBetween(0,Width));}
+        public void Write(object o,int left,int top,int limit=-1) {o.WriteAt(left,top,limit.EnsureBetween(0,Width));}
     }
     public static class Frames{
         public static List<Frame> FrameList;

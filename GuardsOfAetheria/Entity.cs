@@ -6,6 +6,7 @@ namespace GuardsOfAetheria{
     using System.Collections.Generic;
     using Improved;
     using Improved.Consoles;
+    using static Improved.Lists;
     public class EquipmentSet{
         public Boots Boots;
         public Chestplate Chestplate;
@@ -47,7 +48,7 @@ namespace GuardsOfAetheria{
     }
     public class Entity{
         public List<Armour> Armour;
-        public Attributes Attributes=new Attributes();
+        public Attributes Atts=new Attributes();
         public Bars Bars=new Bars();
         public Class Class;
         public string Name;
@@ -56,38 +57,38 @@ namespace GuardsOfAetheria{
         public void Assign(){
             switch(Class){
                 case Class.Melee:
-                    Attributes.Primary=Attributes.Strength;
-                    Attributes.Secondary=Attributes.Wisdom;
-                    Attributes.Tertiary=Attributes.Dexterity;
+                    Atts.Primary=Atts.Strength;
+                    Atts.Secondary=Atts.Wisdom;
+                    Atts.Tertiary=Atts.Dexterity;
                     break;
                 case Class.Magic:
-                    Attributes.Tertiary=Attributes.Strength;
-                    Attributes.Primary=Attributes.Wisdom;
-                    Attributes.Secondary=Attributes.Dexterity;
+                    Atts.Tertiary=Atts.Strength;
+                    Atts.Primary=Atts.Wisdom;
+                    Atts.Secondary=Atts.Dexterity;
                     break;
                 case Class.Ranged:
-                    Attributes.Secondary=Attributes.Strength;
-                    Attributes.Tertiary=Attributes.Wisdom;
-                    Attributes.Primary=Attributes.Dexterity;
+                    Atts.Secondary=Atts.Strength;
+                    Atts.Tertiary=Atts.Wisdom;
+                    Atts.Primary=Atts.Dexterity;
                     break;
             }
         }
         public void Update(){
             switch(Class){
                 case Class.Melee:
-                    Attributes.Strength=Attributes.Primary;
-                    Attributes.Wisdom=Attributes.Secondary;
-                    Attributes.Dexterity=Attributes.Tertiary;
+                    Atts.Strength=Atts.Primary;
+                    Atts.Wisdom=Atts.Secondary;
+                    Atts.Dexterity=Atts.Tertiary;
                     break;
                 case Class.Magic:
-                    Attributes.Strength=Attributes.Tertiary;
-                    Attributes.Wisdom=Attributes.Primary;
-                    Attributes.Dexterity=Attributes.Secondary;
+                    Atts.Strength=Atts.Tertiary;
+                    Atts.Wisdom=Atts.Primary;
+                    Atts.Dexterity=Atts.Secondary;
                     break;
                 case Class.Ranged:
-                    Attributes.Strength=Attributes.Secondary;
-                    Attributes.Wisdom=Attributes.Tertiary;
-                    Attributes.Dexterity=Attributes.Primary;
+                    Atts.Strength=Atts.Secondary;
+                    Atts.Wisdom=Atts.Tertiary;
+                    Atts.Dexterity=Atts.Primary;
                     break;
             }
         }
@@ -119,16 +120,13 @@ namespace GuardsOfAetheria{
         public int RoomId{get;set;}
         public int PlotId{get;set;}
         public int InventorySpace{get;set;}
-        //TODO BLOCK: Inventory stuff
-        //Compartments, large compartments
-        //subtract inventoryspace once item is bought/sold
-        //make compartments less accessible depending on stuff e.g. being in combat/leaving them behind (at home)
+        //TODO: Compartments, large compartments, change invspace, compartment accessibility
         public List<Item> Inventory{get;set;}
         public EquipmentSet Equipped{get;set;}
         public void UpdateBars(){
-            Bars.Endurance.Unbuffed=50+Attributes.Strength*5+Level*5;
-            Bars.Mana.Unbuffed=50+Attributes.Wisdom*5+Level*5;
-            Bars.Stamina.Unbuffed=50+Attributes.Dexterity*5+Level*5;
+            Bars.Endurance.Unbuffed=50+Atts.Strength*5+Level*5;
+            Bars.Mana.Unbuffed=50+Atts.Wisdom*5+Level*5;
+            Bars.Stamina.Unbuffed=50+Atts.Dexterity*5+Level*5;
             Bars.Vitality.Unbuffed=(int)(10+Bars.Endurance.Unbuffed*0.01);//TODO: buffed stats
         }
         public void Equip(int invIndex){
@@ -139,7 +137,8 @@ namespace GuardsOfAetheria{
             else if(item is Greaves) Equipped.Greaves=item as Greaves;
             else if(item is Gloves) Equipped.Gloves=item as Gloves;
             else if(item is Boots) Equipped.Boots=item as Boots;
-            else return;
+            else 
+
             Inventory[invIndex]=default(Item);
         }
         public static void SortInventory(){
@@ -153,7 +152,7 @@ namespace GuardsOfAetheria{
         }
         public void ShowMenu(){
             throw new NotImplementedException();
-            //"Inventory".CWrite();
+            //"Inventory".CWrite(Alignment.Centre);
             //(from i in Inv select i.Name).ToArray().Choose();
             //Add more options, centre text, SelectContinue
         }
@@ -162,12 +161,13 @@ namespace GuardsOfAetheria{
         public static void Create(){
             //TODO: more extensive character creation, notify player
             "Your name is ".CWrite();
-            Bag.Player().Name=CustomIo.ReadLine(Lists.Dict(Lists.Kvp(1,Str.NonLetters)));
+            Bag.Player().Name=CustomIo.ReadLine(Dict(Kvp(1,Str.NonLetters)));
             "You come from\n".CWrite();
             Bag.Player().Origin=
                 (Origin)
                     Choose("an average house in the safe provinces, loyal to the king",
-                        "an average house in a war-torn province, loyal to your lord",//TODO: find correct title
+                        "an average house in a war-torn province, loyal to your lord",
+                        //TODO: find correct title
                         "a refugee tent in a war-torn province, loyal to nobody");
             #region Choose Class
             "You are\n".CWrite();
@@ -198,23 +198,33 @@ namespace GuardsOfAetheria{
             }
             Bag.Player().Class=(Class)Choose(options);
             #endregion
-            //TODO: AssignStartingEquipment();
-            Bag.Player().Attributes.Primary=13;
-            Bag.Player().Attributes.Secondary=10;
-            Bag.Player().Attributes.Tertiary=7;
+            //assign starting equips:
+            switch(Bag.Player().Class){
+                case Class.Melee:
+                    break;
+                case Class.Ranged:
+                    break;
+                case Class.Magic:
+                    break;
+            }
+            Bag.Player().Atts.Primary=13;
+            Bag.Player().Atts.Secondary=10;
+            Bag.Player().Atts.Tertiary=7;
             Bag.Player().Update();
             int attPoints;
             WordWrap("Set your attributes manually. Points left are indicated below.");
             var permanentPoints=Spend(new[]{"You have "," points"," left to use"},
                 new[]{
-                    new Item("Strength",Bag.Player().Attributes.Strength,1),
-                    new Item("Dexterity",Bag.Player().Attributes.Dexterity,1),
-                    new Item("Wisdom",Bag.Player().Attributes.Wisdom,1)
-                },16,out attPoints);
-            Bag.Player().Attributes.Strength=permanentPoints[0].Amount;
-            Bag.Player().Attributes.Dexterity=permanentPoints[1].Amount;
-            Bag.Player().Attributes.Wisdom=permanentPoints[2].Amount;
-            Bag.Player().Attributes.Points=attPoints;
+                    new Item("Strength",Bag.Player().Atts.Strength,1),
+                    new Item("Dexterity",Bag.Player().Atts.Dexterity,1),
+                    new Item("Wisdom",Bag.Player().Atts.Wisdom,1)
+                },
+                16,
+                out attPoints);
+            Bag.Player().Atts.Strength=permanentPoints[0].Amount;
+            Bag.Player().Atts.Dexterity=permanentPoints[1].Amount;
+            Bag.Player().Atts.Wisdom=permanentPoints[2].Amount;
+            Bag.Player().Atts.Points=attPoints;
             Bag.Player().RoomId=1;
         }
     }

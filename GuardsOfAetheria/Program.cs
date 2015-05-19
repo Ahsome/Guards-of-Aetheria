@@ -12,7 +12,7 @@ namespace GuardsOfAetheria{
             BufferWidth=WindowWidth=LargestWindowWidth-5;
             Title="Guards of Aetheria";
             CursorVisible=false;
-            //TODO: for fullscreen option? screen size options, allow/disallow autoresize option (how?), genericise, improve readability, shorten, move strings to json (faster than db), Bag.Instance.Player() is so long, toolbox
+            //TODO: for fullscreen option? screen size options, allow/disallow autoresize option (how?), genericise, improve readability, shorten, move strings to json (faster than db)
             #endregion
             //if (!Directory.Exists(AppData)) Directory.CreateDirectory(AppData);
             Options.Load();

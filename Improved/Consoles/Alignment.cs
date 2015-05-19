@@ -1,6 +1,8 @@
 ﻿using static System.Console;
 namespace Improved.Consoles{
     using System;
+    using System.Linq;
+    using System.Text.RegularExpressions;
     public enum Alignment{
         Left,
         Centre,
@@ -21,9 +23,9 @@ namespace Improved.Consoles{
     /*public void WriteJustified(string s, object[] o, int left = -1, int top = -1)
         {
             string.Format(s, o).WriteAt(0, CursorTop);
-            //TODO: left (for frames), space = width - 
+            //TODO: left (for frames), var spaces=l.Count(c=>c==' '); left+=word.Length; l.Split(new{' '}).WriteAt(spaces*wordswritten/totalwords
         }*/
-    public class Aligned{
+    public static class Aligned{
         public static Alignment Alignment;
         public static IAlignable Align;
         public static void Initiate() {Initiate(Alignment);}
@@ -40,25 +42,90 @@ namespace Improved.Consoles{
                     break;
             }
         }
-        public static void Write(string s,object[] o=null,int left=-1,int top=-1,int width=int.MaxValue){
-            width=Math.Min(width,WindowWidth);
-            if(left<0||left>WindowWidth) left=0;
-            if(top>=0||top<=WindowHeight) CursorTop=top;
-            var lines=s.Split(new[]{'\n','\r'},StringSplitOptions.RemoveEmptyEntries);
-            foreach(var l in lines) (o==null?l:string.Format(l,o)).WriteAt(Align.Calculate(l.Length,left,width),++CursorTop);
+        public static void WriteAt(this string s,
+            int left=-1,
+            int top=-1,
+            int width=int.MaxValue,
+            int maxLength=-1,
+            object[] o=null){
+            CursorLeft=left<0||left>=WindowWidth?WindowWidth:left;
+            Consoles.REnsureBetween(ref width,1,WindowWidth-left);
+            CursorTop=top<0||top>=WindowHeight?WindowHeight:top;//TODO: \r\n
+            Consoles.REnsureBetween(ref maxLength,1,width);
+            foreach(var l in
+                s.Split(new[]{'\n','\r'},StringSplitOptions.RemoveEmptyEntries).Select(l=>l.PadRight(maxLength))) (o==null?l:string.Format(l,o)).W(Align.Calculate(l.Length,left,width),++CursorTop);
         }
-        public static void Write(string s,bool wordWrap,object[] o=null,int left=-1,int top=-1,int width=int.MaxValue){
-            if(!wordWrap){
-                if(top>=0&&top<=WindowHeight) CursorTop=top;
-                Write(s,o,left,CursorTop,width);
-                return;
-            }
-            foreach(var l in Consoles.WordWrap(s.Replace('\n',' '))) Write(l,o,left,CursorTop,width);
+        public static void W(this string s,int left,int top){
+            SetCursorPosition(left,top);
+            Write(s);
         }
-        public static void Write(string s,Alignment alignment,bool wordWrap=false,object[] o=null,int left=-1,int top=-1,
-            int width=int.MaxValue){
+        public static void WriteAt(this string s,
+            bool wordWrap,
+            int left=-1,
+            int top=-1,
+            int width=int.MaxValue,
+            int maxLength=-1,
+            object[] o=null){
+            var regex=new Regex("[\n\r]");
+            if(wordWrap) foreach(var l in Consoles.WordWrap(regex.Replace(s,""),write:false)) WriteAt(l,left,CursorTop,width,maxLength,o);
+            else WriteAt(s,left,CursorTop,width,maxLength,o);
+        }
+        public static void CWrite(this string s,
+            bool wordWrap,
+            int left=-1,
+            int top=-1,
+            int width=int.MaxValue,
+            int maxLength=-1,
+            object[] o=null){
+            var regex=new Regex("[\n\r]");
+            Clear();
+            if(wordWrap) foreach(var l in Consoles.WordWrap(regex.Replace(s,""),write:false)) WriteAt(l,left,CursorTop,width,maxLength,o);
+            else WriteAt(s,left,CursorTop,width,maxLength,o);
+        }
+        public static void WriteAt(this string s,
+            Alignment alignment,
+            bool wordWrap=false,
+            object[] o=null,
+            int left=-1,
+            int top=-1,
+            int width=int.MaxValue,
+            int maxLength=-1){
             Initiate(alignment);
-            Write(s,wordWrap,null,left,top,width);
+            WriteAt(s,wordWrap,left,top,width,maxLength,o);
+        }
+        public static void CWrite(this string s,
+            Alignment alignment,
+            bool wordWrap=false,
+            object[] o=null,
+            int left=-1,
+            int top=-1,
+            int width=int.MaxValue,
+            int maxLength=-1){
+            Initiate(alignment);
+            Clear();
+            WriteAt(s,wordWrap,left,top,width,maxLength,o);
+        }
+        public static void WriteAt(this object o,
+            int left=-1,
+            int top=-1,
+            int width=int.MaxValue,
+            bool wordWrap=false,
+            int maxLength=-1){
+            WriteAt(o.ToString(),wordWrap,left,top,width,maxLength);
+        }
+        public static void CWrite(this object o,
+            int left=-1,
+            int top=-1,
+            int width=int.MaxValue,
+            bool wordWrap=false,
+            int maxLength=-1){
+            Clear();
+            WriteAt(o.ToString(),wordWrap,left,top,width,maxLength);
+        }
+        public static void WriteAt(this char c,int left=-1,int top=-1) {W(c.ToString(),left,top);}
+        public static void CWrite(this char c,int left=-1,int top=-1){
+            Clear();
+            W(c.ToString(),left,top);
         }
     }
 }

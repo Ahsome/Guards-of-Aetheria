@@ -12,8 +12,14 @@ namespace Improved.Consoles{
         public int Top;
         public int Width;
         public ProgressBar() {}
-        public ProgressBar(int initial,int current,int maximum,int width,int left=-1,int top=-1,
-            ConsoleColor initialColour=default(ConsoleColor),ConsoleColor newColour=default(ConsoleColor),
+        public ProgressBar(int initial,
+            int current,
+            int maximum,
+            int width,
+            int left=-1,
+            int top=-1,
+            ConsoleColor initialColour=default(ConsoleColor),
+            ConsoleColor newColour=default(ConsoleColor),
             string enclosure=null){
             Initial=initial;
             Current=current;

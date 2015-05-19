@@ -42,7 +42,9 @@
   <ItemGroup>
     <Compile Include="Cipher.cs" />
     <Compile Include="Consoles\Alignment.cs" />
+    <Compile Include="Consoles\AsciiFont.cs" />
     <Compile Include="Consoles\Frame.cs" />
+    <Compile Include="Lists.cs" />
     <Compile Include="Maths.cs" />
     <Compile Include="Parsing.cs" />
     <Compile Include="Consoles\ProgressBar.cs" />
