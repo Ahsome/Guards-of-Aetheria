@@ -9,13 +9,12 @@
         public const string Uppercase="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     }
     public class Cipher{
-        public static string Caesar(string s,int rot) {return Vigenere(s,Str.Lowercase[rot].ToString());}
+        public static string Caesar(string s,int rot) =>Vigenere(s,Str.Lowercase[rot].ToString());
         //TODO: case comparison, transposition cipher, hill cipher, pre-vigenere cipher - trisomething - key = lowercase, binary cipher, frequency analysis
         public static string Vigenere(string s,string key){
-            var s2="";
-            for(var i=0;i<s.Length;) s2+=char.IsLetter(s[i])?Str.Lowercase[(s[i]+key[i%key.Length])%26]:s[i];
-            return s2;//TODO: do not increment i if not letter
-        }
+            var j=-1;
+            return s.Aggregate("",(a,b)=>a+(char.IsLetter(b)?Str.Lowercase[(b+key[++j%key.Length])%26]:b));
+        } //TODO: one-line-ify, convert letters to alphabet representations
         public static string Transposition(string s,int columns){
             var sb=new StringBuilder(s.Length);
             var letters=new string(s.Where(char.IsLetter).ToArray());

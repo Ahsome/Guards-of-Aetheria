@@ -2,17 +2,20 @@
     using System;
     using Improved.Consoles;
     public class Equipment:Item {}
-    public class Helmet:Equipment {}
-    public class Chestplate:Equipment {}
-    public class Gauntlets:Equipment {}
-    public class Greaves:Equipment {}
-    public class Gloves:Equipment {}
-    public class Boots:Equipment {}
+    public enum ArmourType:byte{
+        Helmet,
+        Chestplate,
+        Gauntlets,
+        Greaves,
+        Gloves,
+        Boots,
+        Shield
+    }
     public class Weapon:Equipment{
         public Variable ArmourPenetration;
         public Variable Attack;
         public string AttackText;
-        //details for weps: prefix, name, suffix, avg damage, damage%, same for armour
+        //details for weps: prefix, name, suffix, Variable DamageRange, same for armour
         public void GetWeaponData(){
             //TODO: info screen
             //var data = "SELECT [Material Name] FROM Materials".GetData(new[] {"Materials"}, new[] {"Material Name"});
@@ -23,6 +26,7 @@
     public class Armour:Equipment{
         public Variable ArmourToughness;
         public Variable Defense;
+        public ArmourType Type;
     }
 
     //rename
@@ -40,6 +44,10 @@
             Min=min;
             Max=max;
         }
-        public int Random() {return new Random().Next(Min,Max+1);}
+        public Variable(int average,decimal minMultiplier,decimal maxMultiplier){
+            Min=(int)(average*minMultiplier);
+            Max=(int)(average*maxMultiplier);
+        }
+        public int Random =>new Random().Next(Min,Max+1);
     }
 }

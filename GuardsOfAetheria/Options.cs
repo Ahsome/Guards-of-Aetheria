@@ -1,21 +1,22 @@
-﻿using static System.Console;
-using static System.ConsoleKey;
-namespace GuardsOfAetheria{
+﻿namespace GuardsOfAetheria{
     using System;
     using GuardsOfAetheria.Properties;
     using Improved;
     using Improved.Consoles;
+    using static System.Console;
+    using static System.ConsoleKey;
     public class Options{
         public static string[] Names={"Menu scrolling","Page numbers"};
         public static string[][] Strings={new[]{"Pages","Scroll"},new[]{"Hidden","Visible"}};
         public static object[][] List={new object[]{false,true},new object[]{false,true}};
         public static void Load(){
-            Consoles.ScrollingIsContinuous=Settings.Default.Menu_scrolling;
-            Consoles.PageNumIsVisible=Settings.Default.Page_numbers;
+            Consoles.SetBools();
+            Consoles.Scrolling["continuous"]=Settings.Default.Menu_scrolling;
+            Consoles.PageNum["visible"]=Settings.Default.Page_numbers;
         }
         public static void Change(){
             //TODO: scrolling
-            "Options\n\n".CWrite();
+            "Options\n\n".WriteAt();
             var top=CursorTop;
             const int left=38;
             const int spacing=12;

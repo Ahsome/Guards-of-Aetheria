@@ -61,10 +61,11 @@ namespace Improved.Consoles{
         }
         public void Write(object o,int left,int top,int limit=-1) {o.WriteAt(left,top,limit.EnsureBetween(0,Width));}
     }
-    public static class Frames{
-        public static List<Frame> FrameList;
-        public static void ShowFrameNumbers(){
-            for(var i=0;i<FrameList.Count;i++) i.WriteAt(FrameList[i].TopLeftX,FrameList[i].TopLeftY);
+    public class Window:List<Frame>{
+        public void ShowFrameNumbers(){
+#if DEV
+            for(var i=0;i<Count;i++) i.WriteAt(this[i].TopLeftX,this[i].TopLeftY);
+#endif
         }
     }
 }

@@ -13,15 +13,15 @@ namespace GuardsOfAetheria{
         }
         public void Fight(Entity attacker,Entity defender){
             //TODO: melee/magic/ranged effects, armour chance to hit - based on size?
-            var armour=new Random().Next(8);//select - chance to hit
+            var armour=new Random().Next(8);//select maybe? - chance to hit
             var weapon=Consoles.Choose(attacker.Weapons[0].Name,attacker.Weapons[1].Name);
-            var totalPenetration=attacker.Weapons[weapon].ArmourPenetration.Random();
-            var totalArmour=defender.Armour[armour].ArmourToughness.Random();
-            var totalDamage=attacker.Weapons[weapon].Attack.Random();
+            var totalPenetration=attacker.Weapons[weapon].ArmourPenetration.Random;
+            var totalArmour=defender.Armour[armour].ArmourToughness.Random;
+            var totalDamage=attacker.Weapons[weapon].Attack.Random;
             var penetrationDamage=totalPenetration-totalArmour;
             var damageDealt=Math.Max(1,
-                (attacker.Weapons[weapon].Attack.Random()+penetrationDamage)*totalDamage-
-                    defender.Armour[armour].Defense.Random());
+                (attacker.Weapons[weapon].Attack.Random+penetrationDamage)*totalDamage-
+                    defender.Armour[armour].Defense.Random);
             if(penetrationDamage<0) Console.WriteLine(attacker.Name+"struck a glancing blow!");
             else Console.WriteLine(attacker.Name+"used a basic attack!");
             //TODO: never show numerical stats - text instead?

@@ -1,21 +1,12 @@
-using static Improved.Consoles.Consoles;
-using static System.ConsoleColor;
-using static GuardsOfAetheria.Toolbox;
 namespace GuardsOfAetheria{
     using System;
     using System.Collections.Generic;
     using Improved;
     using Improved.Consoles;
     using static Improved.Lists;
-    public class EquipmentSet{
-        public Boots Boots;
-        public Chestplate Chestplate;
-        public Gauntlets Gauntlets;
-        public Gloves Gloves;
-        public Greaves Greaves;
-        public Helmet Helmet;
-        public Weapon Weapon;
-    }
+    using static Improved.Consoles.Consoles;
+    using static System.ConsoleColor;
+    using static Toolbox;
     public class Bar:ProgressBar{
         public int Unbuffed;
         public Bar() {}
@@ -122,7 +113,8 @@ namespace GuardsOfAetheria{
         public int InventorySpace{get;set;}
         //TODO: Compartments, large compartments, change invspace, compartment accessibility
         public List<Item> Inventory{get;set;}
-        public EquipmentSet Equipped{get;set;}
+        public Dictionary<ArmourType,Item> ArmourSet{get;set;}
+        public Weapon Weapon;
         public void UpdateBars(){
             Bars.Endurance.Unbuffed=50+Atts.Strength*5+Level*5;
             Bars.Mana.Unbuffed=50+Atts.Wisdom*5+Level*5;
@@ -131,15 +123,14 @@ namespace GuardsOfAetheria{
         }
         public void Equip(int invIndex){
             var item=Inventory[invIndex];//TODO: test
-            if(item is Helmet) Equipped.Helmet=item as Helmet;
-            else if(item is Chestplate) Equipped.Chestplate=item as Chestplate;
-            else if(item is Gauntlets) Equipped.Gauntlets=item as Gauntlets;
-            else if(item is Greaves) Equipped.Greaves=item as Greaves;
-            else if(item is Gloves) Equipped.Gloves=item as Gloves;
-            else if(item is Boots) Equipped.Boots=item as Boots;
-            else 
-
-            Inventory[invIndex]=default(Item);
+            if(item is Armour){
+                Inventory[invIndex]=ArmourSet[(item as Armour).Type];
+                ArmourSet[(item as Armour).Type]=item as Armour;
+            }
+            else if(item is Weapon){
+                Inventory[invIndex]=Weapon;
+                Weapon=item as Weapon;//TODO: two-handed weps remove shield
+            }
         }
         public static void SortInventory(){
             throw new NotImplementedException();
@@ -152,7 +143,7 @@ namespace GuardsOfAetheria{
         }
         public void ShowMenu(){
             throw new NotImplementedException();
-            //"Inventory".CWrite(Alignment.Centre);
+            //"Inventory".WriteAt(Alignment.Centre);
             //(from i in Inv select i.Name).ToArray().Choose();
             //Add more options, centre text, SelectContinue
         }
@@ -160,9 +151,9 @@ namespace GuardsOfAetheria{
     internal class CharacterCreation{
         public static void Create(){
             //TODO: more extensive character creation, notify player
-            "Your name is ".CWrite();
-            Bag.Player().Name=CustomIo.ReadLine(Dict(Kvp(1,Str.NonLetters)));
-            "You come from\n".CWrite();
+            "Your name is ".WriteAt(clear:true);
+            Bag.Player().Name=CustomIo.ReadLine(Dct(Kvp(1,Str.NonLetters)));
+            "You come from\n".WriteAt(clear:true);
             Bag.Player().Origin=
                 (Origin)
                     Choose("an average house in the safe provinces, loyal to the king",
@@ -170,7 +161,7 @@ namespace GuardsOfAetheria{
                         //TODO: find correct title
                         "a refugee tent in a war-torn province, loyal to nobody");
             #region Choose Class
-            "You are\n".CWrite();
+            "You are\n".WriteAt(clear:true);
             var options=new string[3];
             switch(Bag.Player().Origin){
                 case Origin.Nation:
@@ -212,13 +203,11 @@ namespace GuardsOfAetheria{
             Bag.Player().Atts.Tertiary=7;
             Bag.Player().Update();
             int attPoints;
-            WordWrap("Set your attributes manually. Points left are indicated below.");
+            "Set your attributes manually. Points left are indicated below.".WriteAt(clear:true);
             var permanentPoints=Spend(new[]{"You have "," points"," left to use"},
-                new[]{
-                    new Item("Strength",Bag.Player().Atts.Strength,1),
+                List(new Item("Strength",Bag.Player().Atts.Strength,1),
                     new Item("Dexterity",Bag.Player().Atts.Dexterity,1),
-                    new Item("Wisdom",Bag.Player().Atts.Wisdom,1)
-                },
+                    new Item("Wisdom",Bag.Player().Atts.Wisdom,1)),
                 16,
                 out attPoints);
             Bag.Player().Atts.Strength=permanentPoints[0].Amount;

@@ -6,7 +6,7 @@ namespace Improved{
         /// <param name="a">The number</param>
         /// <param name="b">The base</param>
         /// <returns>The modulus</returns>
-        public static int Mod(this int a,int b) {return (a%=b)<0?a+b:a;}
+        public static int Mod(this int a,int b) =>(a%=b)<0?a+b:a;
         /// <summary>
         ///     Returns the positive modulus of two numbers, modifying the first number.
         /// </summary>
