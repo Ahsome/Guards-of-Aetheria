@@ -9,3 +9,5 @@ A simple text-adventure RPG, set in the land of Aesrin. Built using C#, with Vis
 - E-Hern (CODER)
 - Timothy Chew (CODER)
 - Perry Luo (DESIGNER/WRITER)
+
+**Note:** Project may be abandoned.
